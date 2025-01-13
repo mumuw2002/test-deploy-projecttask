@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <h1>All Users</h1>
+    <div class="row">
+        <% users.forEach(user => { %>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="<%= user.profileImage %>" class="card-img-top" alt="<%= user.firstName %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= user.firstName %> <%= user.lastName %></h5>
+                        <form action="/addFriend/<%= user._id %>" method="POST">
+                            <button type="submit" class="btn btn-primary">Add Friend</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>

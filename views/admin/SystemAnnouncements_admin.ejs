@@ -1,0 +1,716 @@
+<!-- C:\Users\plamy\OneDrive\เดสก์ท็อป\Task_Project\views\admin\SystemAnnouncements_admin.ejs -->
+<style>
+  :root {
+    --sidebar: #323450;
+  }
+
+  .secannounce {
+    width: 95%;
+    height: 95%;
+    margin-top: 30px;
+  }
+
+  .headsecannounce p {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .searchannounce {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .searchannounce a:last-child {
+    color: #707070;
+  }
+
+  .searchannounce a:last-child:hover {
+    color: #000000;
+  }
+
+  .inputBox {
+    position: relative;
+  }
+
+  .inputBox i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #707070;
+    font-size: 18px;
+  }
+
+  .inputBox input {
+    width: 300px;
+    height: 40px;
+    padding: 5px 10px 5px 35px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+
+  .addannounce {
+    height: 40px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #3d3555;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+    align-content: center;
+    text-decoration: none;
+  }
+
+  .addannounce:hover {
+    background-color: #2b2537;
+    color: #fff;
+  }
+
+  .historysystemannounce {
+    margin-left: auto;
+  }
+
+  /* Table Styling */
+  .tableannounce {
+    height: 80%;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    table-layout: fixed;
+  }
+
+  thead {
+    background-color: #3d3555;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  tbody {
+    max-height: 470px;
+    overflow-y: auto;
+    display: contents;
+  }
+
+  thead th,
+  tbody td {
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 16.66%;
+  }
+
+  thead th:first-child,
+  tbody td:first-child {
+    width: 50px;
+  }
+
+  thead th,
+  tbody td {
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 16.66%;
+  }
+
+  thead th:first-child,
+  tbody td:first-child {
+    width: 50px;
+  }
+
+  td input[type="checkbox"],
+  th input[type="checkbox"] {
+    margin: 0;
+    position: relative;
+    top: 0;
+  }
+
+  tbody tr {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  td input[type="checkbox"] {
+    margin-right: 10px;
+  }
+
+  .delete-btn {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .delete-btn:hover {
+    background-color: #ff3333;
+  }
+
+  .action-btn {
+    text-align: center;
+  }
+
+  .no-data {
+    text-align: center;
+    font-size: 16px;
+    color: #707070;
+    height: 100px;
+    /* ลบ width: 100% ออก */
+  }
+
+  .no-data td {
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    /* เพิ่ม width: 100% ใน .no-data td */
+  }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+
+  .popup-content button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .confirm-delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+  }
+
+  .cancel-btn {
+    background-color: #ccc;
+    color: black;
+  }
+
+  /* เพิ่มสไตล์สำหรับ selection-status */
+  .selection-status {
+    position: absolute;
+    bottom: 15px;
+    right: 50px;
+    background-color: rgba(238, 238, 238, 0.8);
+    /* เพิ่มความโปร่งใส */
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    /* วางไว้เหนือตาราง */
+    display: flex;
+    /* ใช้ flexbox */
+    align-items: center;
+    /* จัดตำแหน่งในแนวตั้ง */
+    gap: 15px;
+    /* เพิ่มระยะห่างระหว่างข้อความและปุ่ม */
+  }
+
+  .selection-status #delete-selected-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4791db;
+    /* สีฟ้า */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .selection-status #delete-selected-btn:disabled {
+    background-color: #cccccc;
+    cursor: default;
+  }
+
+  /* สไตล์สำหรับ Popup */
+  .popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+  }
+
+  .popup .close-button {
+    position: absolute;
+    font-size: 25px;
+    top: 27px;
+    right: 35px;
+    cursor: pointer;
+  }
+
+  .popup h1 {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .popup .content {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .exannounce span {
+    display: block;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #5c54e5;
+    margin-bottom: 10px;
+  }
+
+  .exannounce span i {
+    font-size: 24px;
+    color: #5c54e5;
+    margin-right: 8px;
+  }
+
+  .reverse-icon {
+    display: inline-block;
+    transform: scaleY(-1);
+    transform: scaleX(-1);
+  }
+
+  .headexannounce {
+    width: 100%;
+  }
+
+  .content-1 {
+    padding: 0px 15px;
+    font-size: 27px;
+  }
+
+  .headexannounce .text {
+    font-size: 13px;
+    color: #646262;
+  }
+
+  .headexannounce .text:last-child {
+    margin-bottom: 12px;
+  }
+
+  .headexannounce .title-preview {
+    width: 100%;
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    cursor: pointer;
+  }
+
+  .headexannounce .date-preview {
+    font-size: 12px;
+    color: #555;
+    padding-left: 10px;
+  }
+
+  .subcontentexannounce {
+    width: 100%;
+    height: 350px;
+    border: solid 2px #d3d3d3;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 10px rgba(55, 55, 55, 0.05);
+  }
+
+  .contentexannounce .content-preview {
+    height: 350px;
+    overflow-y: scroll;
+    padding: 11px 15px;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    border-radius: 10px;
+  }
+
+  .popup-overlay-announcement {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* ซ่อน overlay โดยเริ่มต้น */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+</style>
+
+<div class="main-container">
+  <div class="content">
+    <div class="secannounce">
+      <div class="headsecannounce">
+        <p>ประกาศทั้งหมด</p>
+      </div>
+
+      <div class="searchannounce">
+        <div class="inputBox">
+          <i class="bx bx-search"></i>
+          <input type="search" name="searchTerm" placeholder="ค้นหาประกาศ..." onkeyup="searchAnnouncements()">
+        </div>
+        <a href="/SystemAnnouncements/pageaddAnnouncements" class="addannounce">+ เพิ่มประกาศใหม่</a>
+        <a href="/SystemAnnouncements/historySystemAnnouncements" class="historysystemannounce">ประวัติประกาศระบบ</a>
+      </div>
+
+      <div class="tableannounce">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>ชื่อประกาศ</th>
+              <th>วันที่สร้างประกาศ</th>
+              <th>วันสิ้นสุดของประกาศ</th>
+              <th>คนสร้างประกาศ</th>
+              <th>เห็นแล้ว</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (announcements.length) { %>
+              <% announcements.forEach(announcement=> { %>
+                <% if (!announcement.isDeleted) { %>
+                  <tr data-title="<%= announcement.title %>" data-content="<%= announcement.content %>"
+                    data-created-at="<%= announcement.createdAt %>"
+                    data-expiration-date="<%= announcement.expirationDate %>"
+                    data-created-by="<%= JSON.stringify(announcement.createdBy) %>" onclick="showPopup(this)">
+                    <td onclick="event.stopPropagation()"><input type="checkbox"></td>
+                    <td>
+                      <%= announcement.title %>
+                    </td>
+                    <td>
+                      <%= announcement.createdAt ? new Date(announcement.createdAt).toLocaleDateString('th-TH', {
+                        year: 'numeric' , month: 'long' , day: 'numeric' }) : 'ไม่ระบุ' %>
+                    </td>
+                    <td>
+                      <%= announcement.expirationDate ? new
+                        Date(announcement.expirationDate).toLocaleDateString('th-TH', { year: 'numeric' , month: 'long'
+                        , day: 'numeric' }) : 'ไม่มีวันหมดอายุ' %>
+                    </td>
+                    <td>
+                      <% if (announcement.createdBy) { %>
+                        <%= announcement.createdBy.username %>
+                          <% } else { %>ผู้ใช้ที่ไม่ระบุ<% } %>
+                    </td>
+                    <td id="user-counts">
+                      <%= userCounts %> คน
+                    </td>
+                    <td class="action-btn" onclick="event.stopPropagation()">
+                      <button class="delete-btn" data-id="<%= announcement._id %>">🗑</button>
+                    </td>
+                  </tr>
+                  <% } %>
+                    <% }); %>
+                      <% } else { %>
+                        <tr class="no-data">
+                          <td colspan="7">ไม่พบข้อมูล</td>
+                        </tr>
+                        <% } %>
+          </tbody>
+        </table>
+        <div class="selection-status">
+          <span id="selected-count">0 Selected</span>
+          <button id="delete-selected-btn" disabled>ลบ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popup-overlay">
+  <div class="popup-content">
+    <p>คุณต้องการลบประกาศนี้หรือไม่?</p>
+    <button class="confirm-delete-btn">ยืนยัน</button>
+    <button class="cancel-delete-btn cancel-btn">ยกเลิก</button>
+  </div>
+</div>
+
+<div class="popup-overlay">
+  <div class="popup-content">
+    <p>คุณต้องการลบประกาศนี้หรือไม่?</p>
+    <button class="confirm-delete-btn">ยืนยัน</button>
+    <button class="cancel-delete-btn cancel-btn">ยกเลิก</button>
+  </div>
+</div>
+
+<div class="popup-overlay-announcement">
+  <div id="announcementPopup" class="popup">
+    <span class="close-button" onclick="closePopup()"><i id="icon" class='bx bx-x'></i></span>
+    <div class="popup-content">
+      <div class="headexnewannounce">
+        <div class="exannounce">
+          <span><span><i class='bx bxs-megaphone reverse-icon'></i> ประกาศจากระบบ</span></span>
+          <div class="headexannounce">
+            <div class="content-1" id="popupTitle"></div>
+            <div class="content-1 text" id="popupDate"></div>
+            <div class="content-1 text" id="popupCreatedBy"></div>
+          </div>
+          <div class="contentexannounce">
+            <div class="subcontentexannounce">
+              <div id="popupContent" class="content-preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function showPopup(element) {
+    const announcement = {
+      title: element.dataset.title,
+      content: element.dataset.content,
+      createdAt: element.dataset.createdAt,
+      expirationDate: element.dataset.expirationDate,
+      createdBy: JSON.parse(element.dataset.createdBy)
+    };
+
+    document.getElementById('popupTitle').innerText = announcement.title;
+    document.getElementById('popupContent').innerHTML = marked.parse(announcement.content);
+
+    document.querySelector('.popup-overlay-announcement').style.display = 'flex';
+
+    // แสดงระยะเวลา (popupDate) ในรูปแบบ "ระยะวันที่ประกาศ ... - ..."
+    const formattedCreatedAt = new Date(announcement.createdAt).toLocaleDateString('th-TH', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    // ตรวจสอบ announcement.expirationDate ก่อนแปลงเป็น Date object
+    if (announcement.expirationDate) {
+      const formattedExpirationDate = new Date(announcement.expirationDate).toLocaleDateString('th-TH', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+      document.getElementById('popupDate').innerText = `ระยะวันที่ประกาศ ${formattedCreatedAt} - ${formattedExpirationDate}`;
+    } else {
+      document.getElementById('popupDate').innerText = `ระยะวันที่ประกาศ ${formattedCreatedAt} - ไม่มีวันหมดอายุ`;
+    }
+
+    // แสดงผู้สร้าง (popupCreatedBy)
+    const createdBy = announcement.createdBy ? announcement.createdBy.username : 'ผู้ใช้ที่ไม่ระบุ';
+    document.getElementById('popupCreatedBy').innerText = `สร้างโดย: ${createdBy}`;
+
+    document.getElementById('announcementPopup').style.display = 'block';
+  }
+
+  // ฟังก์ชันสำหรับปิด Popup
+  function closePopup() {
+    document.getElementById('announcementPopup').style.display = 'none';
+    document.querySelector('.popup-overlay-announcement').style.display = 'none';
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  function searchAnnouncements() {
+    const searchInput = document.querySelector('input[name="searchTerm"]');
+    const table = document.querySelector('table'); // แก้ไขตรงนี้
+    const tr = table.getElementsByTagName("tr");
+
+    searchInput.addEventListener('input', () => {
+      const searchTerm = searchInput.value.toUpperCase();
+
+      // กรองข้อมูลในตาราง
+      for (let i = 1; i < tr.length; i++) { // เริ่มต้นที่ i = 1 เพื่อข้าม header row
+        let found = false;
+        const td = tr[i].getElementsByTagName("td");
+        for (let j = 0; j < td.length; j++) { // วนลูปทุกคอลัมน์
+          const txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(searchTerm) > -1) {
+            found = true;
+            break;
+          }
+        }
+        tr[i].style.display = found ? "" : "none";
+      }
+    });
+  }
+
+  searchAnnouncements();
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const masterCheckbox = document.querySelector('thead th input[type="checkbox"]');
+    const tbody = document.querySelector("tbody");
+    const noDataRow = document.querySelector(".no-data");
+    const popupOverlay = document.querySelector(".popup-overlay");
+    const confirmDeleteBtn = document.querySelector(".confirm-delete-btn");
+    const cancelDeleteBtn = document.querySelector(".cancel-delete-btn");
+    const checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+    const selectedCount = document.getElementById("selected-count");
+    const deleteSelectedBtn = document.getElementById("delete-selected-btn");
+    const selectionStatus = document.querySelector(".selection-status"); // เพิ่มตัวแปร selectionStatus
+
+    let currentDeleteId = null;
+    let selectedAnnouncements = [];
+
+    // ซ่อน selection-status ตอนเริ่มต้น
+    selectionStatus.style.display = "none";
+
+    masterCheckbox.addEventListener("change", function () {
+      checkboxes.forEach(checkbox => checkbox.checked = masterCheckbox.checked);
+      updateSelectedAnnouncements();
+      updateSelectionStatus();
+    });
+
+    tbody.addEventListener("change", function (event) {
+      if (event.target.type === "checkbox") {
+        updateSelectedAnnouncements();
+        updateSelectionStatus();
+      }
+    });
+
+    function updateSelectedAnnouncements() {
+      selectedAnnouncements = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.closest("tr").querySelector(".delete-btn").getAttribute("data-id"));
+    }
+
+    function updateSelectionStatus() {
+      const count = selectedAnnouncements.length;
+      selectedCount.textContent = `${count} Selected`;
+      deleteSelectedBtn.disabled = count === 0;
+
+      // แสดงหรือซ่อน selection-status
+      if (count > 0) {
+        selectionStatus.style.display = "flex";
+      } else {
+        selectionStatus.style.display = "none";
+      }
+    }
+
+    deleteSelectedBtn.addEventListener("click", function () {
+      if (selectedAnnouncements.length > 0) {
+        currentDeleteId = selectedAnnouncements;
+        popupOverlay.style.display = "flex";
+      } else {
+        alert("กรุณาเลือกประกาศที่ต้องการลบ");
+      }
+    });
+
+    document.body.addEventListener("click", function (event) {
+      if (event.target.classList.contains("delete-btn")) {
+        currentDeleteId = [event.target.getAttribute("data-id")];
+        popupOverlay.style.display = "flex";
+      }
+    });
+
+    cancelDeleteBtn.addEventListener("click", function () {
+      currentDeleteId = null;
+      popupOverlay.style.display = "none";
+    });
+
+    confirmDeleteBtn.addEventListener("click", async function () {
+      if (currentDeleteId) {
+        try {
+          const deletePromises = currentDeleteId.map(id =>
+            fetch(`/SystemAnnouncements/delete-announcement/${id}`, {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" }
+            })
+          );
+
+          const responses = await Promise.all(deletePromises);
+          const results = await Promise.all(responses.map(res => res.json()));
+
+          const allSuccess = results.every(result => result.success);
+
+          if (allSuccess) {
+            alert("ลบประกาศเรียบร้อยแล้ว");
+            location.reload();
+          } else {
+            const errorMessages = results.filter(result => !result.success)
+              .map(result => result.message)
+              .join(", ");
+            alert(`ไม่สามารถลบบางประกาศได้: ${errorMessages}`);
+          }
+        } catch (error) {
+          console.error("Error deleting announcement:", error);
+          alert("เกิดข้อผิดพลาด: " + error.message);
+        } finally {
+          currentDeleteId = null;
+          popupOverlay.style.display = "none";
+          selectedAnnouncements = [];
+          updateSelectionStatus();
+        }
+      }
+    });
+
+    function checkEmptyTable() {
+      const tbody = document.querySelector("tbody"); // Get the tbody element
+      const noDataRow = tbody.querySelector(".no-data"); // Find .no-data within tbody
+      const rows = tbody.querySelectorAll("tr:not(.no-data)");
+
+      if (noDataRow) { // Check if noDataRow was found
+        noDataRow.style.display = rows.length === 0 ? "table-row" : "none";
+        noDataRow.style.alignItems = "center"; // Use alignItems (camelCase)
+      }
+    }
+
+    checkEmptyTable();
+
+    tbody.addEventListener("click", function (event) {
+      const target = event.target;
+      const isCheckbox = target.type === "checkbox";
+      const isDeleteBtn = target.classList.contains("delete-btn");
+
+      if (!isCheckbox && !isDeleteBtn) {
+        const row = target.closest("tr");
+        showPopup(row);
+      }
+    });
+
+  });
+</script>

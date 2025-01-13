@@ -1,0 +1,72 @@
+<head>
+    <link rel="stylesheet" href="/css/subjectCss/subject.css">
+    <style>
+        .col{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 20px;
+        }
+        .col a{
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .col a:hover{
+            background-color: #7952B3;
+            color: white;
+            transition: 0.3s;
+        }
+        .card{
+            opacity: 0.5;
+        }
+        .card:hover{
+            opacity: 1;
+            transition: 0.3s;
+        }
+
+    </style>
+</head>
+
+<div class="contant">
+    <div class="row head">
+        <div class="col">
+            <a href="/space"><i class='bx bx-left-arrow-alt' ></i></a>
+          <h1 style="font-weight: 600; font-size: 30px;">พื้นที่ทำงานที่ถูกลบ</h1>
+        </div>
+    </div>
+    <div class="row sub_all">
+        <% for(var i=0; i < spaces.length; i++) { %>
+            <div class="col-sm-6 mb-4">
+                <div class="card" style="min-height: 210px">
+                    <a href="" class="card-body text-decoration-none">
+                        <div class="theme"></div>
+                        <div class="text">
+                            <h5 class="card-title"><%= spaces[i].SpaceName %>
+                            </h5>
+                            <p class="card-text">
+                                <%= spaces[i].SpaceDescription %>
+                            </p>
+                        </div>
+                    </a>
+                    <div class="icon">
+                        <p class="card-infotext">จำนวนงานทั้งหมด <span id="task-lenght">
+                                <%= spaces[i].taskCount %>
+                            </span> งาน</p>
+                            <i class='bx bx-recycle recover-alter-btn' data-space-id="<%= spaces._id %>" data-space-name="<%= spaces.SpaceName %>"></i>
+                        </div>
+                </div>
+            </div>
+            <% } %>
+    </div>
+</div>
+
+<%- include('../space/space-componant/recover-alter.ejs') %>
+<script src="/script/nav_menu.js"></script>
+<script src="/script/popup.js"></script>

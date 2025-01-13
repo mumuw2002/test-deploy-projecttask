@@ -1,0 +1,370 @@
+<style>
+    .secsettingadmin {
+        width: 100%;
+    }
+
+    .headsecsettingadmin {
+        background-color: #323450;
+        color: #ffffff;
+        padding: 22px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .headsecsettingadmin h2 {
+        margin: 0;
+    }
+
+    .profilesection {
+        width: 100%;
+        display: flex;
+    }
+
+    .editimgprofile {
+        display: flex;
+        flex-direction: column;
+        width: 46%;
+        margin-right: 4%;
+        align-items: center;
+        background-color: #323450;
+        color: #ffff;
+        padding: 24px;
+        border-radius: 10px;
+        justify-content: center;
+    }
+
+    .editimgprofile img {
+        height: 150px;
+        width: 150px;
+        border-radius: 100%;
+        background-color: rgb(255, 255, 255);
+        object-fit: cover;
+        object-position: center;
+        border: 15px solid #242647;
+    }
+
+    .editimgprofile button {
+        width: auto;
+        height: auto;
+        padding: 22px;
+        border: #ffffff solid 1px;
+        background-color: #323450;
+        color: #cccccc;
+        border-radius: 10px;
+    }
+
+    .editimgprofile button:hover {
+        background-color: #242647;
+        color: #ffff;
+    }
+
+    .editimgprofile span {
+        margin: 16px 0;
+        font-size: 22px;
+    }
+
+    .aboutadminsection {
+        width: 50%;
+        display: block;
+    }
+
+    .aboutadmin {
+        align-items: center;
+        background-color: #323450;
+        color: #ffff;
+        padding: 24px;
+        border-radius: 10px;
+        height: fit-content;
+    }
+
+    .aboutadmin:first-child {
+        margin-bottom: 10px;
+    }
+
+    .aboutadmin .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+
+    .aboutadmin .row .col {
+        width: 30%;
+        font-size: 18px;
+    }
+
+    .aboutadmin .row .col1 {
+        width: 70%;
+        font-size: 18px;
+    }
+
+    .aboutadmin .email1 button {
+        width: auto;
+        height: auto;
+        padding: 10px 20px;
+        border: #ffffff solid 1px;
+        background-color: #323450;
+        color: #cccccc;
+        border-radius: 10px;
+    }
+
+    .aboutadmin .email1 button:hover {
+        background-color: #242647;
+        color: #ffff;
+    }
+
+
+    .aboutadmin .col p {
+        margin: 0;
+        width: 100%;
+
+    }
+
+    .aboutadmin .col1 span {
+
+        width: 100%;
+        color: #ffffff;
+        opacity: 0.9;
+    }
+
+    .aboutadmin hr {
+        margin: 16px 0px;
+        border: 0;
+        border-top: 1px solid;
+        opacity: 0.25;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid #ccc;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        background-color: white;
+        padding: 20px;
+        z-index: 100;
+        border-radius: 10px;
+    }
+
+    .popup-table {
+        width: 80%;
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    
+    @media (max-width: 768px) {
+        .main-container {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .profilesection {
+            display: block;
+            align-items: center;
+        }
+
+        .profilesection img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .editimgprofile {
+            margin: 20px 0;
+            width: 50%;
+
+        }
+
+        .aboutadmin {
+            width: 50%;
+        }
+
+        .aboutadmin .row {
+            display: block;
+        }
+
+        .aboutadmin .row .col {
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .aboutadmin .row .col1 {
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .aboutadmin .col p {
+            width: 100%;
+            margin-block-start: 10px;
+            margin-block-end: 10px;
+        }
+
+        .aboutadmin .col1 span {
+            width: 100%;
+            color: #ffffff;
+            opacity: 0.8;
+            margin-block-start: 10px;
+            margin-block-end: 10px;
+        }
+
+    }
+</style>
+<div class="main-container">
+    <div class="content">
+        <div class="secsettingadmin">
+            <div class="headsecsettingadmin">
+                <h2>ตั้งค่าผู้ดูแลระบบ</h2>
+            </div>
+
+            <div class="profilesection">
+                <form class="editimgprofile" action="/SettingAdmin/updateProfileImage" method="post"
+                    enctype="multipart/form-data">
+                    <div class="editimgprofile">
+                        <img id="profileImageDisplay" src="<%= user.profileImage %>" alt="Profile Image"
+                            onclick="document.getElementById('profileImageInput').click();">
+                        <input type="file" name="profileImage" id="profileImageInput" style="display: none;">
+                        <span>
+                            <%= user.username %>
+                        </span>
+                        <button type="submit">เปลี่ยนรูปโปรไฟล์</button>
+                    </div>
+                </form>
+                <!-- <div class="editimgprofile">
+                    
+                    <img src="<%= user.profileImage %>" alt="Profile Image">
+                    <span>
+                        <%= user.username %>
+                    </span>
+                    <button>เปลี่ยนรูปโปรไฟล์</button>
+                </div> -->
+                <div class="aboutadminsection">
+                    <div class="aboutadmin">
+                        <div class="row">
+                            <div class="col username">
+                                <p>ชื่อผู้ใช้</p>
+                            </div>
+                            <div class="col1 username1">
+                                <span>
+                                    <%= user.username %>
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col email">
+                                <p>อีเมล</p>
+                            </div>
+                            <div class="col1 email1">
+                                <span>
+                                    <%= user.googleEmail %>
+                                </span>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col email">
+                                <p>รหัสผ่าน</p>
+                            </div>
+                            <div class="col1 email1">
+                                <span>
+                                    <button onclick="openChangePasswordPopup()">เปลี่ยนรหัสผ่าน</button> </span>
+                            </div>
+                        </div>
+                        <div id="changePasswordPopup" class="popup">
+                            <div class="close-button" onclick="closePopup('changePasswordPopup')">&times;</div>
+                            <h2>เปลี่ยนรหัสผ่าน</h2>
+                            <form action="/admin/SettingAdmin/changePassword" method="post">
+                                <div>
+                                    <label for="currentPassword">รหัสผ่านปัจจุบัน:</label>
+                                    <input type="password" id="currentPassword" name="currentPassword" required>
+                                </div>
+                                <div>
+                                    <label for="newPassword">รหัสผ่านใหม่:</label>
+                                    <input type="password" id="newPassword" name="newPassword" required>
+                                </div>
+                                <div>
+                                    <label for="confirmPassword">ยืนยันรหัสผ่านใหม่:</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                </div>
+                                <button type="submit">ยืนยัน</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="aboutadmin">
+                        <div class="row">
+                            <div class="col">
+                                <p>ประวัติการเข้าสู่ระบบ</p>
+                            </div>
+                            <div class="col1">
+                                <span class="show-login-history" style="cursor: pointer; color: #ADD8E6;">
+                                    คลิกเพื่อดูประวัติการเข้าสู่ระบบ
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <p>กิจกรรมล่าสุด</p>
+                            </div>
+                            <div class="col1">
+                                <span class="show-activity-log" style="cursor: pointer; color: #ADD8E6;">
+                                    คลิกเพื่อดูกิจกรรมล่าสุด
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script>
+    const profileImageInput = document.getElementById('profileImageInput');
+    const profileImageDisplay = document.getElementById('profileImageDisplay');
+
+    profileImageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            profileImageDisplay.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    });
+</script>
+
+<script>
+    function closePopup(popupId) {
+        document.getElementById(popupId).style.display = "none";
+    }
+
+    function openChangePasswordPopup() {
+        document.getElementById('changePasswordPopup').style.display = 'block';
+    }
+</script>
+//
+<script>
+    //     function closePopup(popupId) {
+    //       document.getElementById(popupId).style.display = "none";
+    //     }
+
+    //     document.querySelector('.show-login-history').addEventListener('click', function() {
+    //       document.getElementById('loginHistoryPopup').style.display = "block";
+    //     });
+
+    //     document.querySelector('.show-activity-log').addEventListener('click', function() {
+    //       document.getElementById('activityLogPopup').style.display = "block";
+    //     });
+//   </script>

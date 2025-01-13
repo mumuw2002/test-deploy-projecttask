@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>สมัครสมาชิก</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/loginCss/register.css" />
+    <style>
+      .password-toggle-icon {
+        cursor: pointer;
+        color: black;
+      }
+      .password-toggle-icon.hidden {
+        color: gray;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="warpper">
+      
+        <form id="registerForm" action="/user/register" method="POST">
+            <h1 class="title">สมัครสมาชิก</h1>
+
+            <% if (errors && errors.length > 0) { %>
+                <% errors.forEach(function(error) { %>
+                    <p class="alert"><%= error %></p>
+                <% }); %>
+            <% } %>
+
+            <div class="input-box">
+                <span class="span-text">ชื่อผู้ใช้:</span>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="ชื่อผู้ใช้"
+                    value="<%= username %>"
+                    required
+                />
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                <span class="span-text">รหัสผ่าน:</span>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="รหัสผ่าน"
+                    value="<%= password %>"
+                    minlength="8"
+                    required
+                />
+                <i
+                    class="password-toggle-icon fas fa-eye"
+                    aria-label="Toggle password visibility"
+                    data-toggle="password"
+                    data-target="password"
+                ></i>
+            </div>
+            <div class="despass">*รหัสผ่านต้องมีอักขระ 8 ตัวขึ้นไป</div>
+
+            <div class="input-box">
+                <span class="span-text">ยืนยันรหัสผ่าน:</span>
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="ยืนยันรหัสผ่าน"
+                    value="<%= confirmPassword %>"
+                    minlength="8"
+                    required
+                />
+                <i
+                    class="password-toggle-icon fas fa-eye"
+                    aria-label="Toggle password visibility"
+                    data-toggle="password"
+                    data-target="confirmPassword"
+                ></i>
+            </div>
+
+            <div class="input-box">
+                <span class="span-text">อีเมล:</span>
+                <input
+                    type="email"
+                    id="googleEmail"
+                    name="googleEmail"
+                    placeholder="อีเมล"
+                    value="<%= googleEmail %>"
+                    required
+                />
+                <i class="fa fa-envelope"></i>
+            </div>
+
+            <input type="submit" class="btn" value="สมัครสมาชิก" />
+            <a href="/auth/google" class="google_btn">
+                <img src="/img/g-logo.png" />
+                <span>Sign in with Google</span>
+            </a>
+            <div class="register">
+                <p>
+                    คุณมีบัญชีแล้วใช่หรือไม่
+                    <a href="/login">เข้าสู่ระบบเลย!</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script src="/script/log-js/register.js"></script>
+</body>
+</html>

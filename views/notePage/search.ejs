@@ -1,0 +1,29 @@
+<div class="container-fluid container-fluid-custom pb-5 mb-5">
+
+  <div class="row note_all">
+    <h1 style=" font-weight: 500;
+                font-size: 34px;
+                color: #7952B3;
+                margin-bottom: 30px;">
+        ผลการค้นหา
+    </h1>
+    <% if(searchResults != '') { %>
+      <% console.log(searchResults); %>
+      <% searchResults.forEach(function (note, index) { %>
+        <div class="col-sm-3 mb-4">
+          <div class="card" style="min-height: 210px">
+            <a href="/dashboard/item/<%= note._id %>" class="card-body text-decoration-none">
+              <h5 class="card-title">ชื่อเรื่อง: <%= note.title %></h5>
+              <div class="line"></div>
+              <p class="card-text"><%= note.body %></p>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12">
+        <p>No items found.</p>
+      </div>
+    <% } %>
+  </div>
+</div>

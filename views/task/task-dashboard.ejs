@@ -1,0 +1,937 @@
+<head>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.25.0/date-fns.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+    * {
+      font-family: "Kanit", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      top: 0;
+    }
+
+    body {
+      position: relative;
+      z-index: -2;
+    }
+
+    :root {
+      --body-color: #e4e9f7;
+      --sidebar-colot: #fff;
+      --primary-color-light: #f6f5f7;
+      --toggle-color: #ddd;
+      --text-color: #707070;
+      --line: #d7d9dd;
+
+      --color1: #7952b3;
+      --color2: #a788d4;
+      --color3: #e4e9f6;
+      --text: #37352f;
+
+      --text2: #515761;
+      --light: #37352fa6;
+      --more-light: #222220d7;
+      --notYet: #b5c0d0;
+
+      --cancle: #ff004d;
+    }
+
+    .contant {
+      background-color: white;
+    margin-left: 90px;
+    display: flex;
+    flex-direction: column;
+    height: 92vh;
+    overflow: hidden;
+    }
+
+    .secside{
+      margin-top: 62.5px !important;
+    }
+    .SubName {
+      padding: 30px 0 20px 50px;
+      font-size: 40px;
+    }
+
+    .nav-tabs {
+      padding-left: 50px;
+      margin-top: 28px;
+      font-size: 16px;
+      font-weight: 400;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .topNavlink .nav-tabs .nav-link.active{
+      color: var(--btn);
+      border-bottom: 4px solid var(--btn);
+      border-radius: 0;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+  }
+  .topNavlink .nav-tabs .nav-link.active:hover{
+      color: var(--btn);
+  }
+  .topNavlink .nav-item:hover::after {
+      display: none;
+  }
+
+    .task-content {
+      display: flex;
+      flex-direction: row;
+      height: 90vh;
+    }
+
+    .task-content .right-bar {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: calc(35% - 10px);
+      margin: 30px 0 20px 50px;
+      gap: 40px;
+    }
+
+    .task-content .right-bar .shortcut {
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+      width: 100%;
+    }
+
+
+.topNavlink .nav-tabs{
+  color: black;
+}
+
+.topNavlink .nav-tabs .nav-link{
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+    #SubDescription {
+      padding: 10px 20px;
+      border: 1px solid rgba(55, 53, 47, 0.16);
+      border-radius: 5px;
+      width: 96%;
+      max-height: 20vh;
+      min-height: 20vh;
+      overflow: scroll;
+    }
+
+    #sub-datil {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    #sub-datil p {
+      margin: 0;
+    }
+
+    #sub-datil p#text {
+      font-weight: 600;
+      padding: 10px;
+      padding-bottom: 0;
+      width: 45%;
+      color: var(--color1);
+    }
+
+    #sub-datil p #detail {
+      width: max-content;
+      padding: 10px;
+      padding-bottom: 0;
+      width: 60%;
+      border-bottom: 1px solid rgba(55, 53, 47, 0.16);
+    }
+
+    .shortcut h1 {
+      font-size: 1.25em;
+      padding-bottom: 10px;
+      padding-left: 10px;
+      border-bottom: 1px solid rgba(55, 53, 47, 0.16);
+      margin-bottom: 0;
+    }
+
+    .shortcut .short-link {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .shortcut a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      min-width: 50px;
+      max-width: calc(100% - 28px);
+      height: 40px;
+      white-space: nowrap;
+      justify-content: flex-start;
+      color: black;
+      border: 1px solid rgba(55, 53, 47, 0.16);
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 200;
+      padding: 8px 12px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .shortcut a:hover {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 400;
+    }
+
+    .shortcut i {
+      padding-right: 15px;
+      font-size: 20px;
+    }
+
+    .task-content {
+      flex: 1;
+      overflow-y: hidden;
+      margin-bottom: 50px;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+      padding: 0 50px 0 50px;
+      width: 100%;
+      overflow: scroll;
+      height: 95vh;
+    }
+
+    .sidebar.close {
+      z-index: 0;
+    }
+
+    .sidebar-popup {
+      width: 600px;
+      height: 100vh;
+      background-color: white;
+      position: fixed;
+      top: 0;
+      right: -600px;
+      transition: right 1s ease;
+      z-index: 1;
+    }
+
+    .dashboard {
+      display: flex;
+    }
+
+    .top-dash {
+      width: 100%;
+      margin-top: 50px;
+      display: flex;
+    }
+
+    .status-task {
+      margin: 0 4% 0 0;
+      height: 330px;
+      border: #E9EBEF solid 2px;
+      border-radius: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+
+    .status-task h5 {
+      align-items: start;
+      margin: 20px 0 0 30px;
+    }
+
+    .pie {
+      padding: 0 20px 20px 20px;
+      width: 100%;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .workload-task h5 {
+      margin: 20px 0 10px 0px;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+
+    .maxgraph {
+      display: flex;
+      align-items: center;
+      margin: 20px 0px;
+      flex-shrink: 0;
+    }
+
+    .maxgraph img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .member-workload {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #E9EBEF;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 20px;
+      border-radius: 5px;
+      position: relative;
+      width: 80%;
+      background-color: #E9EBEF;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background-color: #9BCF53;
+      border-radius: 5px;
+    }
+
+    .progress-text {
+      font-weight: bold;
+      color: #37352f;
+      position: relative;
+      top: 10px;
+      margin-left: 10px;
+    }
+
+    .member-workload {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border: 1px solid #E9EBEF;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 14px;
+      position: relative;
+      gap: 10px;
+    }
+
+    .profile-picture {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #E9EBEF;
+    }
+
+    .progress-bar {
+      height: 20px;
+      border-radius: 5px;
+      position: relative;
+      width: 90%;
+      background-color: #E9EBEF;
+    }
+
+    .left-graph {
+      margin: 0 4% 0 0;
+    }
+
+    .left-graph-sub {
+      height: 350px;
+      border: #E9EBEF solid 2px;
+      border-radius: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
+
+    .left-graph-sub h5 {
+      margin: 20px 0 0 30px;
+    }
+
+    .left-graph-sub .priority-graph {
+      padding: 0 20px 0 20px;
+      width: 100%;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sum-work {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sum-work #sum-work {
+      padding: 10px;
+      margin: 20px 0;
+      border: var(--line) solid 2px;
+      border-radius: 5px;
+      display: flex;
+    }
+
+    .sum-work img {
+      width: 50px;
+    }
+
+    .sum-work .textwork {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      position: relative;
+    }
+
+    .sum-work label {
+      margin-left: 10px;
+    }
+
+    .count {
+      font-weight: bold;
+      right: 0;
+    }
+
+    .right-table {
+      border: var(--line) solid 2px;
+      border-radius: 5px;
+      position: relative;
+      height: fit-content;
+      height: 950px;
+      padding: 20px;
+    }
+
+    .right-table .work-table {
+      padding: 20px;
+      display: contents;
+      height: 100%;
+    }
+
+
+    .right-table h5 {
+      margin: 20px 0 30px 0px;
+      font-size: 1.2em;
+    font-weight: 400;
+    }
+
+    .right-table img {
+      margin: 10px;
+      width: 90%;
+      object-fit: cover;
+    }
+
+    .rightsec {
+      width: 70%;
+      margin: 0 20px;
+    }
+
+    .workload-task {
+      height: fit-content;
+      max-height: 330px;
+      border: var(--line) solid 2px;
+      border-radius: 5px;
+      padding: 0 20px 20px 20px;
+      overflow: hidden;
+      margin: 0 0 50px 0;
+    }
+
+    .maxgraph-all {
+      max-height: 250px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      /* สำหรับ Firefox */
+      scrollbar-color: #323450 #ffffff;
+      /* สำหรับ Firefox */
+    }
+
+    .progress-container {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      margin-left: 10px;
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 40px;
+      background-color: #E9EBEF;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .progress-bar-inner {
+      width: 100%;
+      height: 100%;
+      background-color: #E9EBEF;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #9BCF53;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 10px;
+    }
+
+    .leftsec {
+      width: 30%;
+    }
+
+    /* General Styling */
+    .work-table {
+      margin: 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    .task-section {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Header Styling */
+    .head-complet,
+    .head-progress,
+    .head-edit {
+      background-color: #f4f4f4;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+
+
+    .table-container {
+      max-height: 200px;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .table-container.open {
+      display: block;
+      max-height: 1000px;
+      /* Adjust as needed */
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f8f8f8;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e9e9e9;
+    }
+
+    .table-container tbody {
+      display: block;
+      max-height: 150px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #323450 #ffffff;
+      width: 100%;
+    }
+
+    .table-container thead {
+      background-color: #f8f8f8;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .table-container thead,
+    .table-container tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+    .table-completed{
+      height: 260px;
+    }
+    .table-progress{
+      height: 260px;
+    }
+    .table-edit{
+      height: 260px;
+    }
+    .head-edit{
+      background-color: #4CAF50;
+    }
+    .head-complet{
+      background-color: #6EACDA;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      height: 50px;
+    }
+    .head-edit{
+      background-color: #4CAF50;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      height: 50px;
+    }
+    .head-progress{
+      background-color: #FF4C4C;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      height: 50px;
+    }
+    .head-complet p,
+    .head-edit p,
+    .head-progress p{
+      margin-bottom: 0;
+    }
+    thead tr th{
+      font-weight: 400;
+      font-size: 16px;
+    }
+    .right-table img{
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<div class="contant">
+  <%- include('../task/task_component/task-navbar.ejs') %>
+  <div class="dashboard">
+    <div class="top-dash">
+
+      <div class="leftsec">
+        <div class="status-task">
+          <h5>สถานะของงาน</h5>
+          <div class="pie">
+              <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+        <div class="left-graph">
+          <div class="sum-work">
+            <div class="allwork" id="sum-work">
+              <img src="/public/img/allwork.jpg" alt="งานทั้งหมด">
+              <div class="textwork">
+                  <label>งานทั้งหมด</label>
+                  <div class="count"><%= tasks.length %><span>งาน</span></div>
+              </div>
+          </div>
+
+            <div class="subtask" id="sum-work">
+            <img src="/public/img/subtask.jpg" alt="งานย่อยทั้งหมด">
+            <div class="textwork">
+                <label>งานย่อยทั้งหมด</label>
+                <div class="count"><%= subtasksCount %><span>งาน</span></div>
+            </div>
+        </div>
+
+            <div class="succeedtask" id="sum-work">
+            <img src="/public/img/succeedtask.jpg" alt="งานที่เสร็จสิ้น">
+            <div class="textwork">
+                <label>งานที่เสร็จสิ้น</label>
+                <div class="count"><%= completedTasksCount %><span>งาน</span></div>
+            </div>
+        </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rightsec">
+        <div class="right-table">
+          <h5>ลิสต์งานทั้งหมดภายในพื้นที่</h5>
+          <div class="work-table">
+            <div class="task-section completed">
+              <div class="table-completed">
+                <div class="head-complet">
+                  <div class="text-complet">
+                    <p>กำลังทำ</p>
+                  </div>
+                </div>
+                <div class="table-container-completed table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ชื่อ</th>
+                        <th>ผู้รับมอบหมาย</th>
+                        <th>วันครบกำหนด</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% tasks.forEach(task => { %>
+                        <% if (task.taskStatuses === 'กำลังทำ') { %>
+                            <tr onclick="location.href='/task/<%= task._id %>/detail?spaceId=<%= spaces._id %>'" style="cursor: pointer;">
+                                <td>
+                                    <%= task.taskName %>
+                                </td>
+                                <td>
+                                    <% if (task.assignedUsers.length > 0) { %>
+                                        <% task.assignedUsers.forEach(user => { %>
+                                            <img src="<%= user.profileImage || 'defaultProfileImagePath.jpg' %>" 
+                                                 alt="<%= user.displayName %>" 
+                                                 class="user-profile" 
+                                                 onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';"/>
+                                        <% }); %>
+                                    <% } else { %>
+                                        ไม่มีผู้รับมอบหมาย
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <%= task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'ไม่มี' %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-section in-progress">
+              <div class="table-progress">
+                <div class="head-progress">
+                  <div class="text-progress">
+                    <p>แก้ไข</p>
+                  </div>
+                </div>
+                <div class="table-container-progress table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ชื่อ</th>
+                        <th>ผู้รับมอบหมาย</th>
+                        <th>วันครบกำหนด</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% tasks.forEach(task => { %>
+                        <% if (task.taskStatuses === 'แก้ไข') { %>
+                          <tr onclick="location.href='/task/<%= task._id %>/detail?spaceId=<%= spaces._id %>'" style="cursor: pointer;">
+                                <td><%= task.taskName %></td>
+                                <td>
+                                  <% if (task.assignedUsers.length > 0) { %>
+                                    <% task.assignedUsers.forEach(user => { %>
+                                        <img src="<%= user.profileImage || 'defaultProfileImagePath.jpg' %>" 
+                                             alt="<%= user.displayName %>" 
+                                             class="user-profile" 
+                                             onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';"/>
+                                    <% }); %>
+                                <% } else { %>
+                                    ไม่มีผู้รับมอบหมาย
+                                <% } %>
+                                </td>
+                                <td><%= task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'ไม่มี' %></td>
+                            </tr>
+                        <% } %>
+                    <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-section edit">
+              <div class="table-edit">
+                <div class="head-edit">
+                  <div class="text-edit">
+                    <p>เสร็จสิ้น</p>
+                  </div>
+                </div>
+                <div class="table-container-edit table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ชื่อ</th>
+                        <th>ผู้รับมอบหมาย</th>
+                        <th>วันครบกำหนด</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% tasks.forEach(task => { %>
+                        <% if (task.taskStatuses === 'เสร็จสิ้น') { %>
+                          <tr onclick="location.href='/task/<%= task._id %>/detail?spaceId=<%= spaces._id %>'" style="cursor: pointer;">
+                                <td><%= task.taskName %></td>
+                                <td>
+                                  <% if (task.assignedUsers.length > 0) { %>
+                                    <% task.assignedUsers.forEach(user => { %>
+                                        <img src="<%= user.profileImage || 'defaultProfileImagePath.jpg' %>" 
+                                             alt="<%= user.displayName %>" 
+                                             class="user-profile" 
+                                             onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';"/>
+                                    <% }); %>
+                                <% } else { %>
+                                    ไม่มีผู้รับมอบหมาย
+                                <% } %>
+                                </td>
+                                <td><%= task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'ไม่มี' %></td>
+                            </tr>
+                        <% } %>
+                    <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../task/task_component/dashboard_addPopup.ejs') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const statusData = {
+      labels: ['กำลังทำ', 'เสร็จสิ้น', 'แก้ไข'],
+      datasets: [{
+          data: [
+              <%= statusCounts.working %>,
+              <%= statusCounts.complete %>,
+              <%= statusCounts.fix %>
+          ],
+          backgroundColor: ['#B4B4B8', '#9BCF53', '#FF6868'],
+          hoverBackgroundColor: ['#C7C8CC', '#BFEA7C', '#FF8F8F']
+      }]
+  };
+
+  // Check if all data is zero
+  function isDataEmpty(dataArray) {
+      return dataArray.every(value => value === 0);
+  }
+
+  // Create the chart
+  const ctxStatus = document.getElementById('statusChart').getContext('2d');
+  const chartConfig = {
+      type: 'pie', // Pie Chart
+      data: statusData,
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  position: 'top',
+              },
+              tooltip: {
+                  callbacks: {
+                      label: function(tooltipItem) {
+                          return `สถานะ: ${tooltipItem.label} (${tooltipItem.raw})`;
+                      }
+                  }
+              }
+          }
+      }
+  };
+
+  // If all data is 0, show a message indicating no tasks
+  if (isDataEmpty(statusData.datasets[0].data)) {
+      chartConfig.data = {
+          labels: ['ไม่มีข้อมูล'],
+          datasets: [{
+              data: [1], // Dummy data to show a circle
+              backgroundColor: ['#E0E0E0'], // Color for empty data
+              hoverBackgroundColor: ['#E0E0E0']
+          }]
+      };
+      chartConfig.options.plugins.tooltip.enabled = false; // Disable tooltip as there's no real data
+  }
+
+  // Create the chart instance
+  const statusChart = new Chart(ctxStatus, chartConfig);
+
+  // Calculate progress percentage and update the progress bar
+  function updateProgressBar(totalTasks, completedTasks) {
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const percentComplete = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
+
+    progressFill.style.width = `${percentComplete}%`;
+    progressText.textContent = `${Math.round(percentComplete)}%`;
+
+    // Update colors based on percentage ranges
+    if (percentComplete < 30) {
+      progressFill.style.backgroundColor = '#ff4c4c'; // Red
+      progressText.style.color = '#FFFFFF'; // White
+    } else if (percentComplete < 70) {
+      progressFill.style.backgroundColor = '#FFD700'; // Yellow
+      progressText.style.color = '#000000'; // Black
+    } else {
+      progressFill.style.backgroundColor = '#9BCF53'; // Green
+      progressText.style.color = '#FFFFFF'; // White
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const totalTasks = <%= tasks.length %>;
+    const completedTasksCount = <%= completedTasksCount %>;
+    updateProgressBar(totalTasks, completedTasksCount);
+
+    const workloadChartData = JSON.parse('<%- workloadChartData %>');
+
+    // Render the workload chart
+    const ctx = document.getElementById('workloadChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: workloadChartData,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw} tasks`,
+            },
+          },
+        },
+        scales: {
+          y: { beginAtZero: true },
+        },
+      },
+    });
+  });
+</script>

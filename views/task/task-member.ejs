@@ -1,0 +1,587 @@
+<head>
+    <link rel="stylesheet" href="/css/taskCss/task-member.css">
+</head>
+
+<div class="content">
+    <%- include('../task/task_component/task-navbar.ejs') %>
+
+        <div class="add-member-container">
+            <h2>จัดการสมาชิก</h2>
+            <div class="addSection">
+                <% if (currentUserRole === 'Leader') { %>
+                    <!-- Select Member -->
+                     <div class="addleft">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="filterMemberInput" placeholder="ค้นหาสมาชิกในพื้นที่" onkeyup="filterMembers()">
+                     </div>
+                    
+                    <div class="addright">
+                        <div class="dropdown memberSelect search-member">
+                            <input 
+                                type="text" 
+                                id="searchMemberInput" 
+                                placeholder="เชิญโดยใช้ชื่อผู้ใช้ ID หรืออีเมล"
+                                oninput="searchMember()"
+                                onfocus="showDropdown()"
+                                onblur="hideDropdown()"
+                            />
+                            <span id="clearSelection" class="clear-selection" onclick="clearSelectedMember()">
+                                <i class="fa-solid fa-xmark"></i>
+                            </span>
+                            <ul class="dropdown-menu" id="searchResultsDropdown" style="display: none;">
+                                <!-- show result -->
+                            </ul>
+                            <input type="hidden" id="selectedMemberId" name="selectedMemberId" />
+                        </div>
+                
+                        <!-- Select Role -->
+                        <div class="dropdown roleSelect">
+                            <a class="dropdown-toggle" id="roleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="selectedRoleDisplay"> เลือกบทบาท </span> 
+                            </a>
+                            <ul class="dropdown-menu" id="roleDropdownMenu" aria-labelledby="roleDropdown">
+                                <li class="dropdown-item" onclick="selectRole('Leader')" id="roleLeader">
+                                    <span>แอดมิน</span>
+                                </li>
+                                <li class="dropdown-item" onclick="selectRole('Member')" id="roleMember">
+                                    <span>สมาชิก</span>
+                                </li>
+                                <li class="dropdown-item" onclick="selectRole('Guest')" id="roleGuest">
+                                    <span>แขก</span>
+                                </li>
+                            </ul>
+                        </div>
+                
+                        <button id="addMemberBtn" onclick="addMember()">เพิ่มสมาชิก</button>
+                    </div>
+                <% } else { %>
+                <% } %>
+            </div>
+            
+            <!-- Display Existing Members in the Space -->
+             <div class="memberTable">
+                <table class="table table-responsive" id="myTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 250px;">ชื่อผู้ใช้</th>
+                            <th>อีเมล</th>
+                            <th>บทบาท</th>
+                            <th>สถานะ</th>
+                            <th style="width: 120px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% const leaders = collaborators.filter(collab => collab.role === 'Leader');
+                        const members = collaborators.filter(collab => collab.role === 'Member' || collab.role === 'Guest');
+                            leaders.forEach(collab => { %>
+                            <tr class="alert" role="alert">
+                                <td class="imgName">
+                                    <div class="img">
+                                        <img src="<%= collab.user.profileImage %>" alt="Profile" width="40" height="40"
+                                            onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';">
+                                        <span class="name">
+                                            <%= collab.user.username %>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <%= collab.user.googleEmail %>
+                                </td>
+                                <td>
+                                    <div class="dropdown changeRole">
+                                        <% if (currentUserRole === 'Leader') { %>
+                                            <a class="dropdown-toggle" 
+                                            id="roleDropdown<%= collab._id %>" role="button"
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false">
+                                                <span  class="roleDisplay <%= collab.role === 'Leader' ? 'roleLeader' : collab.role === 'Member' ? 'roleMember' : collab.role === 'Guest' ? 'roleGuest' : '' %>" 
+                                                    id="selectedRoleDisplay<%= collab._id %>">
+                                                    <%= collab.role === 'Leader' ? 'ผู้ดูแล' : collab.role === 'Member' ? 'สมาชิก' : collab.role === 'Guest' ? 'แขก' : collab.role %>
+                                                </span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="roleDropdown<%= collab._id %>">
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Leader', '<%= collab._id %>')"
+                                                    id="roleLeader">
+                                                    <span>
+                                                        ผู้ดูแล
+                                                    </span>
+                                                </li>
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Member', '<%= collab._id %>')"
+                                                    id="roleMember">
+                                                    <span>
+                                                        สมาชิก
+                                                    </span>
+                                                </li>
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Guest', '<%= collab._id %>')"
+                                                    id="roleGuest">
+                                                    <span>
+                                                        แขก
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        <% } else if (currentUserRole === 'Member') { %>
+                                            <span  class="roleDisplay <%= collab.role === 'Leader' ? 'roleLeader' : collab.role === 'Member' ? 'roleMember' : collab.role === 'Guest' ? 'roleGuest' : '' %>">
+                                                <%= collab.role === 'Leader' ? 'ผู้ดูแล' : collab.role === 'Member' ? 'สมาชิก' : collab.role === 'Guest' ? 'แขก' : collab.role %>
+                                            </span>
+                                        <% } %>                              
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="logStatus">
+                                        <span class="status-indicator" data-last-active="<%= collab.user.lastActive %>"></span>
+                                        <%= moment(collab.user.lastActive).fromNow() %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (collab.user._id.toString() !== user._id.toString() && currentUserRole === 'Leader') { %>
+                                        <button class="btn btn-danger btn-sm" 
+                                                onclick="deleteMember('<%= collab.user._id %>')" id="deleteBtn">ลบสมาชิก</button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+
+                        <% members.forEach(collab => { %>
+                            <tr class="alert" role="alert">
+                                <td class="imgName">
+                                    <div class="img">
+                                        <img src="<%= collab.user.profileImage %>" alt="Profile" width="40" height="40"
+                                            onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';">
+                                        <span class="name">
+                                            <%= collab.user.username %>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <%= collab.user.googleEmail %>
+                                </td>
+                                <td>
+                                    <div class="dropdown changeRole">
+                                        <% if (currentUserRole === 'Leader') { %>
+                                            <a class="dropdown-toggle" 
+                                            id="roleDropdown<%= collab._id %>" role="button"
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false">
+                                                <span  class="roleDisplay <%= collab.role === 'Leader' ? 'roleLeader' : collab.role === 'Member' ? 'roleMember' : collab.role === 'Guest' ? 'roleGuest' : '' %>" 
+                                                    id="selectedRoleDisplay<%= collab._id %>">
+                                                    <%= collab.role === 'Leader' ? 'ผู้ดูแล' : collab.role === 'Member' ? 'สมาชิก' : collab.role === 'Guest' ? 'แขก' : collab.role %>
+                                                </span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="roleDropdown<%= collab._id %>">
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Leader', '<%= collab._id %>')">
+                                                    หัวหน้า
+                                                </li>
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Member', '<%= collab._id %>')">
+                                                    สมาชิก
+                                                </li>
+                                                <li class="dropdown-item" 
+                                                    onclick="changeRole('<%= collab.user._id %>', 'Guest', '<%= collab._id %>')">
+                                                    แขก
+                                                </li>
+                                            </ul>
+                                        <% } else if (currentUserRole === 'Member') { %>
+                                            <span  class="roleDisplay <%= collab.role === 'Leader' ? 'roleLeader' : collab.role === 'Member' ? 'roleMember' : collab.role === 'Guest' ? 'roleGuest' : '' %>">
+                                                <%= collab.role === 'Leader' ? 'ผู้ดูแล' : collab.role === 'Member' ? 'สมาชิก' : collab.role === 'Guest' ? 'แขก' : collab.role %>
+                                            </span>
+                                        <% } %>                             
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="logStatus">
+                                        <span class="status-indicator" data-last-active="<%= collab.user.lastActive %>"></span>
+                                        <%= moment(collab.user.lastActive).fromNow() %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (collab.user._id.toString() !== user._id.toString() && currentUserRole === 'Leader') { %>
+                                        <button class="btn btn-danger btn-sm" 
+                                                onclick="deleteMember('<%= collab.user._id %>')" id="deleteBtn">ลบสมาชิก</button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+
+                        <% pendingInvitations.forEach(invitation => { %>
+                            <tr class="alert" role="alert">
+                                <td class="imgName">
+                                    <div class="img">
+                                        <img src="<%= invitation.user.profileImage %>" alt="Profile" width="40" height="40"
+                                            onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';">
+                                        <span class="name">
+                                            <%= invitation.user.username %>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <%= invitation.user.googleEmail %>
+                                </td>
+                                <td>
+                                    <span  class="roleDisplay <%= invitation.role === 'Leader' ? 'roleLeader' : invitation.role === 'Member' ? 'roleMember' : invitation.role === 'Guest' ? 'roleGuest' : '' %>" 
+                                        id="selectedRoleDisplay<%= invitation._id %>">
+                                        <%= invitation.role === 'Leader' ? 'ผู้ดูแล' : invitation.role === 'Member' ? 'สมาชิก' : invitation.role === 'Guest' ? 'แขก' : invitation.role %>
+                                    </span>
+                                </td>
+                                <td class="status">
+                                    <span class="waiting">
+                                        รอการตอบรับ
+                                    </span>
+                                </td>
+                                <td id="optionBtn">
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton<%= invitation._id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= invitation._id %>">
+                                            <li><button class="dropdown-item otpItem" onclick="resendInvitation('<%= invitation._id %>')">
+                                                <i class="fa-solid fa-paper-plane"></i>
+                                                ส่งคำเชิญอีกครั้ง</button>
+                                            </li>
+                                            <li><button class="dropdown-item otpItem" onclick="cancelInvitation('<%= invitation._id %>')"
+                                                style="color: #E53935;">
+                                                <i class="fa-solid fa-xmark"></i>
+                                                ยกเลิกคำเชิญ</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+             </div>          
+        </div>
+</div>
+
+
+<script>
+    let selectedMemberName = '';
+    let selectedRole = '';
+    let selectedMemberImage = '';
+
+    // Function to filter members in the space
+    function filterMembers() {
+        const input = document.getElementById('filterMemberInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('myTable');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Start at 1 to skip the header row
+            const tdUsername = tr[i].getElementsByTagName('td')[0];
+            const tdEmail = tr[i].getElementsByTagName('td')[1];
+            const tdGoogleEmail = tr[i].getElementsByTagName('td')[1];
+
+            if (tdUsername || tdEmail || tdGoogleEmail) {
+                const txtValueUsername = tdUsername ? tdUsername.textContent || tdUsername.innerText : '';
+                const txtValueEmail = tdEmail ? tdEmail.textContent || tdEmail.innerText : '';
+                const txtValueGoogleEmail = tdGoogleEmail ? tdGoogleEmail.textContent || tdGoogleEmail.innerText : '';
+
+                if (txtValueUsername.toLowerCase().indexOf(filter) > -1 ||
+                    txtValueEmail.toLowerCase().indexOf(filter) > -1 ||
+                    txtValueGoogleEmail.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = ''; // Show row if it matches the filter
+                } else {
+                    tr[i].style.display = 'none'; // Hide row if it doesn't match
+                }
+            }
+        }
+        adjustRowHeights();
+    }
+
+    // Function to ensure all visible rows have a fixed height
+    function adjustRowHeights() {
+        const table = document.getElementById('myTable');
+        const tr = table.getElementsByTagName('tr');
+
+        // Set height of all visible rows to 90px
+        for (let i = 1; i < tr.length; i++) { // Skip the header row
+            if (tr[i].style.display !== 'none') { // Only apply to visible rows
+                tr[i].style.height = '90px';
+            } else {
+                tr[i].style.height = ''; // Reset height for hidden rows
+            }
+        }
+    }
+
+    // Attach the filter function to the input field
+    document.getElementById('filterMemberInput').addEventListener('input', filterMembers);
+
+
+    // Function to search users
+    async function searchMember() {
+        const query = document.getElementById('searchMemberInput').value.trim();
+        const spaceId = '<%= spaceId %>';
+        const dropdown = document.getElementById('searchResultsDropdown');
+
+        if (query.length === 0) {
+            dropdown.style.display = 'none';
+            dropdown.innerHTML = '';
+            return;
+        }
+
+        document.getElementById('clearSelection').style.display = 'inline';
+
+        try {
+            // Fetch search results
+            const response = await fetch(`/search-member?q=${encodeURIComponent(query)}&spaceId=${spaceId}`);
+            const results = await response.json();
+
+            // Get the dropdown element
+            const dropdown = document.getElementById('searchResultsDropdown');
+            dropdown.innerHTML = ''; 
+
+            if (results.length === 0) {
+                dropdown.innerHTML = `<li class="dropdown-item text-muted">ไม่พบผลการค้นหา</li>`;
+                return;
+            }
+
+            const filteredResults = results.filter(user => user.role === 'user');
+
+            // Populate dropdown with search results
+            filteredResults.forEach(user => {
+                const li = document.createElement('li');
+                li.className = 'dropdown-item';
+                li.style.cursor = 'pointer';
+                li.onclick = () => selectMember(user);
+                li.innerHTML = `
+                    <img src="${user.profileImage || '/img/profileImage/Profile.jpeg'}" 
+                         alt="Profile"
+                         onerror="this.onerror=null; this.src='/img/profileImage/userDefalt.jpg';">
+                    ${user.username} <span class="resultEmail">(${user.googleEmail})</span>
+                `;
+                dropdown.appendChild(li);
+            });
+
+            dropdown.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    }
+
+    function showDropdown() {
+        const dropdown = document.getElementById('searchResultsDropdown');
+        const query = document.getElementById('searchMemberInput').value.trim();
+        if (query.length >= 1) {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    }
+    function hideDropdown() {
+        setTimeout(() => {
+            document.getElementById('searchResultsDropdown').style.display = 'none';
+        }, 200);
+    }
+
+    function selectMember(user) {
+        const input = document.getElementById('searchMemberInput');
+        input.value = `${user.username} (${user.googleEmail})`;
+        document.getElementById('selectedMemberId').value = user._id;
+        document.getElementById('searchResultsDropdown').style.display = 'none';
+    }
+
+    function clearSelectedMember() {
+        document.getElementById('searchMemberInput').value = '';
+        document.getElementById('selectedMemberId').value = '';
+        document.getElementById('searchResultsDropdown').innerHTML = '';
+        document.getElementById('clearSelection').style.display = 'none';
+    }
+
+    // Function to select a role
+    function selectRole(role) {
+        document.getElementById('selectedRoleDisplay').innerText = role;
+        selectedRole = role;
+    }
+    function toggleDropdown() {
+        const dropdownElement = document.getElementById('roleDropdown');
+        const dropdown = new bootstrap.Dropdown(dropdownElement);
+        dropdown.toggle();
+    }
+    function selectRole(role) {
+        const displayElement = document.getElementById('selectedRoleDisplay');
+        displayElement.innerText = role;
+
+        displayElement.style.borderLeft = '';
+
+        const roleDisplay = 
+                role === 'Leader' ? 'แอดมิน' : 
+                role === 'Member' ? 'สมาชิก' : 
+                role === 'Guest' ? 'แขก': role;
+        document.getElementById('selectedRoleDisplay').innerText = roleDisplay;
+
+        if (role === 'Leader') {
+            displayElement.style.borderLeft = '5px solid #5C54E5';
+            displayElement.style.paddingLeft = '10px';
+        } else if (role === 'Member') {
+            displayElement.style.borderLeft = '5px solid #ED79AD';
+            displayElement.style.paddingLeft = '10px';
+        } else if (role === 'Guest') {
+            displayElement.style.borderLeft = '5px solid #F6AD55';
+            displayElement.style.paddingLeft = '10px';
+        }
+
+        selectedRole = role;
+    }
+
+    async function addMember() {
+        const memberId = document.getElementById('selectedMemberId').value;
+        const role = selectedRole;
+        const spaceId = '<%= spaceId %>';
+    
+        if (!memberId) {
+            alert('โปรดเลือกสมาชิก.');
+            return;
+        }
+    
+        if (!role) {
+            alert('โปรดเลือกบทบาท.');
+            return;
+        }
+    
+        try {
+            const response = await fetch('/add-member', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ memberId, role, spaceId })
+            });
+    
+            if (response.ok) {
+                alert('สมาชิกถูกเพิ่มเรียบร้อยแล้ว!');
+                location.reload();
+            } else {
+                alert('ไม่สามารถเพิ่มสมาชิกได้');
+            }
+        } catch (error) {
+            console.error('Error adding member:', error);
+            alert('An error occurred while adding the member.');
+        }
+    }
+
+    function changeRole(memberId, newRole, collabId) {
+        fetch(`/update-role/${memberId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                role: newRole,
+                spaceId: '<%= spaceId %>'
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`selectedRoleDisplay${collabId}`).innerText = newRole;
+                    alert('อัปเดตบทบาทสำเร็จแล้ว!');
+                    location.reload();
+                } else {
+                    alert('ไม่สามารถอัพเดตบทบาทได้');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating role:', error);
+            });
+    }
+
+    function deleteMember(memberId) {
+        if (confirm("คุณแน่ใจว่าต้องการลบสมาชิกนี้หรือไม่?")) {
+            fetch(`/space/member/${memberId}/delete`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ spaceId: '<%= spaceId %>' })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('การลบสมาชิกล้มเหลว');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('สมาชิกถูกลบออกเรียบร้อยแล้ว');
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+    // Function to update the status indicator color based on lastActive time
+    function updateStatusIndicators() {
+        const indicators = document.querySelectorAll('.status-indicator');
+        const now = new Date();
+
+        indicators.forEach(indicator => {
+            const lastActive = new Date(indicator.getAttribute('data-last-active'));
+            const diffMinutes = (now - lastActive) / (1000 * 60);
+
+            if (diffMinutes <= 10) {
+                indicator.classList.add('online');
+                indicator.classList.remove('offline');
+                indicator.closest('.logStatus').classList.add('online');
+            } else {
+                indicator.classList.add('offline');
+                indicator.classList.remove('online');
+                indicator.closest('.logStatus').classList.add('offline');
+            }
+        });
+    }
+
+    // Call the updateStatusIndicators function on page load and every minute
+    document.addEventListener('DOMContentLoaded', () => {
+        updateStatusIndicators();
+        setInterval(updateStatusIndicators, 60000);
+    });
+
+    async function resendInvitation(invitationId) {
+        try {
+            const response = await fetch(`/notifications/resend/${invitationId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert('คำเชิญถูกส่งอีกครั้งแล้ว');
+                location.reload();
+            } else {
+                alert('ไม่สามารถส่งคำเชิญอีกครั้งได้');
+            }
+        } catch (error) {
+            console.error('Error resending invitation:', error);
+            alert('An error occurred while resending the invitation.');
+        }
+    }
+
+    async function cancelInvitation(invitationId) {
+        try {
+            const response = await fetch(`/notifications/cancel/${invitationId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error canceling invitation:', error);
+            alert('An error occurred while canceling the invitation.');
+        }
+    }
+</script>
+<script src="js/bootstrap.min.js"></script>

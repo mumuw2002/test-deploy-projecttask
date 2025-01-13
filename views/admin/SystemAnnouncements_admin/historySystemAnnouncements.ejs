@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History of System Announcements</title>
+  <style>
+    :root {
+      --sidebar: #323450;
+    }
+
+    .secannounce {
+      width: 95%;
+      height: 95%;
+      margin-top: 30px;
+    }
+
+    .headsecannounce p {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .searchhistoryannounce {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .inputBox {
+      position: relative;
+      width: 300px;
+    }
+
+    .inputBox i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #707070;
+      font-size: 18px;
+    }
+
+    .inputBox input {
+      width: 100%;
+      height: 40px;
+      padding: 5px 10px 5px 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+
+    .addannounce {
+      height: 40px;
+      padding: 0 15px;
+      border: none;
+      border-radius: 20px;
+      background-color: #3d3555;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-left: 20px;
+      align-content: center;
+      text-decoration: none;
+    }
+
+    .addannounce:hover {
+      background-color: #2b2537;
+      color: #fff;
+    }
+
+    /* Table Styling */
+    .tableannounce {
+      height: 70%;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      table-layout: fixed;
+    }
+
+    thead {
+      background-color: #3d3555;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    tbody {
+      max-height: 470px;
+      overflow-y: auto;
+      display: table-row-group;
+      /* กลับค่าเดิม */
+    }
+
+    thead th,
+    tbody td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+      box-sizing: border-box;
+      width: 16.66%;
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      width: 50px;
+    }
+
+    td input[type="checkbox"],
+    th input[type="checkbox"] {
+      margin: 0;
+      position: relative;
+      top: 0;
+    }
+
+    tbody tr {
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    td input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .delete-btn {
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .delete-btn:hover {
+      background-color: #ff3333;
+    }
+
+    .action-btn {
+      text-align: center;
+    }
+
+    .no-data {
+      text-align: center;
+      font-size: 16px;
+      color: #707070;
+      height: 100px;
+    }
+
+    .no-data td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      /* ตั้งค่าเริ่มต้นเป็น none */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .popup-content button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    .cancel-btn {
+      background-color: #ccc;
+      color: black;
+    }
+
+    .systemannouncements a {
+      display: flex;
+      text-decoration: none;
+      align-items: center;
+      color: #737373;
+    }
+
+    .systemannouncements a:hover {
+      color: #000000;
+    }
+
+    .systemannouncements span:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="content">
+      <div class="secannounce">
+        <div class="headsecannounce">
+          <div class="systemannouncements">
+            <a href="/SystemAnnouncements"><i class='bx bx-chevron-left'></i><span>กลับไปหน้าตารางประกาศ</span></a>
+          </div>
+          <p>ประวัติประกาศที่ถูกลบ</p>
+        </div>
+        <div class="searchhistoryannounce">
+          <div class="inputBox">
+            <i class="bx bx-search"></i>
+            <input type="search" name="searchTerm" placeholder="ค้นหาประกาศ..." onkeyup="searchHistoryAnnouncements()">
+          </div>
+        </div>
+        <div class="tableannounce">
+          <table id="myTable">
+            <thead>
+              <tr>
+                <th>ชื่อประกาศ</th>
+                <th>วันที่สร้าง</th>
+                <th>วันสิ้นสุด</th>
+                <th>ผู้สร้าง</th>
+                <th>วันที่ลบ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (deletedAnnouncements.length) { %>
+                <% deletedAnnouncements.forEach(announcement=> { %>
+                  <tr>
+                    <td>
+                      <%= announcement.title %>
+                    </td>
+                    <td>
+                      <%= new Date(announcement.createdAt).toLocaleDateString() %>
+                    </td>
+                    <td>
+                      <%= new Date(announcement.expirationDate).toLocaleDateString() %>
+                    </td>
+                    <td>
+                      <%= announcement.createdBy ? announcement.createdBy.username : 'ไม่ทราบ' %>
+                    </td>
+                    <td>
+                      <%= new Date(announcement.updatedAt).toLocaleDateString() %>
+                    </td>
+                  </tr>
+                  <% }); %>
+                    <% } else { %>
+                      <tr>
+                        <td colspan="5">ไม่มีข้อมูล</td>
+                      </tr>
+                      <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function searchHistoryAnnouncements() {
+      const searchInput = document.querySelector('input[name="searchTerm"]');
+      const table = document.getElementById('myTable');
+      const tr = table.getElementsByTagName("tr");
+
+      searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toUpperCase();
+
+        // กรองข้อมูลในตาราง
+        for (let i = 0; i < tr.length; i++) {
+          const td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            const txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(searchTerm) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      });
+    }
+
+    searchHistoryAnnouncements();
+  </script>
+</body>
+
+</html>

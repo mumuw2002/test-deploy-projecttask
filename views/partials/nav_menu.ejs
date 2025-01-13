@@ -1,0 +1,104 @@
+<head>
+    <link rel="stylesheet" href="/css/partialsCss/nav_menu.css">
+</head>
+
+<div class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="<%= userImage %>" alt="User Profile">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">สวัสดีคุณ <%= userName %></span>
+            </div>
+        </div>
+        <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="line"></div>
+    <div class="menu-bar">
+      <ul class="menu-link">
+        <li class="nav-links">
+          <a href="/#">
+            <i class="bx bxs-dashboard" id="icon"></i>
+            <span class="text navbar-text">แดชบอร์ด</span>
+          </a>
+        </li>
+        <li class="nav-links">
+          <a href="/space">
+            <i class="bx bx-columns" id="icon"></i>
+            <span class="text navbar-text">พื้นที่ทำงานทั้งหมด</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="line"></div>
+    <div class="showspace">
+      <div class="space">
+        <div class="spacoption">
+          <span class="space-text" style="color: #656f7d">พื้นที่ทั้งหมด</span>
+          <div class="spaceopt">
+            <i class="bx bx-plus"></i>
+            <li class="space-nav-item dropdown">
+              <a class="space-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bx bx-dots-horizontal-rounded"></i>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-plus"></i>สร้างพื้นที่ใหม่</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-list-check"></i>จัดการพื้นที่</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye"></i>โชว์พื้นที่ทั้งหมด</a>
+                </li>
+              </ul>
+            </li>
+          </div>
+        </div>
+        <div class="spaceitem-all">
+          <div class="scollitem">
+            <% if (spaces && spaces.length > 0) { %>
+            <% spaces.forEach(function(space) { %>
+
+            <ul class="spaceitem">
+              <li class="itemDetail">
+                <div class="spaceicon">
+                  <span id="spaceicon"><%= space.SpaceName.charAt(0) %></span>
+                  <span id="spacename"><%= space.SpaceName %></span> <!-- Use space instead of spaces[i] -->
+                </div>
+                <div class="spaceoption">
+                  <a class="space-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-horizontal-rounded"></i>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="spaceDropdown">
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> เปลี่ยนชื่อ</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i> ตั้งค่าพื้นที่</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-star"></i> ติดดาว</a></li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-box-archive"></i> จัดเก็บพื้นที่</a></li>
+                    <li><a class="dropdown-item no-hover" href="#" style="color: red"><i class="fa-solid fa-trash" style="color: red"></i> ลบพื้นที่</a></li>
+                  </ul>
+                </div>
+              </li>
+
+            </ul>
+            <% }); %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="overlay"></div> <!-- Overlay -->
+</div>

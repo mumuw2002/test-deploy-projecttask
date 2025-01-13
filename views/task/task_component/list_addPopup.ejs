@@ -1,0 +1,133 @@
+<head>
+    <style>
+        #assignedUsers{
+            width: 320px; 
+            padding: 5px 0 0 10px; 
+            margin-left:30px; 
+            border:1px solid rgba(55, 53, 47, 0.16);
+        }
+        #assignedUsers:focus{
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-popup" id="sidebar-popup">
+        <div class="side-top">
+            <i class='bx bxs-chevrons-right' id="close-task-btn"></i>
+            <i class='bx bx-expand'></i>
+        </div>
+
+        <div class="add-task-form">
+            <div class="top-form">
+                <i class='bx bx-task'></i>
+                <p>เพิ่มงานใหม่</p>
+            </div>
+
+            <form action="/addTask2" method="POST" class="add-form">
+                <table class="add-input" id="add-input-list">
+                    <tbody id="tbody">
+                        <tr id="tr">
+                            <td id="td">
+                                <i class='bx bx-rename'></i>
+                                ชื่องาน
+                            </td>
+                            <td id="td" style="min-width: 350px;">
+                                <input type="text" id="taskName" name="taskName" placeholder="กรอกชื่องาน" required>
+                                <span id="notiAlert">* กรุณากรอกชื่อรายวิชาโดยไม่ใช้อักขระพิเศษ</span>
+                            </td>
+                        </tr id="tr">
+                        
+                        <tr id="tr">
+                            <td id="td">
+                              <i class='bx bxs-calendar'></i>
+                              วันครบกำหนด
+                            </td>
+                            <td id="td" style="min-width: 350px;">
+                              <div id="calendar-container">
+                                <input type="date" id="dueDate" name="dueDate" required style="width: 150px;" placeholder="เลือกวัน">
+                              </div>
+                            </td>
+                        </tr>
+                        
+                        <tr id="tr">
+                            <td id="td" style="vertical-align: top; padding-top: 5px;">
+                                <i class='bx bxs-receipt'></i>
+                                รายละเอียดงาน
+                            </td>
+                            <td id="td" style="min-width: 350px;">
+                                <textarea id="detail" name="detail" rows="4" cols="50"
+                                    placeholder="กรอกรายละเอียดงาน"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr id="tr">
+                            <td id="td">
+                                <i class='bx bx-user-plus'></i>
+                                มอบหมายงานให้สมาชิก
+                            </td>
+                            <td id="td" style="min-width: 350px;">
+                                <select id="assignedUsers" name="assignedUsers" multiple >
+                                    <% users.forEach(user => { %>
+                                        <option value="<%= user._id %>" style="margin-bottom: 10px;">
+                                            > <%= user.displayName %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <input type="hidden" name="spaceId" id="spaceId" value="<%= spaces._id %>">
+                <div class="all-btn">
+                    <button type="button" onclick="clearFields()" id="clearbtn"><i
+                            class='bx bx-rotate-right'></i>ล้าง</button>
+                    <button type="submit" id="submitTaskBtn">เสร็จสิ้น</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+</body>
+<script>
+function validateForm() {
+    var taskName = document.getElementById("taskName").value;
+
+    if (taskName.trim() === "" || !isAlphanumeric(taskName.charAt(0))) {
+        document.getElementById("notiAlert").style.display = "block";
+        return false;
+    }
+    return true;
+}
+function isAlphanumeric(char) {
+    return /^[a-zA-Z0-9ก-๙]+$/.test(char);
+}
+
+document.getElementById("taskName").addEventListener("focus", function() {
+    document.getElementById("notiAlert").style.display = "none";
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dueDateInput = document.getElementById('dueDate');
+  
+    // Function to format the date to "day month" in Thai
+    function formatDateToThai(date) {
+      const options = { day: 'numeric', month: 'long' };
+      return new Date(date).toLocaleDateString('th-TH', options);
+    }
+  
+    // Event listener for when the user selects a date
+    dueDateInput.addEventListener('change', function () {
+      const selectedDate = this.value;
+      if (selectedDate) {
+        // Update the placeholder with the formatted date
+        this.placeholder = formatDateToThai(selectedDate);
+      }
+    });
+  });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

@@ -1,0 +1,203 @@
+<head>
+    <link rel="stylesheet" href="/css/taskCss/(old)list-itemDetail.css">
+</head>
+<body>
+        <div class="content">
+            <div class="top-option">
+                <div class="breadcomes">
+                    <a href="/space">subject</a> <span>/</span>
+                    <a href="/space/item/<%= spaceId %>/task_list">list</a>
+                    <span>/</span>
+                    <a class="active-detail">
+                        <%= taskNames %>
+                    </a>
+                </div>
+                <div class="btn-option">
+                    <p>สร้างเมื่อวันที่ <span id="createAt">
+                            <%= createdAt %>
+                        </span></p>
+                    <a href="#" id="close_btn_link"><span id="close_btn">&times;</span></a>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="firstsec">
+                    <div class="content-Wrap">
+                        <div class="itemDetail">
+                            <div id="firstLine">
+                                <form id="updateTaskForm" action="/updateTask" method="post" class="updateTaskForm1">
+                                    <input type="hidden" name="spaceId" value="<%= spaceId %>">
+                                    <!-- แก้ไขเพิ่ม -->
+                                    <div class="nav-item dropdown taskStatuses">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <%= taskStatuses %>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownStatus">
+                                          <li><a class="dropdown-item task-status-doing" href="#" data-status="กำลังทำ"><i class="fa-regular fa-circle"></i> กำลังทำ</a></li>
+                                          <li><a class="dropdown-item task-status-done" href="#" data-status="เสร็จสิ้น"><i class="fa-solid fa-circle"></i> เสร็จสิ้น</a></li>
+                                          <li><a class="dropdown-item task-status-fix" href="#" data-status="แก้ไข"><i class="fa-solid fa-circle-half-stroke"></i> แก้ไข</a></li>
+                                        </ul>
+                                        <div class="nextStatus" id="nextStatus" style="cursor: pointer;"><i class="fa-solid fa-forward"></i></div>
+                                      </div>
+
+                                    <div class="nav-item dropdown taskPriority">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <%= task.taskPriority %>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li class="item">
+                                                <a class="dropdown-item task-priority priority-urgent" href="#" data-priority="ด่วน">
+                                                    <i class="fa-solid fa-flag"></i> <span class="text">ด่วน</span>
+                                                    <div class="pri_dis">
+                                                        งานที่มีลำดับความสำคัญสูงมีความสำคัญต่อความคืบหน้าของงานโดยรวมและควรดำเนินการโดยเร็วที่สุด
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="item">
+                                                <a class="dropdown-item task-priority priority-normal" href="#" data-priority="ปกติ">
+                                                    <i class="fa-solid fa-flag"></i> <span class="text">ปกติ</span>
+                                                    <div class="pri_dis">
+                                                        งานที่มีลำดับความสำคัญปานกลางมีความสำคัญแต่ไม่เร่งด่วนเท่างานที่มีลำดับความสำคัญสูง
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="item">
+                                                <a class="dropdown-item task-priority priority-low" href="#" data-priority="ต่ำ">
+                                                    <i class="fa-solid fa-flag"></i> <span class="text">ต่ำ</span>
+                                                    <div class="pri_dis">
+                                                        งานที่มีลำดับความสำคัญต่ำสามารถดำเนินการในภายหลังได้
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                      </div>
+                                    <!-- แก้ไขเพิ่ม -->
+
+                                    <input type="hidden" id="taskId" value="<%= task._id %>">
+                                    <input type="hidden" id="taskStatuses" name="taskStatuses" value="<%= task.status %>">
+                                    <input type="hidden" id="taskPriority" name="taskPriority" value="<%= task.taskPriority %>">
+
+                                </form>
+                            </div>
+
+                            <div class="seccondLine">
+                                <form action="/updateTask" method="post" id="updateTaskForm" onsubmit="return validateForm()">
+                                    <h1 class="taskName" id="taskName-text"><%= taskNames %></h1>
+                                    <input type="text" id="taskName" name="taskName" value="<%= taskNames %>" style="display: none;">
+                                    <span id="notiAlert" style="font-size: 14px; color: #FF004D; display: none; margin-top: 5px;">
+                                        * กรุณากรอกชื่อโดยไม่ใช้อักขระพิเศษ
+                                    </span>
+                                
+
+                                    <div class="item-detailInfo">
+                                        <div id="info">
+                                            <span id="inf1">ผู้รับผิดชอบ</span>
+                                            <span id="inf2" style="display: flex; align-items: center; margin: 5px 0;">
+                                                <% if (tasks && tasks.length > 0) { %>
+                                                    <% tasks.forEach(task => { %>
+                                                        <% if (task.assignedUsers && task.assignedUsers.length > 0) { %>
+                                                            <% task.assignedUsers.forEach(user => { %>
+                                                                <div class="user-info">
+                                                                    <img src="<%= user.profileImage %>" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                                                                </div>
+                                                            <% }) %>
+                                                        <% } else { %>
+                                                            <span>ไม่พบผู้รับผิดชอบในงานนี้</span>
+                                                        <% } %>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <span>ไม่มีงานที่เกี่ยวข้อง</span>
+                                                <% } %>
+                                            </span>
+                                        </div>
+                                        <form action="/updateDueDate" method="POST" id="updateDueDateForm">
+                                            <div id="info">
+                                                <span id="inf1">วันครบกำหนด</span>
+                                                <span id="dueDateText" class="clickable">
+                                                    <%= dueDate ? new Date(dueDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) : 'ไม่มีวันครบกำหนด' %>
+                                                </span>
+                                                <input type="hidden" id="dueDateInput" name="dueDate" 
+                                                value="<%= dueDate && !isNaN(new Date(dueDate).getTime()) ? 
+                                                new Date(new Date(dueDate).getTime() - new Date(dueDate).getTimezoneOffset() * 60000).toISOString().split('T')[0] : '' %>" 
+                                                style="display: none;">
+
+                                                <input type="hidden" name="taskId" value="<%= task._id %>">
+                                            </div>
+                                        </form>
+
+                                        <form action="/updateDueTime" method="POST" id="updateDueTimeForm">
+                                            <div id="info">
+                                                <span id="inf1">เวลาครบกำหนด</span>
+                                                <select id="dueTimeSelect" name="dueTime">
+                                                    <option value="" <%= !dueTime ? 'selected' : '' %>>ตลอดทั้งวัน</option>
+                                                    <% for (let hour = 0; hour < 24; hour++) { 
+                                                        let hourString = hour < 10 ? '0' + hour : hour;
+                                                        let isSelected00 = dueTime === `${hourString}:00` ? 'selected' : '';
+                                                        let isSelected30 = dueTime === `${hourString}:30` ? 'selected' : '';
+                                                    %>
+                                                        <option value="<%= hourString %>:00" <%= isSelected00 %>><%= hourString %>:00</option>
+                                                        <option value="<%= hourString %>:30" <%= isSelected30 %>><%= hourString %>:30</option>
+                                                    <% } %>
+                                                </select>
+                                                <input type="hidden" name="taskId" value="<%= task._id %>">
+                                            </div>
+                                        </form>
+                                        
+                                        
+                                        
+                                        
+                                    </div>
+                                    <span id="desText">
+                                        <i class='bx bxs-detail'></i>
+                                        <h1 class="taskDes">รายละเอียดของงาน </h1>
+                                    </span>
+                                    <div class="description">
+                                        <textarea name="taskDetail" id="taskDescription" cols="30"
+                                            rows="10"><%= taskDetail %></textarea>
+                                    </div>
+                                    <div id="submitButtonContainer" style="display: none;">
+                                           <button type="submit" id="updateDetail">บันทึก</button>
+                                    </div>
+
+                                    <input type="hidden" name="taskId" id="taskId" value="<%= task._id %>">
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccondsec">
+                    <div class="activity">
+                        <div class="topAct">
+                            <p>กิจกรรมที่เกิดขึ้น</p>
+                        </div>
+                        <div class="messageAct">
+                            <div class="activityUpdate">
+                                <% task.activityLogs.forEach(log=> { %>
+                                    <p>
+                                        <%= log %>
+                                    </p>
+                                    <% }) %>
+                            </div>
+                            <div class="comment">
+                                <div class="commentsec">
+                                    <input type="text" placeholder="add comment" id="comment" name="comment" />
+                                    <button id="sendComment">ส่ง</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <%- include('../partials/nav_menu.ejs') %>
+        <script src="/script/taskScript/task-detail.js"></script>
+        <script src="/script/taskScript/task-item.js"></script>
+        <script src="/script/taskScript/task-alert.js"></script>
+</body>

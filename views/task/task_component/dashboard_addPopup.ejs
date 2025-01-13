@@ -1,0 +1,160 @@
+<head>
+    <style>
+        #assignedUsers{
+            border: 1px solid var(--line);
+            width: 320px;
+            border-radius: 5px;
+        }
+        #assignedUsersOption{
+            margin: 10px 10px;
+        }
+        #assignedUsers:focus{
+            outline: none;
+        }
+    </style>
+</head>
+<div class="sidebar-popup" id="sidebar-popup">
+    <div class="side-top">
+        <i class='bx bxs-chevrons-right' id="close-task-btn"></i>
+        <i class='bx bx-expand'></i>
+    </div>
+
+    <div class="add-task-form">
+        <div class="top-form">
+            <i class='bx bx-task' ></i>
+            <p>เพิ่มงานใหม่</p>
+        </div>
+
+        <form action="/addTask" method="POST" class="form">
+            <table class="add-input">
+                <tr>
+                    <td>
+                        <i class='bx bx-rename' ></i>
+                        ชื่องาน
+                    </td>
+                    <td>
+                        <input type="text" id="taskName" name="taskName" placeholder="กรอกชื่องาน" required>
+                        <span id="notiAlert" style="display: none; color: #FF004D; font-size: 14px;
+                        font-weight: 400; padding-top: 5px; padding-left: 35px;">* กรุณากรอกชื่อรายวิชาโดยไม่ใช้อักขระพิเศษ</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class='bx bxs-calendar' ></i>
+                        วันครบกำหนด
+                    </td>
+                    <td>
+                        <div id="calendar-container">
+                            <input type="date" id="dueDate" name="dueDate" required
+                            style="width: 150px;">
+                        </div>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                        <i class='bx bxs-data'></i>
+                        ประเภทงาน
+                    </td>
+                    <td>
+                        <select id="taskType" name="taskType">
+                            <option value="งานทั่วไป">งานทั่วไป</option>
+                            <option value="การบ้าน">การบ้าน</option>
+                            <option value="งานกลุ่ม">งานกลุ่ม</option>
+                            <option value="งานแลป">งานแลป</option>
+                            <option value="สอบ">สอบ</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; padding-top: 5px;">
+                        <i class='bx bxs-receipt'></i>
+                        รายละเอียดงาน
+                    </td>
+                    <td>
+                        <textarea id="detail" name="detail" rows="4" cols="50" placeholder="กรอกรายละเอียดงาน"></textarea>
+                    </td>
+                </tr>
+                <tr id="tr">
+                    <td id="td">
+                        <i class='bx bx-user-plus'></i>
+                        เพิ่มบุคคล
+                    </td>
+                    <td id="td" style="width: 350px;">
+                        <select id="assignedUsers" name="assignedUsers" multiple style="width: 100%;">
+                            <% users.forEach(user => { %>
+                                <option id="assignedUsersOption" value="<%= user._id %>">
+                                    > <%= user.displayName %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="subjectId" id="subjectId" value="<%= spaces._id %>">
+
+            <div class="all-btn">
+                <button type="button" onclick="clearFields()"><i class='bx bx-rotate-right'></i>ล้าง</button>
+                <button type="submit">เสร็จสิ้น</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<script>
+     function validateForm() {
+        var taskName = document.getElementById("taskName").value;
+
+        if (taskName.trim() === "" || !isAlphanumeric(taskName)) {
+            document.getElementById("notiAlert").style.display = "block";
+            document.getElementById("notiAlert").textContent = "* กรุณากรอกชื่องานโดยไม่ใช้อักขระพิเศษตอนต้น";
+            return false;
+        }
+        return true;
+    }
+
+    function isAlphanumeric(str) {
+        return /^[^\s!@#$%^&*()_+=\[\]{}|\\:;"'<>,.?\/][a-zA-Z0-9ก-๙\s]*$/.test(str);
+    }
+
+    function clearFields() {
+        document.getElementById("taskName").value = "";
+        // Clear other fields if needed
+        document.getElementById("notiAlert").style.display = "none";
+    }
+
+    // Get the input element
+    var taskNameInput = document.getElementById("taskName");
+    // Get the notiAlert element
+    var notiAlert = document.getElementById("notiAlert");
+    // Get the submit button
+    var submitButton = document.querySelector("button[type='submit']");
+
+    // Disable the submit button initially
+    submitButton.disabled = true;
+
+    // Add input event listener
+    taskNameInput.addEventListener('input', function() {
+        // Get the input value
+        var inputValue = taskNameInput.value;
+        // Check if the input value is not empty and matches the regular expression
+        if (inputValue !== "" && isAlphanumeric(inputValue)) {
+            // If it matches, hide the notiAlert
+            notiAlert.style.display = "none";
+            // Enable the submit button
+            submitButton.disabled = false;
+        } else {
+            // If it doesn't match, display the notiAlert
+            notiAlert.style.display = "block";
+            // Set notiAlert content
+            notiAlert.textContent = "* กรุณากรอกชื่องานโดยไม่ใช้อักขระพิเศษตอนต้น";
+            // Disable the submit button
+            submitButton.disabled = true;
+        }
+    });
+
+    // Add focus event listener to hide notiAlert
+    taskNameInput.addEventListener("focus", function() {
+        notiAlert.style.display = "none";
+    });
+</script>

@@ -1,0 +1,284 @@
+:root {
+    --body-color: #e4e9f7;
+    --sidebar-color: #fff;
+    --primary-color-light: #f6f5f7;
+    --toggle-color: #ddd;
+    --text-color: #707070;
+    --line: #D7D9DD;
+
+    --color1: #7952B3;
+    --color2: #a788d4;
+    --color3: #E4E9F6;
+    --text: #37352F;
+
+    --text2: #515761;
+    --light: #37352FA6;
+    --more-light: #222220d7;
+    --notYet: #B5C0D0;
+
+    --cancel: #FF004D;
+}
+
+.content {
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 20px;
+    margin: 0 0 0 10%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: flex;
+}
+
+.spaceall {
+    width: 100%;
+
+}
+
+.spaceall .heard-space {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0px;
+}
+
+.heard-space .textheard-space {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.task-space {
+    width: 95%;
+    height: 80vh;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.task-space::-webkit-scrollbar {
+    display: none;
+}
+
+.task-space .taskcardall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.taskcard a {
+    text-decoration: none;
+}
+
+.taskcardall .taskcard {
+    flex-basis: calc(50% - 20px);
+    max-width: 48%;
+    height: 275px;
+    border: #CFD1D6 solid 1px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+
+.taskcard .theme {
+    height: 50%;
+    width: 100%;
+}
+
+.taskcard .theme img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.taskcard:hover .theme img {
+    opacity: 0.5;
+}
+.taskcard:hover{
+    margin-top: -10px;
+    transition: 0.3s;
+}
+
+
+.taskcard .taskcardall-text {
+    display: inline-grid;
+    width: 100%;
+    height: 50px;
+}
+
+.taskcardall-text .card-title {
+    width: 100%;
+    font-size: 22px;
+    font-weight: 500;
+    color: #000000;
+    align-content: center;
+    margin: 0;
+    border: 0;
+}
+
+.taskcardall-text #subname {
+    padding: 0 30px;
+}
+
+.taskcardall-text .card-last {
+    padding: 5px 30px;
+    width: 100%;
+}
+
+.taskcardall-text .taskmember {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.taskcardall-text .taskmember img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: #bebebe solid 1px;
+    margin-left: -10px;
+}
+.taskcardall-text .taskmember img:first-child{
+    margin-left: 0;
+}
+.taskcardall-text .card-last .taskceate-date p {
+    align-content: center;
+    font-size: 14px;
+    opacity: 0.6;
+    margin: 0;
+    color: #37352F;
+}
+
+
+.card-last .taskedit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    width: 10%;
+    height: 100%;
+}
+
+.card-last .taskedit i {
+    color: #000000;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.card-last .taskedit i:hover {
+    background-color: var(--lightselect);
+    color: var(--select);
+    border-radius: 5px;
+    opacity: 1;
+}
+
+.card-last .taskedit .fa-trash {
+    color: red;
+}
+
+.card-last .taskedit .dropdown-taskedit-item i {
+    font-size: 16px;
+}
+
+.card-last .taskedit #icon {
+    position: relative;
+    top: 10px;
+    left: 30px;
+}
+
+.card-last .card-last-left {
+    float: left;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    width: 90%;
+}
+
+.card-last .card-last-left .taskceate-date {
+    align-content: center;
+    width: -webkit-fill-available;
+}
+
+.heard-space #new-task-btn {
+    font-size: 14px;
+    font-weight: 300;
+    background-color: #5C54E5;
+    color: #ffffff;
+    padding: 5px 10px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.heard-space #new-task-btn:hover{
+    opacity: 1;
+}
+/* Updated Dropdown Menu Styling */
+.dropdown-taskedit {
+    position: absolute;
+    background-color: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 10px 0;
+    z-index: 10;
+    display: none;
+    top: 40px;
+    right: 0;
+}
+
+.dropdown-taskedit li {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown-taskedit li:hover {
+    background-color: var(--primary-color-light);
+}
+
+.dropdown-taskedit li i {
+    margin-right: 10px;
+}
+
+.dropdown-taskedit li a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.dropdown-taskedit li:last-child a {
+    color: #EE201C;
+}
+
+.dropdown-taskedit .line {
+    margin: 5px 0;
+}
+
+#editsubnameform {
+    display: block;
+    margin-left: 30px;
+    display: block;
+    width: fit-content;
+    border-bottom: #7952B3 2px solid;
+}
+
+.taskcardall-text input {
+    padding: 0;
+}

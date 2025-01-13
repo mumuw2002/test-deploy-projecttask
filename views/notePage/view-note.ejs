@@ -1,0 +1,65 @@
+<head>
+  <style>
+    .delete-btn{
+      width: 120px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: #7952B3;
+      font-size: 16px;
+      color: white;
+      font-weight: 400;
+      margin-right: 10px;
+      opacity: 0.5;
+    }
+    .delete-btn:hover{
+      opacity: 1;
+      background-color: #7952B3;
+      color: white;
+      transition: 0.3s ease;
+    }
+  </style>
+</head>
+
+<div class="container-fluid container-fluid-custom pb-5 mb-5">
+  <div class="view_note row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/note">Dashboard</a></li>
+          <li class="breadcrumb-item active">
+            <%= note.title %>
+          </li>
+        </ol>
+      </nav>
+      <div class="col d-flex justify-content-between align-items-center">
+        <h1 class="h3">แก้ไขโน็ตของคุณ</h1>
+        <form action="/note/item-delete/<%= noteID %>?_method=DELETE" method="POST" class="position-relative" id="deleteNote">
+          <button type="submit" class="btn delete-btn">ลบโน้ต</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <form action="/note/item/<%= noteID %>?_method=PUT" method="POST" class="add_form position-relative">
+    <div class="form-group mb-4" style="left:1px; top:1px; right: 1px;">
+      <input type="text" class="note_title form-control fw-bold border-0 fs-4" id="title" name="title"
+        value="<%= note.title %>" placeholder="Title">
+    </div>
+
+    <div class="form-group mb-4">
+      <textarea class="note_content form-control" id="body" name="body" rows="12"><%= note.body %></textarea>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn delete-btn">แก้ไข</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#deleteButton').click(function () {
+      $('#deleteModal').modal('show');
+    });
+  });
+</script>

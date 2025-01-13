@@ -1,0 +1,107 @@
+<head>
+    <link rel="stylesheet" href="/css/taskCss/task-list.css">
+    <style>
+    </style>
+</head>
+
+<div class="content">
+    <%- include('../task/task_component/task-navbar.ejs') %>
+
+    <div class="add-member-container">
+        <h2>ตรวจงาน</h2>
+    
+        <div class="card">
+          <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table" id="myTable">
+                      <thead class="table-head" id="table-head">
+                          <tr>
+                            <th> ชื่องาน </th>
+                            <th> รายละเอียดงาน </th>
+                            <th> วันครบกำหนด </th>
+                            <th> ผู้รับผิดชอบ </th>
+                          </tr>
+                      </thead>
+
+                      <tbody id="table-body">
+                        <% if (tasks.length > 0) { %>
+                          <% tasks.forEach(task => { %>
+                            <tr class="task-row" onclick="goToPendingDetail('<%= task._id %>', '<%= spaces._id %>')">
+                              <td><%= task.taskName %></td>
+                              <td><% if (task.detail) { %>
+                                    <%= task.detail %>
+                                  <% } else { %>
+                                      <p style="opacity: 0.4; margin-bottom: 0;">
+                                          ไม่พบรายละเอียดงาน</p>
+                                  <% } %></td>
+                              <td><%= task.dueDate ? task.dueDate.toLocaleDateString('th-TH', { month: 'long', day: 'numeric' }) : 'N/A' %></td>
+                                  <td>
+                                    <div id="memberAll">
+                                    <% task.assignedUsers.forEach(user => { %>
+                                        <div class="user-info">
+                                          <img src="<%= user.profileImage %>" alt="User Image" class="user-avatar" 
+                                          onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';"/>
+                                        </div>
+                                        <% }); %>
+                                    </div>
+                                    
+                                  </td>
+                            </tr>
+                          <% }) %>
+                        <% } else { %>
+                          <tr>
+                            <td colspan="4">ไม่มีงานที่อยู่ระหว่างรอตรวจ</td> 
+                          </tr>
+                        <% } %>
+                      </tbody>
+
+                  </table>
+              </div>
+          </div>
+        </div>
+        <!-- <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th> ชื่องาน </th>
+                        <th> รายละเอียดงาน </th>
+                        <th> วันครบกำหนด </th>
+                        <th> ผู้รับผิดชอบ </th>
+                    </tr>
+                </thead>
+                <tbody id="taskList">
+                    <% if (tasks.length > 0) { %>
+                      <% tasks.forEach(task => { %>
+                        <tr class="task-row" onclick="goToPendingDetail('<%= task._id %>', '<%= spaces._id %>')">
+                          <td><%= task.taskName %></td>
+                          <td><% if (task.detail) { %>
+                                <%= task.detail %>
+                              <% } else { %>
+                                  <p style="opacity: 0.4; margin-bottom: 0;">
+                                      ไม่พบรายละเอียดงาน</p>
+                              <% } %></td>
+                          <td><%= task.dueDate ? task.dueDate.toLocaleDateString('th-TH', { month: 'long', day: 'numeric' }) : 'N/A' %></td>
+                          <td>
+                              <div class="user-info">
+                                <img src="<%= user.profileImage %>" alt="User Image" class="user-avatar" />
+                                <span><%= user.username %></span>
+                              </div>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    <% } else { %>
+                      <tr>
+                        <td colspan="4">ไม่มีงานที่อยู่ระหว่างรอตรวจ</td> <!-- No pending tasks -->
+                      </tr>
+                    <% } %>
+                  </tbody>
+            </table>
+        </div> -->
+    </div>
+</div>
+<script>
+  function goToPendingDetail(taskId, spaceId) {
+    const url = `/task/${taskId}/pendingDetail?spaceId=${spaceId}`;
+    window.location.href = url;  // Redirect to the pending detail page
+  }
+</script>

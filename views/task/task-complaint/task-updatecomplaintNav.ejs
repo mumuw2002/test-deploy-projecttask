@@ -1,0 +1,67 @@
+<style>
+    
+    .nav-complaint {
+        width: 100%;
+    }
+
+    .nav-complaint ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .nav-complaint li {
+        padding: 5px;
+        float: left;
+        width: 50%;
+    }
+
+    .nav-complaint li a {
+        display: block;
+        color: #5c5c5c;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .nav-complaint li a.active {
+        color: #4842b1;
+        border-bottom: solid 2px #4842b1;
+    }
+
+    .nav-complaint li a:hover {
+        color: #4842b1;
+        border-bottom: solid 2px #4842b1;
+    }
+</style>
+
+<div class="nav-complaint">
+    <div class="nav-complaintsub">
+        <ul>
+            <li><a href="/complaint/statuscomplaint">กำลังดำเนินการ</a></li>
+            <li><a href="/complaint/endupdatecomplaint">สิ้นสุดแล้ว</a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const setActiveMenuItem = () => {
+        const menuItems = document.querySelectorAll(".nav-complaint li"); // เลือก li แทน .menu-item
+        const currentPath = window.location.pathname; 
+
+        menuItems.forEach(item => {
+            const link = item.querySelector("a");
+            const href = link.getAttribute("href");
+
+            if (href === currentPath) {
+                link.classList.add("active"); // เพิ่ม active class ที่ link
+            } else {
+                link.classList.remove("active"); // ลบ active class ถ้าไม่ตรง
+            }
+        });
+    };
+
+    setActiveMenuItem();
+    window.addEventListener('popstate', setActiveMenuItem); 
+</script>

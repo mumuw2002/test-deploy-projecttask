@@ -1,0 +1,187 @@
+<head>
+    <link rel="stylesheet" href="/css/subjectCss/subject.css">
+    <style>
+        #sub-Detail{
+            display: flex;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<div class="content">
+    <div class="spaceall">
+        <div class="heard-space">
+            <div class="textheard-space">พื้นที่ทำงานทั้งหมด</div>
+            <a href="#" class="add-btn btn" id="new-task-btn">+ เพิ่มพื้นที่ใหม่</a>
+        </div>
+
+        <div class="task-space">
+            <div class="taskcardall">
+                <% for(var i=spaces.length - 1; i>= 0; i--) { %>
+                    <div class="taskcard">
+                        <a href="/space/item/<%= spaces[i]._id %>" id="card">
+                            <div class="theme">
+                                <img src="<%= spaces[i].SpacePicture %>" alt="taskbackground"
+                                onerror="this.onerror=null; this.src='/public/spaceictures/defultBackground.jpg';">
+                            </div>
+                            <div class="taskcardall-text">
+
+                                <div class="taskcardall-text">
+                                    <!-- แสดงชื่อพื้นที่เป็นลิงก์ก่อน -->
+                                    <a id="subname" class="card-title space-name-display-<%= spaces[i]._id %>">
+                                        <%= spaces[i].SpaceName %>
+                                    </a>
+                                    <!-- ฟอร์มที่ซ่อนอยู่สำหรับแก้ไขชื่อพื้นที่ -->
+                                    <form id="editsubnameform" action="/updateSpaceName/<%= spaces[i]._id %>"
+                                        method="POST" class="space-name-edit-form-<%= spaces[i]._id %>"
+                                        style="display: none;">
+                                        <input type="text" name="SpaceName" class="card-title"
+                                            value="<%= spaces[i].SpaceName %>"
+                                            onkeydown="if(event.key === 'Enter'){ event.preventDefault(); this.form.submit(); }">
+                                    </form>
+                                </div>
+                                <div class="card-last">
+                                    <div class="card-last-left">
+                                        <div class="taskmember">
+                                            <% spaces[i].collaborators.forEach(collab => { %>
+                                            <img src="" 
+                                                 alt="" 
+                                                 onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';" 
+                                                 style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+                                                 <% }) %>
+                                          </div>
+
+
+                                        <div class="taskceate-date">
+                                            <p>สร้างเมื่อ : <span>
+                                                    <%= new Date(spaces[i].createdAt).toLocaleDateString('th-TH', {
+                                                        day: '2-digit' , month: '2-digit' }) %>
+                                                </span> </p>
+                                        </div>
+                                    </div>
+                        </a>
+                        <div class="taskedit">
+                            <!-- ใช้ _id เพื่อสร้าง ID ของแต่ละ dropdown -->
+                            <i class="bx bx-dots-horizontal-rounded" id="dropdown-toggle-<%= spaces[i]._id %>"></i>
+                            <ul class="dropdown-taskedit" id="dropdown-taskedit-<%= spaces[i]._id %>"
+                                aria-labelledby="navbarDropdown" style="display: none;">
+                                <li><a class="dropdown-taskedit-item" href="#"><i
+                                            class="fa-solid fa-pen"></i>เปลี่ยนชื่อ</a>
+                                </li>
+                                <li>
+                                    <form id="upload-form" action="/updateSpacePicture/<%= spaces[i]._id %>"
+                                        method="POST" enctype="multipart/form-data">
+                                        <input type="file" name="SpacePicture" accept="image/*" style="display: none;"
+                                            id="file-input-<%= spaces[i]._id %>"
+                                            onchange="submitForm('<%= spaces[i]._id %>')">
+                                    </form>
+                                    <a class="dropdown-taskedit-item" href="#"
+                                        onclick="document.getElementById('file-input-<%= spaces[i]._id %>').click();">
+                                        <i class="fa-solid fa-circle-half-stroke"></i>เปลี่ยนภาพพื้นหลังของงาน
+                                    </a>
+                                </li>
+                                <div class="line"></div>
+                                <li>
+                                    <form id="delete-space-form-<%= spaces[i]._id %>"
+                                        action="/space/delete/<%= spaces[i]._id %>" method="POST"
+                                        style="display: none;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    </form>
+                                    
+                                    <a href="#" class="dropdown-taskedit-item"
+                                        onclick="deleteSpace('<%= spaces[i]._id %>')">
+                                        <i class="fa-solid fa-trash"></i> ลบ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../space/space-componant/add-popup.ejs') %>
+<%- include('../space/space-componant/delete-alter.ejs') %>
+
+<script src="/script/nav_menu.js"></script>
+<script src="/script/popup.js"></script>
+
+<script>
+    function deleteSpace(spaceId) {
+        if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบพื้นที่นี้?')) {
+          const form = document.getElementById(`delete-space-form-${spaceId}`);
+          fetch(form.action, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('พื้นที่ถูกลบเรียบร้อยแล้ว');
+                location.reload(); // Refresh the page to reflect changes
+              } else {
+                alert('ไม่สามารถลบพื้นที่ได้: ' + data.error);
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('เกิดข้อผิดพลาดขณะลบพื้นที่');
+            });
+        }
+      }
+      
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // เลือก dropdowns ทั้งหมด
+        const dropdownToggles = document.querySelectorAll('[id^="dropdown-toggle-"]');
+    
+        dropdownToggles.forEach(toggle => {
+          const spaceId = toggle.id.split('-')[2]; // แยก _id ออกมา
+          const dropdownMenu = document.getElementById(`dropdown-taskedit-${spaceId}`);
+    
+          toggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+    
+            // ปิด dropdown อื่นๆ ก่อน
+            document.querySelectorAll('.dropdown-taskedit').forEach(menu => {
+              if (menu !== dropdownMenu) {
+                menu.style.display = 'none';
+              }
+            });
+    
+            // สลับการแสดง dropdown ปัจจุบัน
+            dropdownMenu.style.display = dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '' ? 'block' : 'none';
+          });
+    
+          // เมื่อคลิก "เปลี่ยนชื่อ"
+          const editItem = dropdownMenu.querySelector('.dropdown-taskedit-item');
+          editItem.addEventListener('click', function(event) {
+            event.preventDefault();
+            // ซ่อน <a> แสดงชื่อพื้นที่
+            document.querySelector(`.space-name-display-${spaceId}`).style.display = 'none';
+            // แสดงฟอร์มแก้ไข
+            document.querySelector(`.space-name-edit-form-${spaceId}`).style.display = 'block';
+          });
+    
+          document.addEventListener('click', function(event) {
+            if (!dropdownMenu.contains(event.target) && event.target !== toggle) {
+              dropdownMenu.style.display = 'none';
+            }
+          });
+        });
+      });
+    
+      // ฟังก์ชันส่งฟอร์มเมื่อเปลี่ยนรูปภาพ
+      function submitForm(spaceId) {
+        const form = document.getElementById('upload-form');
+        const input = document.getElementById('file-input-' + spaceId);
+    
+        if (input.files.length > 0) {
+          form.submit();
+        }
+      }
+</script>

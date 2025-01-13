@@ -1,0 +1,300 @@
+:root {
+    --color1: #7952B3;
+    --color2: #a788d4;
+    --color3: #E4E9F6;
+    --text: #37352F;
+    --light: #37352FA6;
+    --more-light: #222220d7;
+}
+
+.content {
+    background-color: white;
+    margin: 20px 20px 20px 120px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 1320px;
+    max-height: max-content;
+    min-height: 95vh;
+    overflow-y: scroll;
+}
+
+.settinglayout {
+    display: flex;
+    flex-direction: row;
+    padding: 30px 50px;
+
+}
+
+.sectionsettingnav {
+    width: 30%;
+    padding-right: 10px;
+}
+
+#profilesettings {
+    width: 80%;
+}
+
+
+#profilesettings {
+    padding: 0;
+    text-align: left;
+    align-items: center;
+    height: 500px;
+}
+
+.profilesettings-section::-webkit-scrollbar {
+    width: 12px;
+}
+
+.profilesettings-section::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.profilesettings-section::-webkit-scrollbar-track {
+    border-radius: 20px;
+    background-color: #f2f2f2;
+}
+
+.settingnavmenubar h3 {
+    width: 80%;
+    padding-bottom: 10px;
+    border-bottom: solid 1px rgb(170, 170, 170);
+}
+
+.settinglayout .settingnavmenubar {
+    text-align: left;
+}
+
+.settingnavmenubar ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.settingnavmenubar li {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.settingnavmenubar li:hover {
+    color: #5C5F62;
+    background-color: rgb(200, 200, 200);
+}
+
+.settingnavmenubar li:hover a {
+    color: #5C5F62;
+}
+
+.settingnavmenubar .active {
+    background-color: rgb(200, 200, 200);
+    color: #5C5F62;
+}
+
+.settingnavmenubar .active a {
+    color: #5C5F62;
+}
+
+.settingnavmenubar li:first-child {
+    margin-top: 10px;
+}
+
+.settingnavmenubar li a {
+    display: inline-block;
+    margin-left: 10px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.settingnavmenubar li i {
+    font-size: 20px;
+}
+
+.card{
+    height: auto;
+}
+
+#card-header-profilesettings {
+    font-size: 22px;
+}
+
+#card-body-profilesettings {
+    padding: 20px;
+    text-align: center;
+}
+
+#card-body-profilesettings .imgprofile {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#card-body-profilesettings .imgprofile img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.uplode {
+    width: auto;
+}
+
+#card-profilesettings-section {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.sectionimg label i {
+    vertical-align: middle;
+}
+
+.sectionimg button i {
+    vertical-align: middle;
+}
+
+.sectionimg label {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--light);
+    color: #000000;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sectionimg label:hover {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--color3);
+    background-color: var(--color1);
+    color: #ffffff;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sectionimg input[type="file"] {
+    display: none;
+}
+
+.sectionimg button[type="submit"] {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--light);
+    color: #000000;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sectionimg button[type="submit"]:hover {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--color3);
+    background-color: var(--color1);
+    color: #ffffff;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.buttonsub-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.buttonsub-tooltip .buttonsub-tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    margin-left: 5px;
+    background-color: rgb(105, 105, 105);
+    color: #ffffff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.buttonsub-tooltip:hover .buttonsub-tooltiptext {
+    visibility: visible;
+}
+
+.sectiondetail{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
+    align-items: center;
+}
+
+.sectiondetail input {
+    padding: 10px;
+    width: 60%;
+    border: none;
+    color: var(--text);
+    transition: 0.2s;
+    outline: none
+}
+
+.sectiondetail input:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+
+}
+
+.sectiondetail input[type="text"]{
+    border-bottom: #9a9a9a solid 1px;
+}
+
+.sectiondetail input[type="text"]:focus {
+    border-radius: 5px;
+    border: 1.5px solid var(--more-light);
+}
+
+.sectiondetail label {
+    margin-right: 10px;
+    font-size: 1em;
+    color: var(--light);
+}
+
+.sectiondetail label i{
+    padding: 0;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.sectiondetail button[type="submit"] {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--light);
+    color: #000000;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sectiondetail button[type="submit"]:hover {
+    margin-right: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border:1px solid var(--color3);
+    background-color: var(--color1);
+    color: #ffffff;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.upload p{
+    margin-top: 5px;
+    font-size: small;
+    color: #f43a3a;
+}

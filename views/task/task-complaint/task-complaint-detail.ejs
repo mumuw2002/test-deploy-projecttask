@@ -1,0 +1,15 @@
+<h2>รายละเอียดรายงานปัญหา</h2>
+<p>ผู้รายงาน: <%= complaint.userId.name %></p> 
+<p>วันที่รายงาน: <%= complaint.submittedAt.toLocaleDateString('th-TH') %></p>
+<p>หมวดหมู่: <%= complaint.category %></p>
+<p>รายละเอียด: <%= complaint.complaintContent %></p>
+
+<% if (complaint.screenshots.length > 0) { %>
+  <h3>ภาพประกอบ:</h3>
+  <% complaint.screenshots.forEach(screenshot => { %>
+    <img src="<%= screenshot %>" alt="Screenshot"> 
+  <% }); %>
+<% } %>
+
+<p>สถานะ: <%= complaint.status %></p> 
+<p>หมายเลขร้องเรียน: <%= complaint.complaintNumber %></p>

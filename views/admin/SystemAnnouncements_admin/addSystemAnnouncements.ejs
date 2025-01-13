@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เพิ่มประกาศระบบ</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    .main-containeraddannounce {
+      display: flex;
+      margin: 0 0 0 10%;
+      position: relative;
+      z-index: 0;
+    }
+
+    .addannounce {
+      width: 100%;
+      height: 95%;
+      margin-top: 30px;
+      display: flex;
+    }
+
+    .secaddannounce {
+      width: 50%;
+      align-content: center;
+      margin-left: 50px;
+    }
+
+    .secaddannounce .subaddannounce {
+      width: 80%;
+    }
+
+    .contentaddannounce label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .contentaddannounce p {
+      margin-top: 2px;
+      font-size: 13px;
+      color: #737373;
+
+    }
+
+    .contentaddannounce input[type="text"],
+    .contentaddannounce input[type="date"],
+    .contentaddannounce input[type="url"],
+    .contentaddannounce textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .contentaddannounce textarea {
+      resize: none;
+    }
+
+    /* สไตล์สำหรับปุ่ม */
+    .contentaddannounce button[type="submit"] {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #5C54E5;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .contentaddannounce button[type="submit"]:hover {
+      background-color: #4b44c5;
+    }
+
+    .systemannouncements a {
+      display: flex;
+      text-decoration: none;
+      align-items: center;
+      color: #737373;
+    }
+
+    .systemannouncements a:hover {
+      color: #000000;
+    }
+
+    .systemannouncements span:hover {
+      text-decoration: underline;
+    }
+
+    .headaddannounce p {
+      margin-top: 20px;
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .headaddannounce {
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .secexnewannounce {
+      width: 50%;
+      align-content: center;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .headexnewannounce h1 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .exannounce {
+      height: 500px;
+      padding: 20px 30px;
+      border: 1px solid #d3d3d3;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+
+    .exannounce span {
+      display: block;
+      align-items: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #5c54e5;
+      margin-bottom: 10px;
+    }
+
+    .exannounce span i {
+      font-size: 24px;
+      color: #5c54e5;
+      margin-right: 8px;
+    }
+
+    .reverse-icon {
+      display: inline-block;
+      transform: scaleY(-1);
+      transform: scaleX(-1);
+    }
+
+
+    .headexannounce .title-preview {
+      padding-left: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+      cursor: pointer;
+    }
+
+    .headexannounce .title-preview:hover {
+      position: relative;
+    }
+
+    .headexannounce .title-preview:hover::after {
+      content: attr(data-full-title);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      color: #fff;
+      padding: 5px;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: normal;
+      z-index: 10;
+      max-width: 300px;
+    }
+
+    .headexannounce .date-preview {
+      padding-left: 10px;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .subcontentexannounce {
+      width: 100%;
+      height: 350px;
+      border: solid 2px #d3d3d3;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0px 4px 10px rgba(55, 55, 55, 0.05);
+    }
+
+    .contentexannounce .content-preview {
+      height: 350px;
+      overflow-y: scroll;
+      padding: 10px;
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+      border-radius: 10px;
+    }
+
+    .toolbar {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .toolbar button {
+      height: 40px;
+      width: 40px;
+      margin-right: 5px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      position: relative;
+      /* เพิ่ม position relative เพื่อให้ tooltip อยู่ในตำแหน่งที่ถูกต้อง */
+    }
+
+    .toolbar button .tooltip {
+      visibility: hidden;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 5px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      top: 120%;
+      /* ปรับตำแหน่ง tooltip */
+      left: 50%;
+      transform: translateX(-50%);
+      /* จัดตำแหน่ง tooltip ให้อยู่กึ่งกลาง */
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+      /* ป้องกันไม่ให้ tooltip ขึ้นบรรทัดใหม่ */
+    }
+
+    .toolbar button:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .toolbar input {
+      height: 40px;
+      margin-right: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="main-containeraddannounce">
+    <div class="content">
+      <div class="addannounce">
+        <div class="secaddannounce">
+          <div class="subaddannounce">
+            <div class="headaddannounce">
+              <div class="systemannouncements">
+                <a href="/SystemAnnouncements"><i class='bx bx-chevron-left'></i><span>กลับไปหน้าตารางประกาศ</span></a>
+              </div>
+              <p>การสร้างประกาศใหม่</p>
+            </div>
+            <div class="contentaddannounce">
+              <form action="/SystemAnnouncements/pageaddAnnouncements/createAnnouncements" method="POST">
+                <label for="title">ชื่อการประกาศ:</label>
+                <input type="text" id="title" name="title" placeholder="ชื่อประกาศ" required />
+
+                <label for="content">เนื้อหาการประกาศ:</label>
+                <div class="toolbar">
+                  <button type="button" onclick="addMarkdown('**', '**', 'ทำข้อความเป็นตัวหนา')">
+                    <i class="fas fa-bold"></i>
+                    <span class="tooltip">ทำข้อความเป็นตัวหนา</span>
+                  </button>
+                  <button type="button" onclick="addMarkdown('*', '*', 'ข้อความตัวเอียง')">
+                    <i class="fas fa-italic"></i>
+                    <span class="tooltip">ข้อความตัวเอียง</span>
+                  </button>
+                  <button type="button" onclick="addMarkdown('• ', '', 'รายการในลิสต์')">
+                    <i class="fas fa-list"></i>
+                    <span class="tooltip">รายการในลิสต์</span>
+                  </button>
+                  <button type="button" onclick="addMarkdown('---', '', '')">
+                    <i class="fas fa-minus"></i>
+                    <span class="tooltip">เส้นคั่น</span>
+                  </button>
+
+                  <input type="color"
+                    onchange="addMarkdown('<span style=\'color: ' + this.value + ';\'>', '</span>', 'เปลี่ยนสีข้อความ')">
+                  <span class="tooltip">เปลี่ยนสีข้อความ</span>
+                  </input>
+
+                </div>
+                <textarea id="content" name="content" rows="6" placeholder="รายละเอียดเนื้อหาประกาศ"
+                  required></textarea>
+                <label for="expirationDate">ระยะเวลาของประกาศ:</label>
+
+                <input type="date" id="expirationDate" name="expirationDate" required />
+                <p>สมาชิกทุกท่านจะสามารถเห็นประกาศของคุณได้ตั้งแต่วันที่เริ่มต้นเวลา 00:00 น. ถึงวันที่สิ้นสุดเวลา 23:59
+                  น.</p>
+
+                <button type="submit">สร้างประกาศ</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="secexnewannounce">
+          <div class="headexnewannounce">
+            <h1>ตัวอย่างประกาศใหม่</h1>
+            <div class="exannounce">
+              <span><span><i class='bx bxs-megaphone reverse-icon'></i> ประกาศจากระบบ</span>
+                <div class="headexannounce">
+                  <div class="title-preview"></div>
+                  <div class="date-preview"></div>
+                </div>
+                <div class="contentexannounce">
+                  <div class="subcontentexannounce">
+                    <div class="content-preview"></div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    // ตั้งค่าวันที่ปัจจุบันให้กับ input type="date"
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // เดือนเริ่มที่ 0
+    let dd = today.getDate();
+
+    if (mm < 10) mm = '0' + mm;
+    if (dd < 10) dd = '0' + dd;
+
+    const minDate = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('expirationDate').setAttribute('min', minDate);
+
+    // อัปเดตข้อความตัวอย่างแบบเรียลไทม์
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+    const dateInput = document.getElementById('expirationDate');
+    const titlePreview = document.querySelector('.title-preview');
+    const contentPreview = document.querySelector('.content-preview');
+    const datePreview = document.querySelector('.date-preview');
+
+    // ตั้งค่าข้อความตัวอย่างเริ่มต้น
+    titlePreview.textContent = 'ตัวอย่างชื่อประกาศ';
+    titlePreview.style.color = '#737373'; // สีอ่อนสำหรับข้อความตัวอย่าง
+    contentPreview.textContent = 'ตัวอย่างเนื้อหาประกาศ';
+    contentPreview.style.color = '#737373'; // สีอ่อนสำหรับข้อความตัวอย่าง
+
+    // ฟังก์ชันแปลงวันที่เป็นรูปแบบภาษาไทย
+    function formatDateThai(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(date).toLocaleDateString('th-TH', options);
+    }
+
+    // อัปเดตข้อความตัวอย่างแบบเรียลไทม์
+    titleInput.addEventListener('input', () => {
+      const titleValue = titleInput.value || 'กรุณากรอกชื่อประกาศ';
+      titlePreview.textContent = titleValue;
+      titlePreview.style.color = titleInput.value ? '#000' : '#737373';
+
+      // เพิ่มข้อความเต็มลงใน data attribute
+      titlePreview.setAttribute('data-full-title', titleValue);
+    });
+
+    contentInput.addEventListener('input', () => {
+      contentPreview.innerHTML = marked.parse(contentInput.value) || 'กรุณากรอกเนื้อหาประกาศ';
+      contentPreview.style.color = contentInput.value ? '#000' : '#737373';
+    });
+
+    dateInput.addEventListener('input', () => {
+      const selectedDate = dateInput.value;
+      if (selectedDate) {
+        const startDate = formatDateThai(new Date());
+        const endDate = formatDateThai(selectedDate);
+        datePreview.textContent = `ระยะวันที่ประกาศ ${startDate} - ${endDate}`;
+      } else {
+        datePreview.textContent = '';
+      }
+    });
+
+    function addMarkdown(startTag, endTag, defaultText = "") {
+      const textarea = document.getElementById('content');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
+
+      let newText;
+      if (startTag === '• ') { // ตรวจสอบว่าเป็นปุ่ม "รายการ"
+        if (selectedText) {
+          // แยกข้อความที่เลือกด้วย \n
+          newText = selectedText.split('\n').map(line => startTag + line).join('\n');
+        } else {
+          newText = startTag + defaultText;
+        }
+        newText += '\n'; // เพิ่ม \n ต่อท้ายเสมอ
+      } else if (startTag === "---") {
+        newText = "\n\n" + startTag + "\n\n";
+      } else if (selectedText) {
+        newText = startTag + selectedText + endTag;
+      } else {
+        newText = startTag + defaultText + endTag;
+      }
+
+      textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+
+      // อัปเดต contentPreview (ถ้ามี)
+      const contentPreview = document.querySelector('.content-preview');
+      if (contentPreview) {
+        contentPreview.innerHTML = marked.parse(textarea.value);
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+
+</html>

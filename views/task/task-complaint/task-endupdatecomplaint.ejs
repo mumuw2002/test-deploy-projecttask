@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    /*  CSS เหมือนกับ task-updatecomplaint.ejs */
+    .bigcontainer {
+      position: fixed;
+      width: 100%;
+      background-color: #F7F8F9;
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .div-container {
+      width: 80%;
+      height: 100%;
+      background-color: #ffffff;
+      border-radius: 8px;
+    }
+
+    .container {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .headcomplaint {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: baseline;
+    }
+
+    .headcomplaint p {
+      margin: 20px 15px;
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    .headcomplaint .iconback {
+      background-color: #5C54E5;
+      color: #fff;
+      font-size: 20px;
+      padding: 6px;
+      border-radius: 100%;
+    }
+
+    .headcomplaint .iconback:hover {
+      background-color: #4842b1;
+
+    }
+
+    .allcomplaint {
+      margin-top: 15px;
+      padding: 10px 20px 10px 20px;
+
+    }
+
+    .allcomplaint p {
+      font-size: 15px;
+      margin: 5px;
+    }
+
+    .dateupdatestatus p {
+      font-size: 13px;
+      color: #5c5c5c;
+
+    }
+
+    .allcomplaint ul {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .allcomplaint li {
+      border: #d9d9d9 solid 1px;
+      border-radius: 10px;
+      padding: 10px 20px 10px 20px;
+      margin: 0 0 10px 0;
+    }
+
+    .headlicomplaint {
+      font-weight: 600;
+      display: flex;
+    }
+
+    .headlicomplaint p {
+      font-size: 16px;
+      align-content: center;
+      margin-right: 5px;
+    }
+
+    .headlicomplaint .statuscomplaint {
+      border: solid 1px #dedede;
+      border-radius: 10px;
+      font-weight: 300;
+      padding: 10px;
+      margin-left: auto;
+    }
+
+    .contentcomplaint {
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bigcontainer">
+    <div class="div-container">
+      <div class="container">
+        <div class="headcomplaint">
+          <span><a href="/complaint"><i data-label="ช่วยเหลือ" class='bx iconback bx-chevron-left'></i></a></span>
+          <p>รายงานปัญหาที่แก้ไขแล้ว</p> 
+        </div>
+        <%- include('../task-complaint/task-updatecomplaintNav') %>
+        <div class="allcomplaint">
+          <ul>
+            <% complaints.forEach(complaint => { %>
+              <li data-id="<%= complaint._id %>">
+                <div class="headlicomplaint">
+                  <p>รายงานปัญหาเมื่อ : </p>
+                  <p>
+                    <%= complaint.submittedAt.toLocaleDateString('th-TH') %>
+                  </p>
+                  <p>
+                    <%= complaint.submittedAt.toLocaleTimeString('th-TH') %>
+                  </p>
+                  <div class="statuscomplaint">
+                    <p>
+                      <%= complaint.status %>
+                    </p>
+                  </div>
+                </div>
+                <div class="contentcomplaint">
+                  <p>
+                    <%= complaint.complaintContent %>
+                  </p>
+                </div>
+                <div class="numbercomplaint">
+                    <p>หมายเลขร้องเรียน: <%= complaint.complaintNumber %></p>
+                </div>
+                <div class="dateupdatestatus">
+                  <% if (complaint.resolvedAt) { %>
+                    <p>อัปเดตสถานะล่าสุดเมื่อ: <%= complaint.resolvedAt.toLocaleDateString('th-TH') %></p>
+                  <% } %>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      const listItems = document.querySelectorAll('.allcomplaint li');
+      listItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const complaintId = item.dataset.id;
+          // Redirect ไปยังหน้าแสดงรายละเอียด complaint โดยส่ง id ไปด้วย
+          window.location.href = `/complaint/${complaintId}`;
+        });
+      });
+    </script>
+</body>
+
+</html>

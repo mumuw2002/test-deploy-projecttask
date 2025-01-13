@@ -1,0 +1,526 @@
+<!-- C:\Users\plamy\OneDrive\เดสก์ท็อป\Task_Project\views\admin\UserAccountManagement_admin.ejs -->
+<style>
+    :root {
+      --sidebar: #323450;
+    }
+  
+    .secannounce {
+      width: 95%;
+      height: 95%;
+      margin-top: 30px;
+    }
+  
+    .headsecannounce p {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  
+    .searchannounce {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  
+    .searchannounce a:last-child {
+      color: #707070;
+    }
+  
+    .searchannounce a:last-child:hover {
+      color: #000000;
+    }
+  
+    .inputBox {
+      position: relative;
+    }
+  
+    .inputBox i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #707070;
+      font-size: 18px;
+    }
+  
+    .inputBox input {
+      width: 300px;
+      height: 40px;
+      padding: 5px 10px 5px 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+  
+    /* Table Styling */
+    .tableannounce {
+      height: 80%;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      position: relative;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      table-layout: fixed;
+    }
+  
+    thead {
+      background-color: #3d3555;
+      color: #fff;
+      text-transform: uppercase;
+    }
+  
+    tbody {
+      max-height: 470px;
+      overflow-y: auto;
+      display: contents;
+    }
+  
+    thead th,
+    tbody td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+      box-sizing: border-box;
+      width: 16.66%;
+    }
+  
+  
+    thead th,
+    tbody td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+      box-sizing: border-box;
+      width: 16.66%;
+    }
+
+    tbody td {
+      cursor: pointer;
+    }
+  
+    tbody tr {
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+  
+    .action-btn {
+      text-align: center;
+    }
+  
+    .no-data {
+      text-align: center;
+      font-size: 16px;
+      color: #707070;
+      height: 100px;
+      /* ลบ width: 100% ออก */
+    }
+  
+    .no-data td {
+      text-align: center;
+      vertical-align: middle;
+      width: 100%;
+      /* เพิ่ม width: 100% ใน .no-data td */
+    }
+  
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+  
+    .popup-content {
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+  
+    .popup-content button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    .confirm-delete-btn {
+      background-color: #ff4d4d;
+      color: white;
+    }
+  
+    .cancel-btn {
+      background-color: #ccc;
+      color: black;
+    }
+  
+    /* เพิ่มสไตล์สำหรับ selection-status */
+    .selection-status {
+      position: absolute;
+      bottom: 15px;
+      right: 50px;
+      background-color: rgba(238, 238, 238, 0.8);
+      /* เพิ่มความโปร่งใส */
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 10;
+      /* วางไว้เหนือตาราง */
+      display: flex;
+      /* ใช้ flexbox */
+      align-items: center;
+      /* จัดตำแหน่งในแนวตั้ง */
+      gap: 15px;
+      /* เพิ่มระยะห่างระหว่างข้อความและปุ่ม */
+    }
+  
+    .selection-status #delete-selected-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4791db;
+      /* สีฟ้า */
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .selection-status #delete-selected-btn:disabled {
+      background-color: #cccccc;
+      cursor: default;
+    }
+
+     /* สไตล์สำหรับ Popup แสดงรายละเอียดผู้ใช้ */
+  .user-details-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+  }
+
+  .user-details-popup .close-button {
+    position: absolute;
+    font-size: 25px;
+    top: 27px;
+    right: 35px;
+    cursor: pointer;
+  }
+
+  .user-details-popup h1 {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .user-details-popup .content {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .user-details-popup .details-section {
+    margin-bottom: 20px;
+  }
+
+  .user-details-popup .details-label {
+    font-weight: bold;
+  }
+
+  .user-details-popup .activity-log {
+    list-style: none;
+    padding: 0;
+  }
+
+  .user-details-popup .activity-log li {
+    margin-bottom: 5px;
+  }
+  
+  </style>
+  
+  <div class="main-container">
+    <div class="content">
+      <div class="user-management">
+        <div class="user-management-header">
+          <p>การจัดการบัญชีผู้ใช้</p>
+        </div>
+  
+        <div class="user-management-search">
+          <div class="inputBox">
+            <i class="bx bx-search"></i>
+            <input type="search" name="searchTerm" placeholder="ค้นหาผู้ใช้..." onkeyup="searchUsers()">
+          </div>
+        </div>
+  
+        <div class="user-management-table">
+          <table>
+            <thead>
+              <tr>
+                <th>ไอดี</th>
+                <th>ชื่อผู้ใช้</th>
+                <th>อีเมล</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (users.length) { %>
+                <% users.forEach((user, index) => { %>
+                  <tr data-user-id="<%= user._id %>" onclick="showUserDetailsPopup('<%= user._id %>', '<%= user.username %>', '<%= user.googleEmail %>')">
+                    <td><%= user.userid %></td> 
+                    <td> 
+                      <%= user.username %>
+                    </td>
+                    <td><%= user.googleEmail %></td>
+                    <td class="action-btn">
+                      <a href="/admin/users/<%= user._id %>/edit" class="edit-btn">
+                        <i class='bx bxs-edit'></i>
+                      </a>
+                    </td>
+                    <td class="action-btn">
+                      <a href="#" class="delete-btn" data-id="<%= user._id %>" onclick="deleteUser(event, this)"> 
+                        <i class='bx bxs-trash'></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr class="no-data">
+                  <td colspan="6">ไม่พบข้อมูล</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="popup-overlay">
+    <div class="popup-content">
+      <p>คุณต้องการลบผู้ใช้ที่เลือกหรือไม่?</p>
+      <button class="confirm-delete-btn">ยืนยัน</button>
+      <button class="cancel-delete-btn cancel-btn">ยกเลิก</button>
+    </div>
+  </div>
+  
+  <div class="user-details-popup" id="user-details-popup">
+    <span class="close-button" onclick="closeUserDetailsPopup()"><i id="icon" class='bx bx-x'></i></span>
+    <div class="popup-content">
+      <h1>รายละเอียดผู้ใช้</h1>
+      <div class="content">
+        <div class="details-section">
+          <span class="details-label">ชื่อผู้ใช้:</span> 
+          <input type="text" id="user-username" value=""> 
+        </div>
+        <div class="details-section">
+          <span class="details-label">อีเมล:</span> <span id="user-email"></span>
+        </div>
+        <div class="details-section">
+          <button class="edit-btn" onclick="resetPassword()">เปลี่ยนรหัสผ่าน</button>
+          <button class="delete-btn" onclick="deleteUser(event, this)" data-id="">ลบบัญชี</button> 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <script>
+    function searchUsers() {
+      const searchInput = document.querySelector('input[name="searchTerm"]');
+      const table = document.querySelector('table');
+      const tr = table.getElementsByTagName("tr");
+  
+      searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toUpperCase();
+  
+        for (let i = 1; i < tr.length; i++) {
+          let found = false;
+          const td = tr[i].getElementsByTagName("td");
+          for (let j = 0; j < td.length; j++) {
+            const txtValue = td[j].textContent || td[j].innerText;
+            if (txtValue.toUpperCase().indexOf(searchTerm) > -1) {
+              found = true;
+              break;
+            }
+          }
+          tr[i].style.display = found ? "" : "none";
+        }
+      });
+    }
+  
+    searchUsers();
+  </script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const masterCheckbox = document.querySelector('thead th input[type="checkbox"]');
+      const tbody = document.querySelector("tbody");
+      const noDataRow = document.querySelector(".no-data");
+      const popupOverlay = document.querySelector(".popup-overlay");
+      const confirmDeleteBtn = document.querySelector(".confirm-delete-btn");
+      const cancelDeleteBtn = document.querySelector(".cancel-delete-btn");
+      const checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+      const selectedCount = document.getElementById("selected-count");
+      const deleteSelectedBtn = document.getElementById("delete-selected-btn");
+      const selectionStatus = document.querySelector(".selection-status");
+  
+      let currentDeleteId = null;
+      let selectedUsers = []; // เปลี่ยนชื่อตัวแปรเป็น selectedUsers
+  
+      selectionStatus.style.display = "none";
+  
+      masterCheckbox.addEventListener("change", function () {
+        checkboxes.forEach(checkbox => checkbox.checked = masterCheckbox.checked);
+        updateSelectedUsers(); // เรียกใช้ updateSelectedUsers()
+        updateSelectionStatus();
+      });
+  
+      tbody.addEventListener("change", function (event) {
+        if (event.target.type === "checkbox") {
+          updateSelectedUsers(); // เรียกใช้ updateSelectedUsers()
+          updateSelectionStatus();
+        }
+      });
+  
+      function updateSelectedUsers() { // เปลี่ยนชื่อฟังก์ชันเป็น updateSelectedUsers()
+        selectedUsers = Array.from(checkboxes)
+          .filter(checkbox => checkbox.checked)
+          .map(checkbox => checkbox.closest("tr").querySelector(".delete-btn").getAttribute("data-id"));
+      }
+  
+      function updateSelectionStatus() {
+        const count = selectedUsers.length; // ใช้ selectedUsers แทน selectedAnnouncements
+        selectedCount.textContent = `${count} Selected`;
+        deleteSelectedBtn.disabled = count === 0;
+  
+        if (count > 0) {
+          selectionStatus.style.display = "flex";
+        } else {
+          selectionStatus.style.display = "none";
+        }
+      }
+  
+      deleteSelectedBtn.addEventListener("click", function () {
+        if (selectedUsers.length > 0) { // ใช้ selectedUsers แทน selectedAnnouncements
+          currentDeleteId = selectedUsers; // ใช้ selectedUsers แทน selectedAnnouncements
+          popupOverlay.style.display = "flex";
+        } else {
+          alert("กรุณาเลือกผู้ใช้ที่ต้องการลบ");
+        }
+      });
+  
+  
+      cancelDeleteBtn.addEventListener("click", function () {
+        currentDeleteId = null;
+        popupOverlay.style.display = "none";
+      });
+  
+      confirmDeleteBtn.addEventListener("click", async function () {
+        if (currentDeleteId) {
+          try {
+            const deletePromises = currentDeleteId.map(id =>
+              fetch(`/admin/users/${id}/delete`, { // แก้ไข route ให้ถูกต้อง
+                method: "GET", // หรือ "POST" ถ้า route ของคุณเป็นแบบ POST
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              })
+            );
+  
+            const responses = await Promise.all(deletePromises);
+            // ตรวจสอบ response status (เช่น res.ok) และ handle error
+  
+            alert("ลบผู้ใช้เรียบร้อยแล้ว");
+            location.reload();
+  
+          } catch (error) {
+            console.error("Error deleting users:", error);
+            alert("เกิดข้อผิดพลาด: " + error.message);
+          } finally {
+            currentDeleteId = null;
+            popupOverlay.style.display = "none";
+            selectedUsers = []; // เคลียร์ selectedUsers
+            updateSelectionStatus();
+          }
+        }
+      });
+  
+      function checkEmptyTable() {
+        const tbody = document.querySelector("tbody");
+        const noDataRow = tbody.querySelector(".no-data");
+        const rows = tbody.querySelectorAll("tr:not(.no-data)");
+  
+        if (noDataRow) {
+          noDataRow.style.display = rows.length === 0 ? "table-row" : "none";
+          noDataRow.style.alignItems = "center";
+        }
+      }
+  
+      checkEmptyTable();
+  
+  
+    });
+  </script>
+  <script>
+    // ... (โค้ดเดิม) ...
+  
+    function showUserDetailsPopup(userId, username, email) {
+      // แสดงข้อมูลผู้ใช้ใน popup
+      document.getElementById('user-username').value = username; 
+      document.getElementById('user-email').innerText = email;
+      document.querySelector('#user-details-popup .delete-btn').dataset.id = userId; // set user id to delete button
+  
+      // แสดง popup
+      document.getElementById('user-details-popup').style.display = 'block';
+    }
+  
+    function closeUserDetailsPopup() {
+      document.getElementById('user-details-popup').style.display = 'none';
+    }
+  
+    async function resetPassword() {
+      const userId = document.querySelector('#user-details-popup .delete-btn').dataset.id;
+      const email = document.getElementById('user-email').innerText;
+  
+      try {
+        // ส่ง request ไปยัง backend เพื่อส่ง email reset password
+        const response = await fetch(`/admin/users/${userId}/reset-password`, { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email }) // ส่ง email ไปด้วย
+        });
+  
+        const data = await response.json();
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert('เกิดข้อผิดพลาดในการส่ง email reset password');
+        }
+      } catch (error) {
+        console.error('Error sending reset password email:', error);
+        alert('เกิดข้อผิดพลาดในการส่ง email reset password');
+      }
+    }
+  
+    // ... (โค้ดเดิม) ...
+  </script>

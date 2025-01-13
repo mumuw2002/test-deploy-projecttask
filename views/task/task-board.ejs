@@ -1,0 +1,81 @@
+<head>
+    <link rel="stylesheet" href="/css/taskCss/boardPage.css" />
+</head>
+
+<body>
+    <div class="contant">
+        <%- include('../task/task_component/task-navbar.ejs') %>
+
+            <div class="topBoard">
+                <h1 class="boardText">บอร์ดงาน</h1>
+                <a href="#" class="link" id="new-task-btn">
+                    <i class='bx bx-task'></i> + เพิ่มงานใหม่
+                </a>
+            </div>
+
+            <div class="board">
+                <% const statuses=['กำลังทำ', 'รอตรวจ' ,'แก้ไข' , 'เสร็จสิ้น' ]; %>
+                    <% statuses.forEach(status=> { %>
+                        <div class="column" data-status="<%= status %>">
+                            <div class="status">
+                                <p>
+                                    <%= status %> <span class="span count" data-status-count="<%= status %>"><%= taskCounts[status] || 0 %></span>
+                                </p>
+                            </div>
+                            <div class="itemStatus">
+                                <ul id="tasks-<%= status %>">
+                                    <% tasks.filter(task=> task.taskStatuses === status).forEach(task => { %>
+                                        <!-- Changed 'task.status' to 'task.taskStatuses' -->
+                                        <li class="task" data-id="<%= task._id %>" data-space-id="<%= spaces._id %>"
+                                            draggable="true">
+                                            <a href="/task/<%= task._id %>/detail?spaceId=<%= spaces._id %>"
+                                                draggable="false" style="text-decoration: none; color: inherit;">
+                                                <div class="taskname">
+                                                    <p>
+                                                        <%= task.taskName %>
+                                                    </p>
+                                                </div>
+                                                
+                                                <div class="assigned-users">
+                                                    <% task.assigneeProgress.forEach(progress => { %>
+                                                      <div class="assignee-progress">
+                                                        <img src="<%= progress.assignee.profileImage %>" 
+                                                             alt="<%= progress.assignee.username %>" 
+                                                             style="width: 30px; height: 30px; border-radius: 50%;"
+                                                             onerror="this.onerror=null; this.src='/public/img/profileImage/userDefalt.jpg';">
+                                  
+                                                        <div class="progress-container">
+                                                          <div class="progress-bar" 
+                                                               style="width: <%= progress.percentage %>%;"></div>
+                                                        </div>
+                                  
+                                                        <span class="progress-text">
+                                                          <%= progress.percentage %>% 
+                                                          (<%= progress.completed %> / <%= progress.total %>)
+                                                        </span>
+                                                      </div>
+                                                    <% }) %>
+                                                  </div>  
+                                            </a>
+                                            <div class="createdAt">
+                                                    <p id="createAtP">
+                                                      งานถูกสร้างเมื่อ: <%= new Date(task.createdAt).toLocaleDateString('th-TH', 
+                                                        { day: '2-digit', month: '2-digit' }) %>
+                                                    </p>
+                                                    <i class="fa-solid fa-trash-can" 
+                                                        id="deleteTask" 
+                                                        onclick="confirmDeleteTask('<%= task._id %>', '<%= spaces._id %>')"></i>
+                                                </div>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </div>
+                        </div>
+                        <% }) %>
+            </div>
+    </div>
+
+
+    <%- include('../task/task_component/board_addPopup.ejs') %>
+    <script src="/script/taskScript/task-board.js"></script>
+</body>

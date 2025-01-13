@@ -1,0 +1,76 @@
+<div class="container-fluid-adding  container-fluid-custom pb-5 mb-5">
+
+  <div class="row mb-4 note_head">
+    <div class="col">
+      <h1 style="font-weight: 500; color: #707070;">โน็ต Dashboard</h1>
+    </div>
+    <div class="col text-end">
+      <a href="/note/add" class="btn btn-primary">+ เพิ่มโน็ต</a>
+    </div>
+  </div>
+
+  <div class="row note_all">
+    <% if (notes.length> 0) { for(var i=0; i < notes.length; i++) { %>
+        <div class="col-sm-3 mb-4">
+          <div class="card" style="min-height: 210px">
+            <a href="/note/item/<%= notes[i]._id %>" class="card-body text-decoration-none">
+              <h5 class="card-title">ชื่อเรื่อง: <%= notes[i].title %>
+              </h5>
+              <div class="line"></div>
+              <p class="card-text">
+                <%= notes[i].body %>
+              </p>
+            </a>
+          </div>
+        </div>
+        <% }} else { %>
+          <div class="row">
+            <div class="col-3">
+              <img src="/img/human-3.svg" alt="Human pointing hand toward a create button">
+            </div>
+            <div class="col mt-md-4">
+              <h4>มาเรื่องเขียนโน็ตกันดลย...<br />
+                <a href="/notes/add">สร้างโน็ต</a>
+              </h4>
+            </div>
+          </div>
+          <% } %>
+  </div>
+
+  <% if(notes.length> 0) { %>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center mt-4">
+        <% if(current==1) { %>
+          <li class="page-item"><a class="page-link" href="#">ก่อนหน้า</a></li>
+          <% } else { %>
+            <li class="page-item"><a class="page-link" href="/dashboard">หน้าแรก</a></li>
+            <% } %>
+              <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
+                <% if (i !==1 ) { %>
+                  <li class="page-item"><a class="page-link" href="#">...</a></li>
+                  <% } %>
+                    <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
+                      <% if(i==current ) { %>
+                        <li class="page-item"><a class="page-link" href="#">
+                            <%= i %>
+                          </a></li>
+                        <% } else { %>
+                          <li class="page-item"><a class="page-link" href="/dashboard/?page=<%= i %>">
+                              <%= i %>
+                            </a></li>
+                          <% } %>
+                            <% if(i==Number(current) + 4 && i < pages) { %>
+                              <li class="page-item"><a class="page-link" href="#">...</a></li>
+                              <% } %>
+                                <% } %>
+                                  <% if (current==pages) { %>
+                                    <li class="page-item disabled"><a class="page-link">สุดท้าย</a></li>
+                                    <% } else { %>
+                                      <li class="page-item"><a href="/dashboard/?page=<%= pages %>"
+                                          class="page-link">สุดท้าย</a></li>
+                                      <% } %>
+      </ul>
+    </nav>
+  <% } %>
+
+</div>

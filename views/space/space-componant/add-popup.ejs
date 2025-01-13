@@ -1,0 +1,58 @@
+<div class="sidebar-popup" id="sidebar-popup">
+    <div class="side-top">
+        <i class='bx bxs-chevrons-right' id="close-task-btn"></i>
+    </div>
+    <div class="add-task-form">
+        <div class="top-form">
+            <i class='bx bx-task' ></i>
+            <p>เพิ่มพื้นที่ทำงานใหม่</p>
+        </div>
+
+        <form action="/createSpace" method="POST" class="form" id="subjectForm" onsubmit="return validateForm()">
+            <table class="add-input">
+                <!-- Other fields remain the same -->
+                <tr style="vertical-align: top;">
+                    <td>
+                        <p style="margin-top: 5px;">ชื่อพื้นที่ทำงาน</p>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="SpaceName" id="SpaceName" placeholder="* เพิ่มชื่อรายวิชา" required>
+                        <span id="notiAlert">* กรุณากรอกชื่อพื้นที่โดยไม่ใช้อักขระพิเศษ</span>
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="vertical-align: top; padding-top: 5px;"> รายละพื้นที่ทำงาน <br> (ทางเลือก) </td>
+                    <td>
+                        <textarea id="SpaceDescription" name="SpaceDescription" rows="4" cols="50" placeholder="เพิ่มรายละพื้นที่"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="all-btn">
+                <button type="button" onclick="clearFields()" id="btnClear"><i class='bx bx-rotate-right'></i>ล้าง</button>
+                <button type="submit" class="btn">สร้าง</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<script>
+    function validateForm() {
+        var subName = document.getElementById("SubName").value;
+
+        if (subName.trim() === "" || !isAlphanumeric(subName.charAt(0))) {
+            document.getElementById("notiAlert").style.display = "block";
+            return false;
+        }
+        return true;
+    }
+    function isAlphanumeric(char) {
+        return /^[a-zA-Z0-9ก-๙]+$/.test(char);
+    }
+
+    document.getElementById("SubName").addEventListener("focus", function() {
+        document.getElementById("notiAlert").style.display = "none";
+    });
+</script>

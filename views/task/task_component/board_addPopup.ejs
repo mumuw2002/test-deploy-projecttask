@@ -1,0 +1,93 @@
+<head>
+    <style>
+        :root{
+            --color1: #7952B3;
+            --color2: #a788d4;
+            --color3: #E4E9F6;
+            --light: #37352FA6;
+            --more-light: #222220d7;
+            --notYet: #B5C0D0;
+            --line: #D7D9DD;
+            --text: #515761;
+        }
+        #assignedUsers {
+            width: 320px;
+            padding: 5px 0 0 10px;
+            border: 1px solid rgba(55, 53, 47, 0.16);
+        }
+        #assignedUsers:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar-popup" id="sidebar-popup">
+        <div class="add-task-form">
+            <div class="side-top">
+                <div class="top-form">
+                    <i class='bx bx-task'></i>
+                    <p>เพิ่มงานใหม่</p>
+                </div>
+                <i class="fa-solid fa-xmark" id="close-task-btn"></i>
+            </div>
+            
+
+            <form action="/addTask_board" method="POST" class="add-form">
+                <table class="add-input" id="add-input-list">
+                    <tbody id="tbody">
+                        <tr id="tr">
+                            <td id="td"><i class='bx bx-rename'></i> ชื่องาน</td>
+                            <td id="td" style="min-width: 350px;">
+                                <input type="text" id="taskName" name="taskName" placeholder="กรอกชื่องาน" required>
+                            </td>
+                        </tr>
+                        <tr id="tr">
+                            <td id="td"><i class='bx bxs-calendar'></i> วันครบกำหนด</td>
+                            <td id="td" style="min-width: 350px;">
+                                <input type="date" id="dueDate" name="dueDate" required style="width: 150px;" placeholder="เลือกวัน">
+                            </td>
+                        </tr>
+                        <tr id="tr">
+                            <td id="td" style="vertical-align: top; padding-top: 5px;">
+                                <i class='bx bxs-receipt'></i> รายละเอียดงาน
+                            </td>
+                            <td id="td" style="min-width: 350px;">
+                                <textarea id="detail" name="detail" rows="4" cols="50" placeholder="กรอกรายละเอียดงาน"></textarea>
+                            </td>
+                        </tr>
+            
+                        <!-- New Assigned Users Multi-Select -->
+                        <tr id="tr">
+                            <td id="td"><i class='bx bx-user'></i> ผู้รับผิดชอบ</td>
+                            <td id="td" style="min-width: 350px;">
+                                <select name="assignedUsers" id="assignedUsers" multiple style="width: 100%;">
+                                    <% if (users && users.length > 0) { %>
+                                        <% users.forEach(user => { %>
+                                            <option value="<%= user._id %>">
+                                                <%= user.username %>
+                                            </option>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <option disabled>No users available</option>
+                                    <% } %>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                <input type="hidden" name="spaceId" id="spaceId" value="<%= spaces._id %>">
+                <div class="all-btn">
+                    <button type="button" onclick="clearFields()" id="clearbtn">
+                        <i class='bx bx-rotate-right'></i> ล้าง
+                    </button>
+                    <button type="submit" id="submitTaskBtn">เสร็จสิ้น</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+</body>

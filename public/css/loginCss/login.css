@@ -1,0 +1,203 @@
+@import url(https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap);
+
+* {
+    font-family: 'kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --body-color: #DEE5F3;
+    --primary-color: #7952B3;
+    --primary-color-light: #BEA6E1;
+    --toggle-color: #F2F7FD;
+    --text-color: #707070;
+    --lighttopnav: #474962;
+    --select: #7952B3;
+    --lightselect: #E5E4FA;
+    --deepbackground: #F7F8F9;
+    --lightline: #E9EBEF;
+    --lightText: #fffc;
+    --btn: #5C54E5;
+
+    --line: #d7d9dd;
+    --more-line: #9a9a9a;
+    --text1: #656f7d;
+    --color1: #7952b3;
+    --color2: #a788d4;
+    --color4: #906fc3;
+    --color3: #e4e9f6;
+    --text2: #37352f;
+    --light: #37352fa6;
+    --more-light: #0a0a03d7;
+    --notYet: #c3cad5;
+
+    --cancle: #E53935;
+    --grey: rgb(235, 237, 242);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--body-color);
+    
+}
+
+.warpper{
+    width: 450px;
+    border-radius: 30px;
+    padding: 30px 40px;
+    background-color: var(--toggle-color);
+}
+
+.warpper .title{
+    font-size: 30px;
+    text-align: center;
+}
+
+.warpper .input-box{
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.input-box input{
+    width: 100%;
+    background: white;
+    border: none;
+    outline: none;
+    border: 2px solid;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 20px 45px 20px 20px;
+    color: var(--text-color);
+    border: none;
+    margin-top: 10px;
+    font-weight: 300;
+}
+
+.input-box input::placeholder{
+    color: var(--text-color);
+}
+
+.span-text{
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 69%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.warpper .forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin: 15px 0 15px;
+}
+
+.forgot label input{
+    accent-color: white;
+    margin-right: 3px;
+}
+
+.forgot a{
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.forgot a:hover{
+    text-decoration: underline;
+}
+
+.warpper .btn{
+    width: 100%;
+    height: 50px;
+    background: var(--btn);
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    font-weight: 400;
+    transition: 0.3s;
+}
+.warpper .btn:hover,
+.warpper .btn:focus {
+  background-color: #000000;
+  color: #ffffff;
+}
+.warpper .btn:active {
+  background: #000000;
+  color: rgba(255, 255, 255, 0.7);
+}
+.warpper .btn:disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.warpper .register{
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+    margin: 20px 0 15px;
+}
+
+.register p a{
+    color: var(--btn);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register p a:hover{
+    text-decoration: underline;
+}
+.warpper .register p{
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.google_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px; /* Adjust the height as needed */
+    border: 2px solid var(--text-color);
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 300;
+    text-decoration: none;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.google_btn:hover{
+    color: black;
+}
+
+.google_btn img {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.google_btn span {
+    display: inline-block;
+}
+

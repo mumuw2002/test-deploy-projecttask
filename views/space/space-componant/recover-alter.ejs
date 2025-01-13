@@ -1,0 +1,134 @@
+<head>
+    <style>
+        .recover-popup{
+            width: 35%;
+            height: 300px;
+            background-color: white;
+            position: fixed;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            border-radius: 10px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            transition: 0.5s ease-in-out;
+        }
+        .recover-popup.show {
+            top: 10%;
+            z-index: 1;
+        }
+        .recover-popup #recoverText{
+            font-size: 30px;
+            margin: 0;
+            font-weight: 400;
+            line-height: 50px;
+            text-align: center;
+        }
+        .recover-btn{
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
+        .recover-btn .btn{
+            padding: 10px 20px;
+            width: 150px;
+            border-radius: 5px;
+            border: 1px solid #D7D9DD;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        .recover-btn #recover-btn:hover{
+            background-color: #FF004D;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            opacity: 1;
+        }
+        .recover-btn #cancel-btn:hover{
+            background-color: #707070;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            opacity: 1;
+        }
+
+
+        .recover-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 0;
+        }
+        .show-recover-overlay {
+            display: block;
+        }
+    </style>
+</head>
+
+<div class="recover-popup" id="recover-popup">
+    <div class="recover-content">
+        <h1 id="recoverText">คุณต้องการกู้คืน <span id="space-name"></span> ใช่หรือไม่?</h1>
+    </div>
+    <div class="recover-btn">
+        <button class="btn" id="recover-btn">กู้คืน</button>
+        <button class="btn" id="cancel-btn">ยกเลิก</button>
+    </div>
+</div>
+<div class="recover-overlay" id="recover-overlay"></div>
+
+<script>
+    // Show the recovery confirmation popup when recover button is clicked
+    document.querySelectorAll(".recover-alter-btn").forEach(function(button) {
+        button.addEventListener("click", function() {
+            const spaceId = this.dataset.spaceId; // Get space ID from data attribute
+            const spaceName = this.dataset.spaceName; // Get space name from data attribute
+            
+            // Set the recovery confirmation text to include the space name
+            document.getElementById("space-name").innerText = spaceName; // Show space name in popup
+            
+            document.getElementById("recover-popup").classList.add("show");
+            document.getElementById("recover-overlay").classList.add("show-recover-overlay");
+            document.getElementById("recover-btn").dataset.spaceId = spaceId; // Assign spaceId to the recover button
+        });
+    });
+
+    // Recover the space when the recover button is clicked
+    document.getElementById('recover-btn').addEventListener('click', function() {
+        const spaceId = this.dataset.spaceId;
+        console.log('Recovering space with ID:', spaceId); // Debug log
+    
+        fetch(`/space/${spaceId}/recover`, { method: 'PUT' })
+        .then(response => {
+            console.log('Response:', response); // Debug log
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data returned:', data); // Debug log
+            // Handle success
+        })
+        .catch(err => console.error('Fetch error:', err));
+    });
+    
+    // Cancel the recovery action and close the popup
+    document.getElementById("cancel-btn").addEventListener("click", function() {
+        document.getElementById("recover-popup").classList.remove("show");
+        document.getElementById("recover-overlay").classList.remove("show-recover-overlay");
+    });
+</script>
+

@@ -1,0 +1,28 @@
+<head>
+  <link rel="stylesheet" href="/css/partialsCss/top_nav.css">
+</head>
+
+
+<div class="top">
+  <!-- searchBox start -->
+  <div class="searchBox">
+      <h2>Task Hub</h2>
+      <div class="inputBox">
+        <form action="/note/search" role="search" method="POST">
+            <i class='bx bx-search'></i>
+            <input type="search" name="searchTerm" placeholder="ค้นหา...">
+        </form>
+      </div>
+  </div>
+  <!-- searchBox end -->
+
+  <!-- user start -->
+  <div class="user">
+      <div class="userImg">
+          <img src="<%= userImage %>" alt="user">
+      </div>
+      <i class='bx bx-bell' ></i>
+      <a href="/logout" type="button" class="btn-logout"><i class='bx bx-log-out'></i></a>
+  </div>
+  <!-- user end -->
+</div>

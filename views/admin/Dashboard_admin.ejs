@@ -1,0 +1,94 @@
+<style>
+  .yy {
+    margin-left: 200px;
+  }
+</style>
+<div class="main-container">
+  <div class="content">
+    <div class="secdashboard">
+      <h2>จำนวนผู้ใช้งาน</h2>
+      <p>ผู้ใช้งานทั้งหมด: <%= totalUsersCount %>
+      </p>
+      <p>ผู้ใช้งานปัจจุบัน: <%= onlineUsersCount %>
+      </p>
+      <canvas id="newUserChart"></canvas>
+      <h2>รายงานปัญหา</h2>
+      <p>รายงานทั้งหมด: <%= totalComplaintsCount %>
+      </p>
+      <p>รายงานที่ยังไม่ได้แก้ไข: <%= openComplaintsCount %>
+      </p>
+      <p>รายงานที่กำลังแก้ไข: <%= inProgressComplaintsCount %>
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>ประเภทปัญหา</th>
+            <th>จำนวน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% complaintCategories.forEach(category=> { %>
+            <tr>
+              <td>
+                <%= category._id %>
+              </td>
+              <td>
+                <%= category.count %>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    
+      <h2>ประกาศระบบ</h2>
+      <p>ผู้ใช้ที่เห็นประกาศ: <%= seenAnnouncementsCount %> (<%= seenPercentage.toFixed(2) %>%)</p>
+    
+      <canvas id="announcementSeenChart"></canvas>
+    
+      <h2>การใช้งานระบบ</h2>
+    
+      <table>
+        <thead>
+          <tr>
+            <th>วันและเวลา</th>
+            <th>จำนวนผู้ใช้งาน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% systemUsage.forEach(usage=> { %>
+            <tr>
+              <td>
+                <%= usage._id %>
+              </td>
+              <td>
+                <%= usage.count %>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+      <canvas id="systemUsageChart"></canvas>
+    
+    
+      <a href="/admin/manage-users" class="btn btn-primary">จัดการผู้ใช้งาน</a>
+      <a href="/admin/manage-courses" class="btn btn-secondary">จัดการรายวิชา</a>
+      <a href="/SystemAnnouncements" class="btn btn-success">จัดการประกาศระบบ</a>
+      <a href="/ReportUserProblem" class="btn btn-warning">รายงานปัญหา</a>
+    
+    
+    </div>
+    
+  </div>
+</div>
+  
+<script>
+  const newUserCounts = <% - JSON.stringify(newUserCounts) %>;
+  // ... (โค้ด JavaScript สำหรับสร้างกราฟด้วย Chart.js หรือ library อื่นๆ)
+</script>
+<script>
+  const systemUsage = <% - JSON.stringify(systemUsage) %>;
+  // ... (โค้ด JavaScript สำหรับสร้างกราฟ)
+</script>
+<script>
+  // ... (โค้ด JavaScript สำหรับสร้างกราฟ)
+</script>

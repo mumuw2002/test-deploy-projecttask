@@ -1,0 +1,14 @@
+<div id="selectionInfo">
+    <div class="select">
+        <i class='bx bx-x' onclick="toggleSelectionInfo()"></i>
+        งานที่เลือก <span id="selectedCount">0</span> งาน
+    </div>
+
+    <form id="deleteTasksForm" action="/space/item/<%= spaces._id %>/deleteTasks" method="POST">
+        <input type="hidden" name="taskIds" id="taskIds">
+        <div class="selectDelete">
+            <i class='bx bxs-trash-alt'></i>
+            <button type="submit" onclick="displayConfirmation()">ลบงาน</button>
+        </div>
+    </form>
+</div>

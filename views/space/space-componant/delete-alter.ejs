@@ -1,0 +1,143 @@
+<head>
+    <style>
+        .delete-popup{
+            width: 35%;
+            height: 300px;
+            background-color: white;
+            position: fixed;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            border-radius: 10px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            transition: 0.5s ease-in-out;
+        }
+        .delete-popup.show {
+            top: 10%;
+            z-index: 1;
+        }
+        .delete-popup #deleteText{
+            font-size: 30px;
+            margin: 0;
+            font-weight: 400;
+            line-height: 50px;
+            text-align: center;
+        }
+        .delete-btn{
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
+        .delete-btn .btn{
+            padding: 10px 20px;
+            width: 150px;
+            border-radius: 5px;
+            border: 1px solid #D7D9DD;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        .delete-btn #delete-btn:hover{
+            background-color: #FF004D;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            opacity: 1;
+        }
+        .delete-btn #cancel-btn:hover{
+            background-color: #707070;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            opacity: 1;
+        }
+
+
+        .delete-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 0;
+        }
+        .show-delete-overlay {
+            display: block;
+        }
+    </style>
+</head>
+  
+<!-- space delete alter -->
+<div class="delete-popup" id="delete-popup">
+    <div class="delete-content">
+        <h1 id="deleteText"></h1>
+    </div>
+    <div class="delete-btn">
+        <button class="btn" id="delete-btn">ลบ</button>
+        <button class="btn" id="cancel-btn">ยกเลิก</button>
+    </div>
+</div>
+<div class="delete-overlay" id="delete-overlay"></div>
+
+<script>
+    document.querySelectorAll(".delete-alter-btn").forEach(function(button) {
+        button.addEventListener("click", function() {
+            const spaceId = this.dataset.spaceId; // Get space ID from the data attribute
+            const spaceName = this.dataset.spaceName; // Get space Name from the data attribute
+            
+            // Set the delete confirmation text to include the space name
+            document.getElementById("deleteText").innerText = `คุณต้องการลบพื้นที่ ${spaceName} ใช่หรือไม่`;
+            
+            document.getElementById("delete-popup").classList.add("show");
+            document.getElementById("delete-overlay").classList.add("show-delete-overlay");
+            document.getElementById("delete-btn").dataset.spaceId = spaceId; // Assign spaceId to the delete button
+        });
+    });
+
+    // Delete the space when the delete button is clicked
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        const spaceId = this.dataset.spaceId;
+
+        if (!spaceId) {
+            console.error("Space ID is undefined.");
+            return;
+        }
+
+        fetch(`/space/delete/${spaceId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the space card from the DOM
+                const spaceCard = document.querySelector(`.delete-alter-btn[data-space-id="${spaceId}"]`).closest('.col-sm-6');
+                spaceCard.parentNode.removeChild(spaceCard);
+                // Close the delete popup and overlay
+                document.getElementById("delete-popup").classList.remove("show");
+                document.getElementById("delete-overlay").classList.remove("show-delete-overlay");
+            } else {
+                // Handle error
+                console.error(data.error);
+            }
+        })
+        .catch(err => console.error(err));
+    });
+
+    // Cancel the delete action and close the popup
+    document.getElementById("cancel-btn").addEventListener("click", function() {
+        document.getElementById("delete-popup").classList.remove("show");
+        document.getElementById("delete-overlay").classList.remove("show-delete-overlay");
+    });
+</script>
+

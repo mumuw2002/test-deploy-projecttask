@@ -1,0 +1,105 @@
+<head>
+    <link rel="stylesheet" href="/css/taskCss/item.css">
+</head>
+
+<div class="info-popup">
+    <div class="left-content">
+        <form action="" method="post">
+            <div class="detail-info-left">
+                <div id="fstline">
+                    <i class='bx bx-sidebar'></i>
+                    <div class="detail-dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="drop1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            งานทั่วไป </button>
+                        <div class="dropdown-menu dropdown-menu-start mt-2" aria-labelledby="filter">
+                            <a class="dropdown-item" href="#"> งานทั่วไป </a>
+                            <a class="dropdown-item" href="#"> การบ้าน </a>
+                            <a class="dropdown-item" href="#"> งานกลุ่ม </a>
+                            <a class="dropdown-item" href="#"> งานแลป </a>
+                            <a class="dropdown-item" href="#"> สอบ </a>
+                        </div>
+                    </div>
+                    <div class="detail-dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="drop2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ยังไม่ทำ </button>
+                        <div class="dropdown-menu dropdown-menu-start mt-2" aria-labelledby="filter">
+                            <a class="dropdown-item" href="#">ยังไม่ทำ </a>
+                            <a class="dropdown-item" href="#">กำลังทำ </a>
+                            <a class="dropdown-item" href="#">เสร็จสิ้น </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="secline">
+                    <textarea name="taskname" id="taskname"></textarea>
+                    <h1>รายละเอียดงาน</h1>
+                    <div id="detail">
+                        <textarea name="taskDetail" id="taskDetail" rows="5"></textarea>
+                    </div>
+                </div>
+                <div id="thrline">
+                    <h1>งานย่อย</h1>
+                    <div class="subTask-input" id="subTask-input">
+                        <form action="" method="POST" class="subTask-form">
+                            <input type="text" id="subtask" name="subtask" style="display: none;"
+                                placeholder="+ คุณต้องการทำอะไรให้เสร็จสิ้น">
+                            <span id="toggle">+ เพิ่มงานย่อย</span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="right-content">
+        <div class="opt">
+            <i class='bx bx-x' class="close-item" undefined ></i>
+        </div>
+        <div class="detail-info-right">
+            <h1>รายละเอียด</h1>
+            <div id="detail-info">
+                <div id="info">
+                    <span id="inf1">ผู้รับผิดชอบ</span>
+                    <span class="inf2" id="userName"> Detail </span>
+                </div>
+                <div id="info">
+                    <span id="inf1">วันครบกำหนด</span>
+                    <span class="inf2">
+                        <textarea id="dueDate"></textarea>
+                    </span>
+                </div>
+                <div id="info">
+                    <span id="inf1">ความสำคัญของงาน</span>
+                    <div class="prority">
+                        <button class="btn dropdown-toggle" type="button" id="filter" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class='bx bxs-flag' ></i> ความสำคัญ </button>
+                        <div class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="filter">
+                            <a class="dropdown-item" href="#"><i class='bx bxs-flag bx-tada' style='color:#ff004d'></i> เร่งด่วน </a>
+                            <a class="dropdown-item" href="#"><i class='bx bxs-flag' style='color:#ffd23f'  ></i> สูง </a>
+                            <a class="dropdown-item" href="#"><i class='bx bxs-flag' style='color:#378ce7'  ></i> ปกติ </a>
+                            <a class="dropdown-item" href="#"><i class='bx bxs-flag' style='color:#636262'  ></i> ต่ำ </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="info">
+                    <span id="inf1">แท็ก</span>
+                    <span class="inf2" id="taskTag"> Detail </span>
+                </div>
+                <div id="info">
+                    <span id="inf1">สร้างเมื่อ</span>
+                    <span class="inf2" id="createAt"> Detail </span>
+                </div>
+            </div>
+            <div class="date">
+                <span> - สร้างเมื่อ</span> เวลา
+            </div>
+            <div class="date">
+                <span> - อัพเดตล่าสุดเมื่อ</span> เวลา
+            </div>
+        </div>
+    </div>
+
+    <div class="subtask-popup">
+
+    </div>
+</div>
+<div class="overlay-detail"></div>

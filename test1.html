@@ -1,0 +1,294 @@
+<style>
+    :root {
+        --sidebar: #323450;
+    }
+
+    .secannounce {
+        width: 95%;
+        height: 95%;
+        margin-top: 30px;
+    }
+
+    .headsecannounce p {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .searchannounce {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .searchannounce a:last-child {
+        color: #707070;
+    }
+
+    .searchannounce a:last-child:hover {
+        color: #000000;
+    }
+
+    .inputBox {
+        position: relative;
+    }
+
+    .inputBox i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #707070;
+        font-size: 18px;
+    }
+
+    .inputBox input {
+        width: 300px;
+        height: 40px;
+        padding: 5px 10px 5px 35px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 16px;
+    }
+
+    /* Table Styling */
+    .tableannounce {
+        height: 80%;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        table-layout: fixed;
+    }
+
+    thead {
+        background-color: #3d3555;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    tbody {
+        max-height: 470px;
+        overflow-y: auto;
+        display: contents;
+    }
+
+    thead th,
+    tbody td {
+        padding: 12px;
+        text-align: left;
+        vertical-align: middle;
+        box-sizing: border-box;
+        width: 16.66%;
+    }
+
+
+    thead th,
+    tbody td {
+        padding: 12px;
+        text-align: left;
+        vertical-align: middle;
+        box-sizing: border-box;
+        width: 16.66%;
+    }
+
+    tbody td {
+        cursor: pointer;
+    }
+
+    tbody tr {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .action-btn {
+        text-align: center;
+    }
+
+    .no-data {
+        text-align: center;
+        font-size: 16px;
+        color: #707070;
+        height: 100px;
+        /* ลบ width: 100% ออก */
+    }
+
+    .no-data td {
+        text-align: center;
+        vertical-align: middle;
+        width: 100%;
+        /* เพิ่ม width: 100% ใน .no-data td */
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #ffffff;
+    }
+
+    .popup-content h1 {
+        font-size: 20px;
+        padding: 10px;
+        background-color: #ffffff;
+        border-bottom: #bababa solid 1px;
+    }
+
+    .popup-content .content-popup{
+        padding: 10px;
+    }
+
+    .popup-content input[type="text"] {
+        border: none;
+    }
+
+    .popup-content button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .confirm-delete-btn {
+        background-color: #ff4d4d;
+        color: white;
+    }
+
+    .cancel-btn {
+        background-color: #ccc;
+        color: black;
+    }
+
+    /* เพิ่มสไตล์สำหรับ selection-status */
+    .selection-status {
+        position: absolute;
+        bottom: 15px;
+        right: 50px;
+        background-color: rgba(238, 238, 238, 0.8);
+        /* เพิ่มความโปร่งใส */
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 10;
+        /* วางไว้เหนือตาราง */
+        display: flex;
+        /* ใช้ flexbox */
+        align-items: center;
+        /* จัดตำแหน่งในแนวตั้ง */
+        gap: 15px;
+        /* เพิ่มระยะห่างระหว่างข้อความและปุ่ม */
+    }
+
+    .selection-status #delete-selected-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4791db;
+        /* สีฟ้า */
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .selection-status #delete-selected-btn:disabled {
+        background-color: #cccccc;
+        cursor: default;
+    }
+
+    /* สไตล์สำหรับ Popup แสดงรายละเอียดผู้ใช้ */
+    .user-details-popup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 800px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+    }
+
+    .user-details-popup .close-button {
+        position: absolute;
+        font-size: 25px;
+        top: 27px;
+        right: 35px;
+        cursor: pointer;
+    }
+    
+    .popup-content.content{
+        padding: 20px;
+    }
+
+    .user-details-popup h1 {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    
+
+    .user-details-popup .content {
+        padding: 10px;
+
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .user-details-popup .details-section {
+        margin-bottom: 20px;
+    }
+
+    .user-details-popup .details-label {
+        font-weight: bold;
+    }
+
+    .user-details-popup .activity-log {
+        list-style: none;
+        padding: 0;
+    }
+
+    .user-details-popup .activity-log li {
+        margin-bottom: 5px;
+    }
+</style>
+<div class="popup-content">
+    <h1>ข้อมูลผู้ใช้</h1>
+    <div class="content content-popup">
+        <div class="details-section">
+            <span class="details-label">ชื่อผู้ใช้:</span>
+            <input type="text" id="user-username" value="">
+        </div>
+        <div class="details-section">
+            <span class="details-label">อีเมล:</span> <span id="user-email"></span>
+        </div>
+        <div class="details-section">
+            <button class="edit-btn" onclick="resetPassword()">เปลี่ยนรหัสผ่าน</button>
+            <button class="delete-btn" onclick="deleteUser(event, this)" data-id="">ลบบัญชี</button>
+        </div>
+    </div>
+</div>

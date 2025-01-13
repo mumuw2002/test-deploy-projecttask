@@ -1,0 +1,52 @@
+<html lang="en">
+  <head>
+
+    </head>
+  <body>
+  <div class="main-container">
+    <div class="content">
+      <div class="secannounce">
+        <div class="headsecannounce">
+          <p>รายงานปัญหาจากผู้ใช้</p>
+        </div>
+
+        <div class="searchannounce">
+          <div class="inputBox">
+            <i class="bx bx-search"></i>
+            <input type="search" name="searchTerm" placeholder="ค้นหารายงานปัญหา..." onkeyup="searchComplaints()">
+          </div>
+          <a href="/ReportUserProblem/history" class="historysystemannounce">ประวัติรายงานปัญหา</a> 
+        </div>
+
+        <div class="tableannounce">
+          <table>
+            <thead>
+              <tr>
+                <th>หมายเลขร้องเรียน</th>
+                <th>ผู้ใช้</th>
+                <th>วันที่ส่ง</th>
+                <th>หมวดหมู่</th>
+                <th>สถานะ</th>
+                <th>รายละเอียด</th> 
+              </tr>
+            </thead>
+            <tbody>
+              <% complaints.forEach(complaint => { %>
+                <tr>
+                  <td><%= complaint.complaintNumber %></td>
+                  <td><%= complaint.userId.username %></td>
+                  <td><%= complaint.submittedAt.toLocaleDateString('th-TH') %></td>
+                  <td><%= complaint.category %></td>
+                  <td><%= complaint.status %></td>
+                  <td>
+                    <a href="/ReportUserProblem/<%= complaint._id %>">ดูรายละเอียด</a> 
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

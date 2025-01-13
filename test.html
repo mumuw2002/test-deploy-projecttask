@@ -1,0 +1,47 @@
+<!-- <div id="loginHistoryPopup" class="popup">
+    <span class="close-button" onclick="closePopup('loginHistoryPopup')">&times;</span>
+    <h2>ประวัติการเข้าสู่ระบบ</h2>
+    <table class="table table-striped popup-table">
+        <thead>
+            <tr>
+                <th>ลำดับ</th>
+                <th>เวลาเข้าสู่ระบบ</th> 
+                <th>เวลาออกจากระบบ</th> 
+                <th>IP Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% loginHistory.forEach((log, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= log.loginTime.toLocaleString() %></td>
+                    <td><%= log.logoutTime ? log.logoutTime.toLocaleString() : '-' %></td> 
+                    <td><%= log.ipAddress %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+  <div id="activityLogPopup" class="popup">
+    <span class="close-button" onclick="closePopup('activityLogPopup')">&times;</span>
+    <h2>กิจกรรมล่าสุด</h2>
+    <table class="table table-striped popup-table">
+      <thead>
+        <tr>
+          <th>ลำดับ</th>
+          <th>เวลา</th>
+          <th>กิจกรรม</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% activityLog.forEach((log, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= log.timestamp.toLocaleString() %></td>
+            <td><%= log.activity %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div> -->
