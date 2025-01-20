@@ -45,7 +45,7 @@ exports.login = async (req, res, next) => {
   // Input validation
   if (!req.body.googleEmail || !req.body.password) {
       req.flash('error', 'Please enter email and password');
-      return res.redirect('/');
+      return res.redirect('/login');
   }
 
   passport.authenticate('local', async (err, user, info) => {
@@ -56,7 +56,7 @@ exports.login = async (req, res, next) => {
 
       if (!user) {
           req.flash('error', info.message || 'Invalid email or password');
-          return res.redirect('/');
+          return res.redirect('/login');
       }
 
       req.logIn(user, async (err) => {
