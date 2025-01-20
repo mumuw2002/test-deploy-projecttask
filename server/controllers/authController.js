@@ -42,9 +42,6 @@ exports.loginPage = (req, res) => {
   res.render("log/login", { error: req.flash('error') }); 
 };
 
-exports.loginPageone = (req, res) => {
-  res.render("log/login", { error: req.flash('error') }); 
-};
 
 exports.login = async (req, res, next) => {
   console.log("เริ่มต้นกระบวนการ login1"); 

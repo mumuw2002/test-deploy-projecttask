@@ -172,11 +172,25 @@ app.set('layout', './layouts/main');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Middleware to check authentication
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/login');
+}
+
 // Routes setup
 app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/index'));
 app.use('/', require('./server/routes/spaceRoutes'));
 app.use('/', require('./server/routes/taskRou/taskPageRoutes'));
+
+// Protected route for /space
+app.get('/space', ensureAuthenticated, (req, res) => {
+  res.render('space');
+});
+
 app.use('/', require('./server/routes/taskRou/taskDetailRoutes'));
 app.use('/', require('./server/routes/taskRou/taskComplaintRouter'));
 app.use('/', require('./server/routes/notiRoutes'));

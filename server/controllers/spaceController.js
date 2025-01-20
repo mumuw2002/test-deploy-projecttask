@@ -1,3 +1,4 @@
+// server\controllers\spaceController.js
 const Spaces = require('../models/Space');
 const Space = require('../models/Space');
 const User = require('../models/User');
