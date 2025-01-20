@@ -62,6 +62,14 @@ const UserSchema = new Schema({
             inWeb: { type: Boolean, default: true },
         },
     },
+    resetToken: {
+        type: String,
+        required: false,
+    },
+    resetTokenExpiration: {
+        type: Date,
+        required: false,
+    },    
 });
 
 UserSchema.plugin(passportLocalMongoose, { usernameField: 'googleEmail' });

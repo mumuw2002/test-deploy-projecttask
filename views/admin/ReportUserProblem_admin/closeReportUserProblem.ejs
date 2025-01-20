@@ -1,11 +1,9 @@
-<!-- views\admin\SystemAnnouncements_admin\historySystemAnnouncements.ejs -->
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>History of System Announcements</title>
+  <title>Closed Report User Problem</title>
   <style>
     :root {
       --sidebar: #323450;
@@ -228,53 +226,57 @@
       <div class="secannounce">
         <div class="headsecannounce">
           <div class="systemannouncements">
-            <a href="/SystemAnnouncements"><i class='bx bx-chevron-left'></i><span>กลับไปหน้าตารางประกาศ</span></a>
+            <a href="/ReportUserProblem"><i class='bx bx-chevron-left'></i><span>กลับไปหน้าตารางรายงานปัญหา</span></a>
           </div>
-          <p>ประวัติประกาศที่ถูกลบ</p>
+          <p>ประวัติรายงานปัญหาที่เสร็จสิ้นแล้ว</p>
         </div>
         <div class="searchhistoryannounce">
           <div class="inputBox">
             <i class="bx bx-search"></i>
-            <input type="search" name="searchTerm" placeholder="ค้นหาประกาศ..." onkeyup="searchHistoryAnnouncements()">
+            <input type="search" name="searchTerm" placeholder="ค้นหารายงานปัญหา..." onkeyup="searchHistoryAnnouncements()">
           </div>
         </div>
         <div class="tableannounce">
           <table id="myTable">
             <thead>
               <tr>
-                <th>ชื่อประกาศ</th>
-                <th>วันที่สร้าง</th>
-                <th>วันสิ้นสุด</th>
-                <th>ผู้สร้าง</th>
-                <th>วันที่ลบ</th>
+                <th>หมายเลขร้องเรียน</th>
+                <th>ผู้ใช้</th>
+                <th>วันที่ส่ง</th>
+                <th>หมวดหมู่</th>
+                <th>สถานะ</th>
+                <th>รายละเอียด</th>
               </tr>
             </thead>
             <tbody>
-              <% if (deletedAnnouncements.length) { %>
-                <% deletedAnnouncements.forEach(announcement=> { %>
+              <% if (closedComplaints.length) { %>
+                <% closedComplaints.forEach(complaint=> { %>
                   <tr>
                     <td>
-                      <%= announcement.title %>
+                      <%= complaint.complaintNumber %>
                     </td>
                     <td>
-                      <%= new Date(announcement.createdAt).toLocaleDateString() %>
+                      <%= complaint.userId.username %>
                     </td>
                     <td>
-                      <%= new Date(announcement.expirationDate).toLocaleDateString() %>
+                      <%= new Date(complaint.submittedAt).toLocaleDateString() %>
                     </td>
                     <td>
-                      <%= announcement.createdBy ? announcement.createdBy.username : 'ไม่ทราบ' %>
+                      <%= complaint.category %>
                     </td>
                     <td>
-                      <%= new Date(announcement.updatedAt).toLocaleDateString() %>
+                      <%= complaint.status %>
+                    </td>
+                    <td>
+                      <a href="/ReportUserProblem/<%= complaint._id %>">ดูรายละเอียด</a>
                     </td>
                   </tr>
-                  <% }); %>
-                    <% } else { %>
-                      <tr>
-                        <td colspan="5">ไม่มีข้อมูล</td>
-                      </tr>
-                      <% } %>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="6">ไม่มีข้อมูล</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
@@ -290,7 +292,6 @@
       searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toUpperCase();
 
-        // กรองข้อมูลในตาราง
         for (let i = 0; i < tr.length; i++) {
           const td = tr[i].getElementsByTagName("td")[0];
           if (td) {

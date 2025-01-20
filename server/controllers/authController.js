@@ -45,7 +45,7 @@ exports.login = async (req, res, next) => {
   // Input validation
   if (!req.body.googleEmail || !req.body.password) {
       req.flash('error', 'Please enter email and password');
-      return res.redirect('/login');
+      return res.redirect('/');
   }
 
   passport.authenticate('local', async (err, user, info) => {
@@ -56,7 +56,7 @@ exports.login = async (req, res, next) => {
 
       if (!user) {
           req.flash('error', info.message || 'Invalid email or password');
-          return res.redirect('/login');
+          return res.redirect('/');
       }
 
       req.logIn(user, async (err) => {
@@ -260,7 +260,6 @@ exports.showResetPassword = (req, res) => {
   const { email } = req.session; // ดึงค่า email จาก session
   res.render('forgot_password/reset-password', { email }); // ส่ง email ไปที่ EJS
 };
-
 
 exports.resetPassword = async (req, res) => {
   const { newPassword } = req.body;

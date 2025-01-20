@@ -1,8 +1,266 @@
+<!-- ReportUserProblem_admin.ejs -->
 <html lang="en">
-  <head>
 
-    </head>
-  <body>
+<head>
+  <style>
+    :root {
+      --sidebar: #323450;
+    }
+
+    .secannounce {
+      width: 95%;
+      height: 95%;
+      margin-top: 30px;
+    }
+
+    .headsecannounce p {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .searchannounce {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .searchannounce a:last-child {
+      color: #707070;
+    }
+
+    .searchannounce a:last-child:hover {
+      color: #000000;
+    }
+
+    .inputBox {
+      position: relative;
+    }
+
+    .inputBox i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #707070;
+      font-size: 18px;
+    }
+
+    .inputBox input {
+      width: 300px;
+      height: 40px;
+      padding: 5px 10px 5px 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+
+    .historysystemannounce {
+      margin-left: auto;
+    }
+
+    /* Table Styling */
+    .tableannounce {
+      height: 80%;
+      overflow: hidden;
+      /* เพิ่ม overflow: hidden ให้ .tableannounce */
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .table-wrapper {
+      height: calc(100% - 5px);
+      /* ปรับ height ให้มีพื้นที่สำหรับ selection-status */
+      overflow-y: auto;
+      /* เพิ่ม scrollbar */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      table-layout: fixed;
+    }
+
+    thead {
+      background-color: #3d3555;
+      color: #fff;
+      text-transform: uppercase;
+      position: sticky;
+      /* ให้ thead ติดอยู่ด้านบน */
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody {
+      max-height: 470px;
+    }
+
+    thead th,
+    tbody td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+      box-sizing: border-box;
+      width: 16.66%;
+    }
+
+    thead th:first-child {
+      border-top-left-radius: 10px;
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      width: 50px;
+    }
+
+    thead th,
+    tbody td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+      box-sizing: border-box;
+      width: 16.66%;
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      width: 50px;
+    }
+
+    tbody td:first-child {
+      font-size: 14px;
+    }
+
+    td input[type="checkbox"],
+    th input[type="checkbox"] {
+      margin: 0;
+      position: relative;
+      top: 0;
+    }
+
+    tbody tr {
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    td input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .delete-btn {
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .delete-btn:hover {
+      background-color: #ff3333;
+    }
+
+    .action-btn {
+      text-align: center;
+    }
+
+    .no-data {
+      text-align: center;
+      font-size: 16px;
+      color: #707070;
+      height: 100px;
+      /* ลบ width: 100% ออก */
+    }
+
+    .no-data td {
+      text-align: center;
+      vertical-align: middle;
+      width: 100%;
+      /* เพิ่ม width: 100% ใน .no-data td */
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+
+    .popup-content button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .confirm-delete-btn {
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    .cancel-btn {
+      background-color: #ccc;
+      color: black;
+    }
+
+    /* เพิ่มสไตล์สำหรับ selection-status */
+    .selection-status {
+      position: absolute;
+      bottom: 15px;
+      right: 50px;
+      background-color: rgba(238, 238, 238, 0.8);
+      /* เพิ่มความโปร่งใส */
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 10;
+      /* วางไว้เหนือตาราง */
+      display: flex;
+      /* ใช้ flexbox */
+      align-items: center;
+      /* จัดตำแหน่งในแนวตั้ง */
+      gap: 15px;
+      /* เพิ่มระยะห่างระหว่างข้อความและปุ่ม */
+    }
+
+    .selection-status #delete-selected-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4791db;
+      /* สีฟ้า */
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .selection-status #delete-selected-btn:disabled {
+      background-color: #cccccc;
+      cursor: default;
+    }
+  </style>
+</head>
+
+<body>
   <div class="main-container">
     <div class="content">
       <div class="secannounce">
@@ -15,38 +273,78 @@
             <i class="bx bx-search"></i>
             <input type="search" name="searchTerm" placeholder="ค้นหารายงานปัญหา..." onkeyup="searchComplaints()">
           </div>
-          <a href="/ReportUserProblem/history" class="historysystemannounce">ประวัติรายงานปัญหา</a> 
+          <a href="/ReportUserProblem/ClosedReportUserProblem" class="historysystemannounce">ประวัติรายงานปัญหาที่เสร็จสิ้นแล้ว</a>
         </div>
 
         <div class="tableannounce">
-          <table>
-            <thead>
-              <tr>
-                <th>หมายเลขร้องเรียน</th>
-                <th>ผู้ใช้</th>
-                <th>วันที่ส่ง</th>
-                <th>หมวดหมู่</th>
-                <th>สถานะ</th>
-                <th>รายละเอียด</th> 
-              </tr>
-            </thead>
-            <tbody>
-              <% complaints.forEach(complaint => { %>
+          <div class="table-wrapper">
+            <table>
+              <thead>
                 <tr>
-                  <td><%= complaint.complaintNumber %></td>
-                  <td><%= complaint.userId.username %></td>
-                  <td><%= complaint.submittedAt.toLocaleDateString('th-TH') %></td>
-                  <td><%= complaint.category %></td>
-                  <td><%= complaint.status %></td>
-                  <td>
-                    <a href="/ReportUserProblem/<%= complaint._id %>">ดูรายละเอียด</a> 
-                  </td>
+                  <th>หมายเลขร้องเรียน</th>
+                  <th>ผู้ใช้</th>
+                  <th>วันที่ส่ง</th>
+                  <th>หมวดหมู่</th>
+                  <th>สถานะ</th>
+                  <th>รายละเอียด</th>
                 </tr>
-              <% }); %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% complaints.forEach(complaint=> { %>
+                  <tr>
+                    <td>
+                      <%= complaint.complaintNumber %>
+                    </td>
+                    <td>
+                      <%= complaint.userId.username %>
+                    </td>
+                    <td>
+                      <%= complaint.submittedAt.toLocaleDateString('th-TH') %>
+                    </td>
+                    <td>
+                      <%= complaint.category %>
+                    </td>
+                    <td>
+                      <%= complaint.status %>
+                    </td>
+                    <td>
+                      <a href="/ReportUserProblem/<%= complaint._id %>">ดูรายละเอียด</a>
+                    </td>
+                  </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <script>
+    function searchComplaints() {
+      const searchInput = document.querySelector('input[name="searchTerm"]');
+      const table = document.querySelector('table');
+      const tr = table.getElementsByTagName("tr");
+
+      searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toUpperCase();
+
+        for (let i = 1; i < tr.length; i++) {
+          let found = false;
+          const td = tr[i].getElementsByTagName("td");
+          for (let j = 0; j < td.length; j++) {
+            const txtValue = td[j].textContent || td[j].innerText;
+            if (txtValue.toUpperCase().indexOf(searchTerm) > -1) {
+              found = true;
+              break;
+            }
+          }
+          tr[i].style.display = found ? "" : "none";
+        }
+      });
+    }
+
+    searchComplaints();
+  </script>
+</body>
+
 </html>

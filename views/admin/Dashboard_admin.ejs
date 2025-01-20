@@ -1,94 +1,462 @@
-<style>
-  .yy {
-    margin-left: 200px;
-  }
-</style>
+<head>
+    <style>
+        body {
+            background-color: rgb(247, 250, 252) !important;
+            font-family: sans-serif;
+        }
+    
+        .content {
+            margin-bottom: 20px;
+            padding: 30px;
+            background-color: rgb(247, 250, 252) !important;
+        }
+    
+        .secdashbordadmin {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    
+        #user-statistics {
+            width: 40%;
+            margin: 0;
+            padding: 20px 40px;
+            border-radius: 10px;
+            background-color: #ffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        #head1 {
+            font-size: 20px;
+            padding-left: 20px;
+            width: 100%;
+            height: fit-content;
+        }
+    
+        #user-statistics .summary-card {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+    
+        #boxcard-sum {
+            background-color: rgb(243, 232, 255);
+        }
+    
+        #boxcard-sum .imgcard-sum {
+            background-color: rgb(191, 131, 255);
+        }
+    
+        #boxcard-online {
+            background-color: rgb(220, 252, 231);
+        }
+    
+        #boxcard-online .imgcard-sum {
+            background-color: rgb(60, 216, 86);
+        }
+    
+        #boxcard-sum #conboxcard-sum {
+            margin-top: 20px;
+            display: flex;
+            flex-flow: column;
+        }
+    
+        #boxcard-online #conboxcard-online {
+            margin-top: 20px;
+            display: flex;
+            flex-flow: column;
+        }
+    
+        #announcements {
+            width: 40%;
+        }
+    
+        .crad-sum {
+            border-radius: 20px;
+            width: 80%;
+            padding: 30px 20px 20px 20px;
+        }
+    
+        .crad-sum .imgcard-sum {
+            padding: 15px 15px;
+            border-radius: 100%;
+        }
+    
+        .crad-sum svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+    
+        .crad-sum span {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: rgb(66, 81, 102);
+        }
+    
+        .crad-sum #person {
+            font-size: 15px !important;
+            color: rgb(66, 81, 102);
+        }
+    
+        #conboxcard-sum span:first-child,
+        #conboxcard-online span:first-child {
+            font-size: 24px;
+            color: rgb(21, 29, 72);
+        }
+    
+        .dashboard-section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+
+        .dashboard-section canvas{
+            max-height: 300px;
+        }
+    
+        .dashboard-section h2 {
+            margin-bottom: 10px;
+        }
+    
+        .dashboard-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        .dashboard-section th,
+        .dashboard-section td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+    
+        .btn-primary {
+            background-color: #007bff;
+        }
+    
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+    
+        .btn-success {
+            background-color: #28a745;
+        }
+    
+        .btn-warning {
+            background-color: #ffc107;
+        }
+    
+        #system-usage {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 55%;
+        }
+    
+        #systemUsageChart canvas {
+            background-color: #f7fafc;
+            /* สีพื้นหลังของกราฟ */
+        }
+    
+        #complaint-reports {
+            padding: 20px;
+            width: 55%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+</head>
+
+
 <div class="main-container">
-  <div class="content">
-    <div class="secdashboard">
-      <h2>จำนวนผู้ใช้งาน</h2>
-      <p>ผู้ใช้งานทั้งหมด: <%= totalUsersCount %>
-      </p>
-      <p>ผู้ใช้งานปัจจุบัน: <%= onlineUsersCount %>
-      </p>
-      <canvas id="newUserChart"></canvas>
-      <h2>รายงานปัญหา</h2>
-      <p>รายงานทั้งหมด: <%= totalComplaintsCount %>
-      </p>
-      <p>รายงานที่ยังไม่ได้แก้ไข: <%= openComplaintsCount %>
-      </p>
-      <p>รายงานที่กำลังแก้ไข: <%= inProgressComplaintsCount %>
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>ประเภทปัญหา</th>
-            <th>จำนวน</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% complaintCategories.forEach(category=> { %>
-            <tr>
-              <td>
-                <%= category._id %>
-              </td>
-              <td>
-                <%= category.count %>
-              </td>
-            </tr>
-            <% }); %>
-        </tbody>
-      </table>
-    
-      <h2>ประกาศระบบ</h2>
-      <p>ผู้ใช้ที่เห็นประกาศ: <%= seenAnnouncementsCount %> (<%= seenPercentage.toFixed(2) %>%)</p>
-    
-      <canvas id="announcementSeenChart"></canvas>
-    
-      <h2>การใช้งานระบบ</h2>
-    
-      <table>
-        <thead>
-          <tr>
-            <th>วันและเวลา</th>
-            <th>จำนวนผู้ใช้งาน</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% systemUsage.forEach(usage=> { %>
-            <tr>
-              <td>
-                <%= usage._id %>
-              </td>
-              <td>
-                <%= usage.count %>
-              </td>
-            </tr>
-            <% }); %>
-        </tbody>
-      </table>
-      <canvas id="systemUsageChart"></canvas>
-    
-    
-      <a href="/admin/manage-users" class="btn btn-primary">จัดการผู้ใช้งาน</a>
-      <a href="/admin/manage-courses" class="btn btn-secondary">จัดการรายวิชา</a>
-      <a href="/SystemAnnouncements" class="btn btn-success">จัดการประกาศระบบ</a>
-      <a href="/ReportUserProblem" class="btn btn-warning">รายงานปัญหา</a>
-    
-    
+    <div class="content">
+        <div class="secdashbordadmin">
+            <div class="dashboard-section" id="user-statistics">
+                <p id="head1">จำนวนผู้ใช้งานในระบบ</p>
+                <div class="summary-card">
+                    <p class="crad-sum" id="boxcard-sum">
+                        <span class="imgcard-sum">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                <path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192l42.7 0c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0L21.3 320C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7l42.7 0C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3l-213.3 0zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352l117.3 0C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7l-330.7 0c-14.7 0-26.7-11.9-26.7-26.7z" />
+                            </svg>
+                        </span>
+                        <span id="conboxcard-sum">
+                            <span>
+                                <%= totalUsersCount %> <span id="person">คน</span>
+                            </span>
+                            <span>ผู้ใช้งานทั้งหมด</span>
+                        </span>
+                    </p>
+                    <p class="crad-sum" id="boxcard-online">
+                        <span class="imgcard-sum">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M352 256c0 22.2-1.2 43.6-3.3 64l-185.3 0c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64l185.3 0c2.2 20.4 3.3 41.8 3.3 64zm28.8-64l123.1 0c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64l-123.1 0c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32l-116.7 0c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0l-176.6 0c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0L18.6 160C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192l123.1 0c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64L8.1 320C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6l176.6 0c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352l116.7 0zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6l116.7 0z" />
+                            </svg>
+                        </span>
+                        <span id="conboxcard-online">
+                            <span>
+                                <%= onlineUsersCount %> <span id="person">คน</span>
+                            </span>
+                            <span>ผู้ใช้งานปัจจุบัน</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-section" id="system-usage">
+                <p id="head1">การใช้งานระบบ</p>
+                <canvas id="systemUsageChart"></canvas>
+            </div>
+
+            <div class="dashboard-section" id="announcements">
+                <p id="head1">จำนวนครั้งที่ผู้ใช้เห็นประกาศระบบ</p>
+                <canvas id="announcementSeenChart" height="300" width="300"></canvas>
+            </div>
+
+            <div class="dashboard-section" id="complaint-reports">
+                <p id="head1">รายงานปัญหา</p>
+                <canvas id="complaintChart"></canvas>
+            </div>
+
+            <!-- <div class="dashboard-section" id="shortcut-buttons">
+                <p id="head1">การจัดการระบบ</p>
+                <a href="/admin/manage-users" class="btn btn-primary">จัดการผู้ใช้งาน</a>
+                <a href="/admin/manage-courses" class="btn btn-secondary">จัดการรายวิชา</a>
+                <a href="/SystemAnnouncements" class="btn btn-success">จัดการประกาศระบบ</a>
+                <a href="/ReportUserProblem" class="btn btn-warning">รายงานปัญหา</a>
+            </div> -->
+        </div>
     </div>
-    
-  </div>
 </div>
-  
+
 <script>
-  const newUserCounts = <% - JSON.stringify(newUserCounts) %>;
-  // ... (โค้ด JavaScript สำหรับสร้างกราฟด้วย Chart.js หรือ library อื่นๆ)
-</script>
-<script>
-  const systemUsage = <% - JSON.stringify(systemUsage) %>;
-  // ... (โค้ด JavaScript สำหรับสร้างกราฟ)
-</script>
-<script>
-  // ... (โค้ด JavaScript สำหรับสร้างกราฟ)
+    const complaintsByCategoryAndStatus = <%- JSON.stringify(complaintsByCategoryAndStatus) %>;
+
+    const categories = complaintsByCategoryAndStatus.map(item => item._id);
+    const statusCounts = {
+        Open: [],
+        'In Progress': [],
+        Closed: []
+    };
+
+    complaintsByCategoryAndStatus.forEach(item => {
+        item.statuses.forEach(status => {
+            statusCounts[status.status].push(status.count);
+        });
+    });
+
+    const complaintChartCtx = document.getElementById('complaintChart').getContext('2d');
+    new Chart(complaintChartCtx, {
+        type: 'bar',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Open',
+                data: statusCounts.Open,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'In Progress',
+                data: statusCounts['In Progress'],
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Closed',
+                data: statusCounts.Closed,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'ประเภทปัญหา'
+                    }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'จำนวน'
+                    },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'จำนวนปัญหาแยกตามประเภทและสถานะ'
+                }
+            }
+        }
+    });
+
+
+    const seenCount = <%= seenAnnouncementsCount %>;
+    const unseenCount = <%= totalAnnouncements - seenAnnouncementsCount %>;
+
+    const announcementSeenChartCtx = document.getElementById('announcementSeenChart').getContext('2d');
+    new Chart(announcementSeenChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['ผู้ใช้ที่เห็นประกาศ', 'ผู้ใช้ที่ยังไม่เห็นประกาศ'],
+            datasets: [{
+                data: [seenCount, unseenCount],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 99, 132, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'สัดส่วนผู้ใช้ที่เห็นประกาศระบบ'
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    const systemUsageData = <%- JSON.stringify(systemUsage) %>;
+
+    // สร้างอาร์เรย์ของวันที่ในช่วง 7 วันที่ผ่านมา
+    const dateLabels = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        dateLabels.push(new Date(d));
+    }
+
+    // เตรียมข้อมูลสำหรับกราฟ
+    const filledData = dateLabels.map(date => {
+        const matchingData = systemUsageData.find(usage =>
+            new Date(usage._id).toLocaleDateString() === date.toLocaleDateString()
+        );
+        return matchingData ? matchingData.count : 0;
+    });
+
+    const ctx = document.getElementById('systemUsageChart').getContext('2d');
+    const systemUsageChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dateLabels,
+            datasets: [{
+                label: 'Active Users',
+                data: filledData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 3,
+                pointBackgroundColor: '#36A2EB',
+                pointBorderColor: '#fff',
+                pointRadius: 5,
+                tension: 0.4,
+                fill: {
+                    target: 'origin',
+                    above: 'rgba(54, 162, 235, 0.2)',
+                    below: 'rgba(255, 255, 255, 0.8)'
+                },
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                }
+            },
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'd MMM'
+                        },
+                        tooltipFormat: 'd MMM yyyy'
+                    },
+                    title: {
+                        display: true,
+                        text: 'วันที่ใช้งานระบบ'
+                    },
+                    ticks: {
+                        maxTicksLimit: 7,
+                        color: '#64748B',
+                        offset: true,
+                        font: {
+                            family: 'sans-serif',
+                            size: 12,
+                        }
+                    },
+                    grid: {
+                        color: '#E0E6ED',
+                        drawBorder: false,
+                    },
+                    min: dateLabels[0],
+                    max: dateLabels[6],
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'จำนวนผู้ใช้งาน'
+                    },
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#64748B',
+                        font: {
+                            family: 'sans-serif',
+                            size: 12,
+                        },
+                        stepSize: 30,
+                    },
+                    grid: {
+                        color: '#E0E6ED',
+                        drawBorder: false,
+                    }
+                }
+            }
+        }
+    });
 </script>

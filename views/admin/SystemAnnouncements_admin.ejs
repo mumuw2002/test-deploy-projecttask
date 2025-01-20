@@ -79,10 +79,14 @@
   /* Table Styling */
   .tableannounce {
     height: 80%;
-    overflow: hidden;
     border: 1px solid #ddd;
     border-radius: 10px;
     position: relative;
+  }
+
+  .table-wrapper {
+    height: calc(100% - 5px);
+    overflow-y: auto;
   }
 
   table {
@@ -96,12 +100,14 @@
     background-color: #3d3555;
     color: #fff;
     text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
   tbody {
     max-height: 470px;
-    overflow-y: auto;
-    display: contents;
+    /* overflow-y: auto;  ลบออก */
   }
 
   thead th,
@@ -111,6 +117,11 @@
     vertical-align: middle;
     box-sizing: border-box;
     width: 16.66%;
+  }
+
+  thead th:first-child {
+    border-top-left-radius: 10px;
+
   }
 
   thead th:first-child,
@@ -401,60 +412,62 @@
       </div>
 
       <div class="tableannounce">
-        <table>
-          <thead>
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>ชื่อประกาศ</th>
-              <th>วันที่สร้างประกาศ</th>
-              <th>วันสิ้นสุดของประกาศ</th>
-              <th>คนสร้างประกาศ</th>
-              <th>เห็นแล้ว</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (announcements.length) { %>
-              <% announcements.forEach(announcement=> { %>
-                <% if (!announcement.isDeleted) { %>
-                  <tr data-title="<%= announcement.title %>" data-content="<%= announcement.content %>"
-                    data-created-at="<%= announcement.createdAt %>"
-                    data-expiration-date="<%= announcement.expirationDate %>"
-                    data-created-by="<%= JSON.stringify(announcement.createdBy) %>" onclick="showPopup(this)">
-                    <td onclick="event.stopPropagation()"><input type="checkbox"></td>
-                    <td>
-                      <%= announcement.title %>
-                    </td>
-                    <td>
-                      <%= announcement.createdAt ? new Date(announcement.createdAt).toLocaleDateString('th-TH', {
-                        year: 'numeric' , month: 'long' , day: 'numeric' }) : 'ไม่ระบุ' %>
-                    </td>
-                    <td>
-                      <%= announcement.expirationDate ? new
-                        Date(announcement.expirationDate).toLocaleDateString('th-TH', { year: 'numeric' , month: 'long'
-                        , day: 'numeric' }) : 'ไม่มีวันหมดอายุ' %>
-                    </td>
-                    <td>
-                      <% if (announcement.createdBy) { %>
-                        <%= announcement.createdBy.username %>
-                          <% } else { %>ผู้ใช้ที่ไม่ระบุ<% } %>
-                    </td>
-                    <td id="user-counts">
-                      <%= userCounts %> คน
-                    </td>
-                    <td class="action-btn" onclick="event.stopPropagation()">
-                      <button class="delete-btn" data-id="<%= announcement._id %>">🗑</button>
-                    </td>
-                  </tr>
-                  <% } %>
-                    <% }); %>
-                      <% } else { %>
-                        <tr class="no-data">
-                          <td colspan="7">ไม่พบข้อมูล</td>
-                        </tr>
-                        <% } %>
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>ชื่อประกาศ</th>
+                <th>วันที่สร้างประกาศ</th>
+                <th>วันสิ้นสุดของประกาศ</th>
+                <th>คนสร้างประกาศ</th>
+                <th>เห็นแล้ว</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <% if (announcements.length) { %>
+                <% announcements.forEach(announcement=> { %>
+                  <% if (!announcement.isDeleted) { %>
+                    <tr data-title="<%= announcement.title %>" data-content="<%= announcement.content %>"
+                      data-created-at="<%= announcement.createdAt %>"
+                      data-expiration-date="<%= announcement.expirationDate %>"
+                      data-created-by="<%= JSON.stringify(announcement.createdBy) %>" onclick="showPopup(this)">
+                      <td onclick="event.stopPropagation()"><input type="checkbox"></td>
+                      <td>
+                        <%= announcement.title %>
+                      </td>
+                      <td>
+                        <%= announcement.createdAt ? new Date(announcement.createdAt).toLocaleDateString('th-TH', {
+                          year: 'numeric' , month: 'long' , day: 'numeric' }) : 'ไม่ระบุ' %>
+                      </td>
+                      <td>
+                        <%= announcement.expirationDate ? new
+                          Date(announcement.expirationDate).toLocaleDateString('th-TH', { year: 'numeric' ,
+                          month: 'long' , day: 'numeric' }) : 'ไม่มีวันหมดอายุ' %>
+                      </td>
+                      <td>
+                        <% if (announcement.createdBy) { %>
+                          <%= announcement.createdBy.username %>
+                            <% } else { %>ผู้ใช้ที่ไม่ระบุ<% } %>
+                      </td>
+                      <td id="user-counts">
+                        <%= userCounts %> คน
+                      </td>
+                      <td class="action-btn" onclick="event.stopPropagation()">
+                        <button class="delete-btn" data-id="<%= announcement._id %>">🗑</button>
+                      </td>
+                    </tr>
+                    <% } %>
+                      <% }); %>
+                        <% } else { %>
+                          <tr class="no-data">
+                            <td colspan="7">ไม่พบข้อมูล</td>
+                          </tr>
+                          <% } %>
+            </tbody>
+          </table>
+        </div>
         <div class="selection-status">
           <span id="selected-count">0 Selected</span>
           <button id="delete-selected-btn" disabled>ลบ</button>

@@ -1,48 +1,324 @@
 <html lang="en">
+
 <head>
-  </head>
+  <style>
+    body {
+      background-color: #f6f6f6;
+    }
+
+    .content{
+      background-color: #f6f6f6;
+      height: 100%;
+    }
+
+    .secupdateReportUserProblem {
+      width: 95%;
+      height: 100%;
+      padding: 0 30px 30px 30px;
+      margin-top: 30px;
+    }
+
+    .heardreport {
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .heardreport a {
+      display: flex;
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .heardreport p {
+      font-size: 20px;
+      margin: 0 0 0 10px;
+    }
+
+    .heardreport .bx {
+      align-content: center;
+      background-color: #5C54E5;
+      color: #fff;
+      font-size: 20px;
+      padding: 6px;
+      border-radius: 100%;
+    }
+
+    .contentreport {
+      width: 900px;
+      background-color: #fff;
+      padding: 30px 50px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .statusupdate {
+      display: flex;
+      margin-bottom: 30px;
+    }
+
+    .statusupdate select {
+      height: 40px;
+      padding: 5px;
+      width: 120px;
+      margin: 0 20px;
+      word-wrap: normal;
+    }
+
+    .statusupdate select option {
+      background-color: #fff !important;
+      /* ไม่มีสีพื้นหลัง */
+      color: #000000 !important;
+      /* ใช้สีตัวอักษรเดียวกับ select */
+    }
+
+    .statusupdate button {
+      height: 40px;
+      padding: 5px;
+      width: 120px;
+      background-color: white;
+      color: black;
+      border: 2px solid #555555;
+    }
+
+    .statusupdate button:hover {
+      background-color: #555555;
+      color: white;
+    }
+
+    .statusupdate label {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .conreportgro {
+      margin-bottom: 30px;
+    }
+
+    .conreportgro p {
+      display: contents;
+      font-size: 16px;
+    }
+
+    .conreportgro p:first-child {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .conreportgrodetail {
+      margin-bottom: 30px
+    }
+
+    .conreportgrodetail #labelcategory {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .conreportgrodetail p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .conreportgroimg p {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+
+    .conreportgrodetail .reportdetail {
+      border: 2px solid #c0c0c0;
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .imgscreenshots {
+      width: 100%;
+      max-width: 550px;
+    }
+
+    .imgscreenshots img {
+      width: 100%;
+    }
+
+    /* The Modal (background) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 70%;
+    }
+
+    .closebtn {
+      color: #000000;
+      position: absolute;
+      top: 10px;
+      right: 10%;
+      font-size: 30px;
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+    }
+
+    .closebtn:hover,
+    .closebtn:focus {
+      color: rgb(255, 0, 0);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .imgscreenshots .small-image {
+      border: #858585 1px solid;
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
 <body>
   <div class="main-container">
     <div class="content">
       <div class="secupdateReportUserProblem">
         <div class="heardreport">
           <a href="/ReportUserProblem">
-            <p>รายงานปัญหาจากผู้ใช้</p> 
+            <i class='bx bx-chevron-left'></i>
+            <p>รายงานปัญหาจากผู้ใช้</p>
           </a>
         </div>
         <div class="contentreport">
-          <form action="/complaint/<%= complaint._id %>/update" method="POST"> 
+          <form action="/complaint/<%= complaint._id %>/update" method="POST">
+            <div class="statusupdate">
+              <div class="conreportgrofirst">
+                <label for="status">สถานะ : </label>
+                <select id="status" name="status">
+                  <option value="Open" <%=complaint.status==='Open' ? 'selected' : '' %>>Open</option>
+                  <option value="In Progress" <%=complaint.status==='In Progress' ? 'selected' : '' %>>In Progress
+                  </option>
+                  <option value="Closed" <%=complaint.status==='Closed' ? 'selected' : '' %>>Closed</option>
+                </select>
+              </div>
+              <div class="buttonconreport">
+                <button type="submit">บันทึกสถานะ</button>
+              </div>
+            </div>
+
             <div class="conreportgro">
-              <p>ประเภทของปัญหา</p>
-              <p class="highlight"><%= complaint.category %></p> 
+              <p>ประเภทของปัญหา : </p>
+              <p class="highlight">
+                <%= complaint.category %>
+              </p>
             </div>
-            <div class="conreportgro">
-              <p>รายละเอียดของปัญหา</p>
-              <p><%= complaint.complaintContent %></p> 
+            <div class="conreportgrodetail">
+              <p id="labelcategory">รายละเอียดของปัญหา : </p>
+              <div class="reportdetail">
+                <p>
+                  <%= complaint.complaintContent %>
+                </p>
+              </div>
             </div>
-            <% if (complaint.screenshots && complaint.screenshots.length > 0) { %> 
-            <div class="conreportgro">
-              <p>ภาพหน้าจอ</p>
-              <% complaint.screenshots.forEach(screenshot => { %>
-              <img src="<%= screenshot %>" alt="ภาพหน้าจอ"> 
-              <% }); %>
-            </div>
-            <% } %>
-            <div class="conreportgro">
-              <label for="status">สถานะ:</label>
-              <select id="status" name="status"> 
-                <option value="Open" <%= complaint.status === 'Open' ? 'selected' : '' %>>Open</option>
-                <option value="In Progress" <%= complaint.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
-                <option value="Closed" <%= complaint.status === 'Closed' ? 'selected' : '' %>>Closed</option>
-              </select>
-            </div>
-            <div class="buttonconreport">
-              <button type="submit">บันทึกสถานะ</button> 
-            </div>
+            <% if (complaint.screenshots && complaint.screenshots.length> 0) { %>
+              <div class="conreportgroimg">
+                <p>ภาพหน้าจอ : </p>
+                <div class="imgscreenshots">
+                  <% complaint.screenshots.forEach(screenshot=> { %>
+                    <img src="<%= screenshot %>" alt="ภาพหน้าจอ" class="small-image" onclick="openModal(this)">
+                    <% }); %>
+                </div>
+              </div>
+              <% } %>
           </form>
         </div>
       </div>
     </div>
   </div>
+
+  <div id="imageModal" class="modal">
+    <div class="modalconten">
+      <span class="closebtn" onclick="closeModal()">&times;</span>
+      <img class="modal-content" id="modalImage">
+    </div>
+  </div>
+
+  <script>
+    const statusSelect = document.getElementById('status');
+
+    // ตรวจสอบค่าเริ่มต้นของ select และตั้งค่าสี
+    switch (statusSelect.value) {
+      case 'Open':
+        statusSelect.style.backgroundColor = '#d4edda';
+        statusSelect.style.color = '#155724';
+        statusSelect.style.borderColor = '#28a745';
+        break;
+      case 'In Progress':
+        statusSelect.style.backgroundColor = '#e2e3e5';
+        statusSelect.style.color = '#343a40';
+        statusSelect.style.borderColor = '#6c757d';
+        break;
+      case 'Closed':
+        statusSelect.style.backgroundColor = '#f8d7da';
+        statusSelect.style.color = '#721c24';
+        statusSelect.style.borderColor = '#dc3545';
+        break;
+    }
+
+    statusSelect.addEventListener('change', () => {
+      const selectedValue = statusSelect.value;
+
+      switch (selectedValue) {
+        case 'Open':
+          statusSelect.style.backgroundColor = '#d4edda'; // สีเขียวอ่อน
+          statusSelect.style.color = '#155724'; // สีเขียวเข้ม
+          statusSelect.style.borderColor = '#28a745'; // สีเขียว
+          break;
+        case 'In Progress':
+          statusSelect.style.backgroundColor = '#e2e3e5'; // สีเทาอ่อน
+          statusSelect.style.color = '#343a40'; // สีเทาเข้ม
+          statusSelect.style.borderColor = '#6c757d'; // สีเทา
+          break;
+        case 'Closed':
+          statusSelect.style.backgroundColor = '#f8d7da'; // สีแดงอ่อน
+          statusSelect.style.color = '#721c24'; // สีแดงเข้ม
+          statusSelect.style.borderColor = '#dc3545'; // สีแดง
+          break;
+        default:
+          statusSelect.style.backgroundColor = ''; // คืนค่าสีเดิม
+          statusSelect.style.color = ''; // คืนค่าสีเดิม
+          statusSelect.style.borderColor = ''; // คืนค่าสีเดิม
+      }
+    });
+
+    // ฟังก์ชันสำหรับเปิด modal
+    function openModal(img) {
+      var modal = document.getElementById("imageModal");
+      var modalImg = document.getElementById("modalImage");
+      modal.style.display = "block";
+      modalImg.src = img.src;
+    }
+
+    // ฟังก์ชันสำหรับปิด modal
+    function closeModal() {
+      document.getElementById("imageModal").style.display = "none";
+    }
+  </script>
 </body>
+
 </html>

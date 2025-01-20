@@ -25,15 +25,20 @@ router.get('/SystemAnnouncements/historySystemAnnouncements', adminController.hi
 
 router.post('/SettingAdmin/updateProfileImage', ensureAdmin, adminController.updateProfileImage);
 router.post('/SettingAdmin/changePassword', ensureAdmin, adminController.changePassword);
+router.get('/SettingAdmin/loginHistory', ensureAdmin, adminController.getLoginHistory);
 
 router.get('/ReportUserProblem/updateReportUserProblem', ensureAdmin, adminController.updateReportUserProblem);
+router.get('/ReportUserProblem/ClosedReportUserProblem', ensureAdmin, adminController.ClosedReportUserProblem);
+router.get('/ReportUserProblem/closed', ensureAdmin, adminController.ClosedReportUserProblem);
+
 router.get('/ReportUserProblem/:id', ensureAdmin, adminController.updateReportUserProblem); 
 
-router.get('/users/:id/edit', ensureAdmin, adminController.editUser); 
-router.post('/users/:id/edit', ensureAdmin, adminController.updateUser);
+router.put('/userAccountManagement/updateusersmanage', ensureAdmin, adminController.updateusersmanage);
+router.post('/admin/userAccountManagement/reset-password/:id', adminController.resetPassword); 
 
-router.delete('/users/:id/delete', ensureAdmin, adminController.deleteUser); 
+router.get('/reset-password-new-get', adminController.showResetPasswordNew);
+router.post('/reset-password-new', adminController.resetPasswordNew); // เพิ่ม route นี้
 
-router.get("/logout", adminController.logout);
+router.get("/logout", ensureAdmin, adminController.logout);
 
 module.exports = router;
