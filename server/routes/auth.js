@@ -1,4 +1,3 @@
-// server\routes\auth.js
 const express = require("express");
 const passport = require("passport");
 // Add this line to import GoogleStrategy

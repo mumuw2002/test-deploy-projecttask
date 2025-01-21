@@ -1,4 +1,3 @@
-// server\config\passport.js
 const passport = require('passport'); // เพิ่มการ import passport
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User'); // ปรับเส้นทางให้ถูกต้อง

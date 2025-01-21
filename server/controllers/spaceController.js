@@ -1,4 +1,3 @@
-// server\controllers\spaceController.js
 const Spaces = require('../models/Space');
 const Space = require('../models/Space');
 const User = require('../models/User');
@@ -11,17 +10,9 @@ moment.locale('th');
 // Space Dashboard
 exports.SpaceDashboard = async (req, res) => {
   try {
-    // Log session and auth headers for debugging
-    console.log("Session data:", req.session);
-    console.log("Auth headers:", req.headers.authorization);
+    const userId = new mongoose.Types.ObjectId(req.user.id); // ใช้ new เพื่อสร้าง ObjectId
 
-    if (!req.user || !req.user._id) {
-      throw new Error("User information is missing.");
-    }
-
-    const userId = new mongoose.Types.ObjectId(req.user._id.toString());
-
-    const spaces = await Space.find({
+    const spaces = await Spaces.find({
       $or: [
         { user: userId },
         { collaborators: { $elemMatch: { user: userId } } }
@@ -37,7 +28,6 @@ exports.SpaceDashboard = async (req, res) => {
       user: req.user,
       layout: "../views/layouts/space"
     });
-
   } catch (error) {
     console.error("Error fetching spaces:", error);
     res.status(500).send("Internal Server Error");

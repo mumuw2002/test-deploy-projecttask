@@ -1,4 +1,3 @@
-// server\controllers\authController.js
 const passport = require("passport");
 const User = require("../models/User");
 const adminController = require('./adminController');
@@ -42,53 +41,42 @@ exports.loginPage = (req, res) => {
   res.render("log/login", { error: req.flash('error') }); 
 };
 
-
 exports.login = async (req, res, next) => {
-  console.log("เริ่มต้นกระบวนการ login1"); 
-  console.log("ข้อมูลที่ได้รับจาก form:", req.body); 
-
   // Input validation
   if (!req.body.googleEmail || !req.body.password) {
-      console.log("Error: ไม่มี email หรือรหัสผ่าน"); 
       req.flash('error', 'Please enter email and password');
       return res.redirect('/login');
   }
 
   passport.authenticate('local', async (err, user, info) => {
       if (err) {
-          console.error('Authentication error:', err); 
+          console.error('Authentication error:', err);
           return next(err);
       }
 
       if (!user) {
-          console.log("Authentication ล้มเหลว:", info.message || 'Invalid email or password'); 
           req.flash('error', info.message || 'Invalid email or password');
           return res.redirect('/login');
       }
 
-      console.log("Authentication สำเร็จ! ข้อมูล user:", user); 
-
       req.logIn(user, async (err) => {
           if (err) {
-              console.error('Login error:', err); 
+              console.error('Login error:', err);
               return next(err);
           }
           try {
               user.lastLogin = Date.now(); 
               user.lastActive = Date.now(); 
               await user.save();
-              console.log("อัปเดต lastLogin และ lastActive สำเร็จ"); 
 
               // Redirect based on role (example)
               if (user.role === 'admin') {
-                  console.log("Redirect ไปที่ /adminPage"); 
                   return res.redirect('/adminPage'); 
               } else {
-                  console.log("Redirect ไปที่ /space"); 
                   return res.redirect('/space'); 
               }
           } catch (error) {
-              console.error('Error updating lastActive:', error); 
+              console.error('Error updating lastActive:', error);
               return next(error);
           }
       });

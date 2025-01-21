@@ -98,27 +98,23 @@ passport.use(
     User.authenticate()
   )
 );
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
-});
 // Session setup
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }), 
-  cookie: {
-      secure: process.env.NODE_ENV === 'production',  // ใช้ secure เมื่ออยู่ใน production
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }), 
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  },
-}));
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -131,12 +127,6 @@ app.use('/img', express.static(path.join(__dirname, 'public/img')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/docUploads', express.static(path.join(__dirname, 'docUploads')));
 app.use(methodOverride('_method'));
-
-
-app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src 'self' https://fonts.googleapis.com https://lh3.googleusercontent.com;");
-  next();
-});
 
 // Flash middleware setup
 app.use(flash());
@@ -182,25 +172,11 @@ app.set('layout', './layouts/main');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Middleware to check authentication
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-      return next();
-  }
-  res.redirect('/login');
-}
-
 // Routes setup
 app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/index'));
 app.use('/', require('./server/routes/spaceRoutes'));
 app.use('/', require('./server/routes/taskRou/taskPageRoutes'));
-
-// Protected route for /space
-app.get('/space', ensureAuthenticated, (req, res) => {
-  res.render('space');
-});
-
 app.use('/', require('./server/routes/taskRou/taskDetailRoutes'));
 app.use('/', require('./server/routes/taskRou/taskComplaintRouter'));
 app.use('/', require('./server/routes/notiRoutes'));
