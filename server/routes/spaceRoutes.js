@@ -6,7 +6,7 @@ const { isLoggedIn } = require('../middleware/checkAuth');
 const spaceController = require('../controllers/spaceController');
 const userActivityLogger = require('../middleware/userActivityLogger');
 
-router.get('/space',  isAuthenticated, userActivityLogger, spaceController.SpaceDashboard);
+router.get('/space', spaceController.SpaceDashboard);
 router.post('/createSpace', isLoggedIn, userActivityLogger, spaceController.createSpace);
 router.delete('/space/delete/:id', isLoggedIn, spaceController.deleteSpace);
 router.put('/space/:id/recover', isLoggedIn, spaceController.recoverSpace);
