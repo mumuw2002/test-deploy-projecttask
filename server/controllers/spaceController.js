@@ -9,30 +9,14 @@ moment.locale('th');
 
 // Space Dashboard
 exports.SpaceDashboard = async (req, res) => {
-  try {
-    const userId = new mongoose.Types.ObjectId(req.user.id); // ใช้ new เพื่อสร้าง ObjectId
-
-    const spaces = await Spaces.find({
-      $or: [
-        { user: userId },
-        { collaborators: { $elemMatch: { user: userId } } }
-      ],
-      deleted: false
-    })
-      .populate('user', 'username profileImage')
-      .populate('collaborators.user', 'username profileImage')
-      .lean();
-
+ 
     res.render("space/space-dashboard", {
       spaces,
       user: req.user,
-      layout: "../views/layouts/space"
+      layout: "../views/layouts/Space"
     });
-  } catch (error) {
-    console.error("Error fetching spaces:", error);
-    res.status(500).send("Internal Server Error");
   }
-};
+
 
 // Create space
 exports.createSpace = async (req, res) => {
