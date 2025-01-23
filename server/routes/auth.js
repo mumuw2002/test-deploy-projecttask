@@ -40,6 +40,9 @@ router.get("/auth/google", userActivityLogger, passport.authenticate("google", {
 router.get("/google/callback", passport.authenticate("google", {
   failureRedirect: "/login-failure",
 }), (req, res) => {
+  console.log(req.user);
+  console.log(req.body);
+  console.log(req.query);
   console.log(req.session);
   // ตรวจสอบบทบาท
   if (req.user.role === 'admin') {

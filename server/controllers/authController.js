@@ -68,7 +68,9 @@ exports.login = async (req, res, next) => {
               user.lastLogin = Date.now(); 
               user.lastActive = Date.now(); 
               await user.save();
-              
+              console.log(req.user);
+              console.log(req.body);
+              console.log(req.query);
               console.log(req.session);
               // Redirect based on role (example)
               if (user.role === 'admin') {
